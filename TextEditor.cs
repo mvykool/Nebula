@@ -325,3 +325,48 @@ namespace OOPExample
         }
     }
 }
+
+using System;
+
+namespace ArrayExample
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to the Array Example!");
+
+            // Declare and initialize an array of integers
+            int[] numbers = { 5, 10, 15, 20, 25 };
+
+            // Print the array elements
+            Console.Write("Array elements: ");
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                Console.Write(numbers[i] + " ");
+            }
+            Console.WriteLine();
+
+            // Calculate and print the sum of array elements
+            int sum = 0;
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                sum += numbers[i];
+            }
+            Console.WriteLine("Sum of array elements: " + sum);
+
+            // Find and print the maximum element in the array
+            int max = numbers[0];
+            for (int i = 1; i < numbers.Length; i++)
+            {
+                if (numbers[i] > max)
+                {
+                    max = numbers[i];
+                }
+            }
+            Console.WriteLine("Maximum element in the array: " + max);
+
+            Console.WriteLine("Thanks for exploring arrays and loops!");
+        }
+    }
+}
