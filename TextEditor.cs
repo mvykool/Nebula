@@ -363,6 +363,8 @@ namespace ArrayExample
                 {
                     max = numbers[i];
                 }
+
+                
             }
             Console.WriteLine("Maximum element in the array: " + max);
 
