@@ -235,3 +235,54 @@ namespace HelloWorldApp
         }
     }
 }
+
+using System;
+
+namespace ConsoleApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to the C# Console App!");
+            Console.Write("Please enter your name: ");
+            string name = Console.ReadLine();
+
+            Console.WriteLine($"Hello, {name}!");
+
+            Console.WriteLine("Let's do a simple calculation.");
+            Console.Write("Enter a number: ");
+            double num1 = Convert.ToDouble(Console.ReadLine());
+
+            Console.Write("Enter another number: ");
+            double num2 = Convert.ToDouble(Console.ReadLine());
+
+            Console.WriteLine($"Sum: {num1 + num2}");
+            Console.WriteLine($"Difference: {num1 - num2}");
+            Console.WriteLine($"Product: {num1 * num2}");
+            Console.WriteLine($"Quotient: {num1 / num2}");
+
+            Console.WriteLine("Now, let's count from 1 to 10:");
+            for (int i = 1; i <= 10; i++)
+            {
+                Console.Write($"{i} ");
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Let's check if a number is even or odd.");
+            Console.Write("Enter a number: ");
+            int number = Convert.ToInt32(Console.ReadLine());
+
+            if (number % 2 == 0)
+            {
+                Console.WriteLine($"{number} is even.");
+            }
+            else
+            {
+                Console.WriteLine($"{number} is odd.");
+            }
+
+            Console.WriteLine("Thanks for using the console app!");
+        }
+    }
+}
