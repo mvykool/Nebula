@@ -315,3 +315,13 @@ namespace OOPExample
             person1.Age = 30;
 
             Person person2 = new Person();
+            person2.Name = "Bob";
+            person2.Age = 25;
+
+            person1.Introduce();
+            person2.Introduce();
+
+            Console.WriteLine("Thanks for exploring OOP!");
+        }
+    }
+}
