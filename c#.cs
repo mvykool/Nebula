@@ -76,3 +76,51 @@ namespace SimpleCalculator
         }
     }
 }
+
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        List<string> notes = new List<string>();
+
+        while (true)
+        {
+            Console.WriteLine("Note Taking App");
+            Console.WriteLine("1. Add a note");
+            Console.WriteLine("2. View notes");
+            Console.WriteLine("3. Exit");
+
+            Console.Write("Enter your choice: ");
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    Console.Write("Enter your note: ");
+                    string note = Console.ReadLine();
+                    notes.Add(note);
+                    Console.WriteLine("Note added successfully!\n");
+                    break;
+                case 2:
+                    Console.WriteLine("Your notes:");
+                    for (int i = 0; i < notes.Count; i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {notes[i]}");
+                    }
+                    Console.WriteLine();
+                    break;
+                case 3:
+                    Console.WriteLine("Exiting the app.");
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Please try again.\n");
+                    break;
+            }
+        }
+    }
+}
+
+
