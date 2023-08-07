@@ -233,3 +233,33 @@ class Program
         Console.WriteLine($"Total: ${total}");
     }
 }
+
+using System;
+using System.Text;
+
+class Program
+{
+    static string GenerateRandomPassword(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+        StringBuilder password = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < length; i++)
+        {
+            int index = random.Next(chars.Length);
+            password.Append(chars[index]);
+        }
+
+        return password.ToString();
+    }
+
+    static void Main(string[] args)
+    {
+        Console.Write("Enter the desired length of the password: ");
+        int length = Convert.ToInt32(Console.ReadLine());
+
+        string password = GenerateRandomPassword(length);
+        Console.WriteLine($"Generated Password: {password}");
+    }
+}
