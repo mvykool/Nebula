@@ -12,7 +12,7 @@ import { DataSource } from 'typeorm';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      port: 3306,
+      port: 5432,
       username: 'mvykol',
       password: 'maicol123',
       database: 'postgres',
