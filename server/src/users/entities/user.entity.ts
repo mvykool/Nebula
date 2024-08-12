@@ -1,1 +1,2 @@
+@Entity()
 export class User {}
