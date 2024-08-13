@@ -9,6 +9,7 @@ import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
+    // move this to ENV
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
