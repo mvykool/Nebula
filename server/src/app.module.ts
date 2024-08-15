@@ -5,7 +5,7 @@ import { UsersModule } from './users/users.module';
 import { ProjectsModule } from './projects/projects.module';
 import { PagesModule } from './pages/pages.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { DataSource } from 'typeorm';
       username: 'maicol',
       password: 'maicol123',
       database: 'postgres',
-      entities: [],
+      entities: [User],
       synchronize: true,
     }),
     UsersModule,
@@ -26,6 +26,4 @@ import { DataSource } from 'typeorm';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  private dataSource: DataSource;
-}
+export class AppModule {}
