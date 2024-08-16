@@ -9,7 +9,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   createUser(createUserDto: CreateUserDto): Promise<User> {
     const user: User = new User();
@@ -40,5 +40,12 @@ export class UsersService {
 
   removeUser(id: number): Promise<{ affected?: number }> {
     return this.userRepository.delete(id);
+  }
+
+  async findOne(username: string): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { username },
+    });
+    return user;
   }
 }
