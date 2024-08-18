@@ -12,7 +12,10 @@ export class ProjectsService {
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
   ) {}
-  create(createProjectDto: CreateProjectDto, user: User): Promise<Project> {
+  createProject(
+    createProjectDto: CreateProjectDto,
+    user: User,
+  ): Promise<Project> {
     const project: Project = new Project();
     project.name = createProjectDto.name;
     project.cover = createProjectDto.cover;
