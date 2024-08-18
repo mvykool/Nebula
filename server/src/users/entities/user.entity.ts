@@ -1,4 +1,5 @@
-import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
+import { Project } from 'src/projects/entities/project.entity';
+import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -16,4 +17,7 @@ export class User {
 
   @Column({ type: 'varchar' })
   password: string;
+
+  @OneToMany(() => Project, (project) => project.owner)
+  project: Project[];
 }
