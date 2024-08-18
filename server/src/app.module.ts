@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { Project } from './projects/entities/project.entity';
 import { Page } from './pages/entities/page.entity';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -26,6 +27,12 @@ import { Page } from './pages/entities/page.entity';
       entities: [User, Project, Page],
       synchronize: true,
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
     UsersModule,
     ProjectsModule,
     PagesModule,
