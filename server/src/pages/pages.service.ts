@@ -4,15 +4,14 @@ import { UpdatePageDto } from './dto/update-page.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Page } from './entities/page.entity';
 import { Repository } from 'typeorm';
-import { Project } from 'src/projects/entities/project.entity';
+import { ProjectsService } from 'src/projects/projects.service';
 
 @Injectable()
 export class PagesService {
   constructor(
     @InjectRepository(Page)
     private readonly pageRepository: Repository<Page>,
-    @InjectRepository(Project)
-    private readonly projectRepository: Repository<Project>,
+    private readonly projectsService: ProjectsService,
   ) {}
 
   async createPage(createPageDto: CreatePageDto): Promise<Page> {
@@ -21,9 +20,7 @@ export class PagesService {
     page.content = createPageDto.content;
 
     // set project for pages
-    const project = await this.projectRepository.findOneOrFail({
-      where: { id: createPageDto.projectId },
-    });
+    const project = await this.projectsService.findOne(createPageDto.projectId);
     page.project = project;
 
     // provide parentid if exist

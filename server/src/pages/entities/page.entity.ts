@@ -1,10 +1,12 @@
 import { Project } from 'src/projects/entities/project.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -27,9 +29,9 @@ export class Page {
   @OneToMany(() => Page, (page) => page.parent)
   children: Page;
 
-  @Column({ type: 'varchar', length: 40 })
+  @CreateDateColumn({ type: 'varchar', length: 40 })
   created: Date;
 
-  @Column({ type: 'varchar', length: 40 })
+  @UpdateDateColumn({ type: 'varchar', length: 40 })
   updated: Date;
 }

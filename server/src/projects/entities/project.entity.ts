@@ -4,6 +4,8 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Page } from 'src/pages/entities/page.entity';
@@ -16,16 +18,16 @@ export class Project {
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   cover: string;
 
-  @Column({ type: 'text', length: 255 })
+  @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column({ type: 'varchar', length: 40 })
+  @CreateDateColumn({ type: 'varchar', length: 40 })
   created: Date;
 
-  @Column({ type: 'varchar', length: 40 })
+  @UpdateDateColumn({ type: 'varchar', length: 40 })
   updated: Date;
 
   @ManyToOne(() => User, (user) => user.project)
