@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { useState } from 'react'
+import { useAuth } from '../../hooks/authProvider';
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -8,10 +8,15 @@ const Login = () => {
     password: "",
   });
 
+  //set authProvider
+  const auth = useAuth();
+
   const handleSubmitEvent = (e: any) => {
     e.preventDefault();
+    console.log(input.username, input.password)
     if (input.username !== "" && input.password !== "") {
-      //dispatch action from hooks
+      auth.loginAction(input);
+      return;
     }
     alert("please provide a valid input");
   };

@@ -6,7 +6,8 @@ const AuthContext = createContext<any>({});
 
 const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("site") || "");
+  const [token, setToken] = useState(() => { return localStorage.getItem("site") || '' });
+
   const navigate = useNavigate();
   const loginAction = async (data: any) => {
     try {
@@ -18,14 +19,22 @@ const AuthProvider = ({ children }: any) => {
         body: JSON.stringify(data),
       });
       const res = await response.json();
-      if (res.data) {
-        setUser(res.data.user);
-        setToken(res.token);
-        localStorage.setItem("site", res.token);
-        navigate("/");
+
+      if (response.ok) {
+        console.log('good')
+        console.log(res)
+        localStorage.setItem("site", res.access_token);
+        navigate("/home");
         return;
       }
-      throw new Error(res.message);
+
+      if (res.data) {
+        console.log('start')
+        console.log(localStorage)
+        setUser(res.data.user);
+        setToken(res.token);
+        return;
+      }
     } catch (err) {
       console.error(err);
     }
