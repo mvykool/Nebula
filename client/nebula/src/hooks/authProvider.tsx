@@ -24,7 +24,7 @@ const AuthProvider = ({ children }: any) => {
         console.log('good')
         console.log(res)
         localStorage.setItem("site", res.access_token);
-        navigate("/home");
+        navigate("/");
         return;
       }
 
