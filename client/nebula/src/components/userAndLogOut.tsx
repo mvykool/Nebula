@@ -33,7 +33,7 @@ const UserAndLogOut = () => {
   return (
     <div ref={ref} className="relative">
       <div
-        className="flex cursor-pointer items-center gap-3 hover:bg-gray-800 pr-14 rounded-md"
+        className={`flex cursor-pointer items-center gap-3 hover:bg-gray-800 pr-14 rounded-md ${isOpen ? 'bg-gray-800' : 'bg-opacity-0'}`}
         onClick={toggleUsername}
       >
         <img
@@ -48,7 +48,10 @@ const UserAndLogOut = () => {
         <div className="border boder-white absolute w-full rounded-b-md py-5">
           <button
             className="flex items-center gap-2 ml-3"
-            onClick={() => auth.logOut()}
+            onClick={() => {
+              auth.logOut()
+              setIsOpen(false)
+            }}
           >
             Logout
             <i className='bx bx-exit'></i>
