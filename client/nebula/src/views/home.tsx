@@ -1,11 +1,10 @@
 import React from 'react'
+import Navbar from '../components/navbar';
 
 const Home = () => {
   return (
     <div>
-      <i className='bx bx-user'></i>
-      <i className='bx bxs-user'></i>
-      <i className='bx bxl-facebook-square'></i>
+      <Navbar />
     </div>
   )
 }
