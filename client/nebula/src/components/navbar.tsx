@@ -4,13 +4,13 @@ const Navbar = () => {
     <div className="w-full h-16 flex justify-between items-center px-[10%]">
 
       {/*Logo*/}
-      <div className="flex">
+      <div className="flex gap-2">
         <i className='bx bxs-analyse text-xl text-purple-700'></i>
         <p className="font-bold text-lg">Neb<span className="text-purple-500">u</span>la</p>
       </div>
 
       {/*Main button*/}
-      <div className="border-b-4 border-b-purple-500 py-5 px-2">
+      <div className="border-b-[5px] border-b-purple-500 py-5 px-2 flex justify-center items-center">
         <button>Projects</button>
       </div>
 
