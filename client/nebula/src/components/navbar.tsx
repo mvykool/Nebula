@@ -1,5 +1,10 @@
+import { useAuth } from "../hooks/authProvider"
 
 const Navbar = () => {
+
+  //set authProvider
+  const auth = useAuth();
+
   return (
     <div className="w-full h-16 flex justify-around items-center">
 
@@ -26,6 +31,7 @@ const Navbar = () => {
         <div className="flex cursor-pointer items-center gap-3">
           <img src="https://avatars.githubusercontent.com/u/87054757?v=4" className="h-10 w-10 rounded-md" alt="user-picture" />
           <p className="font-semibold">username</p>
+          <button onClick={() => auth.logOut()}>logout</button>
         </div>
       </div>
     </div>
