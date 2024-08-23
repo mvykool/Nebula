@@ -1,7 +1,7 @@
 
 const Navbar = () => {
   return (
-    <div className="w-full h-16 flex justify-between items-center px-[15%]">
+    <div className="w-full h-16 flex justify-around items-center">
 
       {/*Logo*/}
       <div className="flex gap-2 w-[205px]">
@@ -18,13 +18,15 @@ const Navbar = () => {
       {/*user info and logout*/}
       <div className="flex items-center gap-3 w-[205px]">
         <ul className="flex gap-3 mr-4">
-          <li><i className='bx bx-moon text-xl'></i></li>
-          <li><i className='bx bx-bell text-xl' ></i></li>
+          <li><i className='bx bx-moon text-xl cursor-pointer'></i></li>
+          <li><i className='bx bx-bell text-xl cursor-pointer' ></i></li>
         </ul>
 
         {/*image and name*/}
-        <img src="https://avatars.githubusercontent.com/u/87054757?v=4" className="h-10 w-10 rounded-md" alt="user-picture" />
-        <p className="font-semibold">username</p>
+        <div className="flex cursor-pointer items-center gap-3">
+          <img src="https://avatars.githubusercontent.com/u/87054757?v=4" className="h-10 w-10 rounded-md" alt="user-picture" />
+          <p className="font-semibold">username</p>
+        </div>
       </div>
     </div>
   )
