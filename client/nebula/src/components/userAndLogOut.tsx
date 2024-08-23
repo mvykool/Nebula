@@ -1,5 +1,7 @@
 import { useState, useRef, MouseEvent as ReactMouseEvent, useEffect } from "react";
 import { useAuth } from "../hooks/authProvider"
+import Logout from "./logout";
+import Username from "./username";
 
 const UserAndLogOut = () => {
 
@@ -33,30 +35,14 @@ const UserAndLogOut = () => {
   return (
     <div ref={ref} className="relative">
       <div
-        className={`flex cursor-pointer items-center gap-3 hover:bg-gray-800 pr-14 rounded-md ${isOpen ? 'bg-gray-800' : 'bg-opacity-0'}`}
+        className={`flex cursor-pointer items-center gap-3 hover:bg-gray-800 pr-12 rounded-md ${isOpen ? 'bg-gray-800' : 'bg-opacity-0'}`}
         onClick={toggleUsername}
       >
-        <img
-          src="https://avatars.githubusercontent.com/u/87054757?v=4"
-          className="h-10 w-10 rounded-md"
-          alt="user-picture"
-        />
-        <p className="font-semibold">username</p>
+        <Username />
       </div>
 
       {isOpen && (
-        <div className="border boder-white absolute w-full rounded-b-md py-5">
-          <button
-            className="flex items-center gap-2 ml-3"
-            onClick={() => {
-              auth.logOut()
-              setIsOpen(false)
-            }}
-          >
-            Logout
-            <i className='bx bx-exit'></i>
-          </button>
-        </div>
+        <Logout auth={auth} setIsOpen={setIsOpen} />
       )}
     </div>
   )
