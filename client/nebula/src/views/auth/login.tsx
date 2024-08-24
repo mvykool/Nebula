@@ -64,7 +64,7 @@ const Login = () => {
             your password should be more than 6 character
           </div>
         </div>
-        <button className="mt-3 bg-purple-300 rounded-md py-2 px-1">Submit</button>
+        <button type="submit" className="mt-3 bg-purple-300 rounded-md py-2 px-1">Submit</button>
       </form>
     </div>
   )
