@@ -30,38 +30,42 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmitEvent}>
-      <div className="form_control">
-        <label>username:</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="user123"
-          aria-describedby="username"
-          aria-invalid="false"
-          onChange={handleInput}
-        />
-        <div id="username" className="sr-only">
-          Please enter a valid username. It must contain at least 6 characters.
+    <div className='flex justify-center items-center w-full min-h-screen'>
+      <form onSubmit={handleSubmitEvent} className='bg-gray-50 rounded-md px-8 py-10 shadow-sm flex flex-col gap-4'>
+        <div className="flex flex-col gap-2">
+          <label className='font-semibold'>Username</label>
+          <input
+            className='py-2 px-1 rounded-sm'
+            type="text"
+            id="username"
+            name="username"
+            placeholder="user123"
+            aria-describedby="username"
+            aria-invalid="false"
+            onChange={handleInput}
+          />
+          <div id="username" className="sr-only">
+            Please enter a valid username. It must contain at least 6 characters.
+          </div>
         </div>
-      </div>
-      <div className="form_control">
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          aria-describedby="user-password"
-          aria-invalid="false"
-          onChange={handleInput}
-        />
-        <div id="user-password" className="sr-only">
-          your password should be more than 6 character
+        <div className="flex flex-col gap-2">
+          <label className='font-semibold' htmlFor="password">Password</label>
+          <input
+            className='py-2 px-1 rounded-sm'
+            type="password"
+            id="password"
+            name="password"
+            aria-describedby="user-password"
+            aria-invalid="false"
+            onChange={handleInput}
+          />
+          <div id="user-password" className="sr-only">
+            your password should be more than 6 character
+          </div>
         </div>
-      </div>
-      <button className="btn-submit">Submit</button>
-    </form>
+        <button className="mt-3 bg-purple-300 rounded-md py-2 px-1">Submit</button>
+      </form>
+    </div>
   )
 }
 
