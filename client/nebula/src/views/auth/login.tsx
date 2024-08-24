@@ -30,8 +30,9 @@ const Login = () => {
   };
 
   return (
-    <div className='flex justify-center items-center w-full min-h-screen'>
-      <form onSubmit={handleSubmitEvent} className='bg-gray-50 rounded-md px-8 py-10 shadow-sm flex flex-col gap-4'>
+    <div className='flex flex-col justify-center items-center w-full min-h-screen'>
+      <h2 className="font-bold my-7 text-4xl">Sign <span className="text-purple-400">u</span>p</h2>
+      <form onSubmit={handleSubmitEvent} className='bg-gray-50 rounded-md px-8 py-10 shadow-md flex flex-col gap-4'>
         <div className="flex flex-col gap-2">
           <label className='font-semibold'>Username</label>
           <input
