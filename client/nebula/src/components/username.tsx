@@ -1,13 +1,17 @@
-
+import { useAuth } from "../hooks/authProvider"
 const Username = () => {
+  const { user } = useAuth()
+
+  console.log(user)
+
   return (
     <>
       <img
-        src="https://avatars.githubusercontent.com/u/87054757?v=4"
+        src={user?.picture}
         className="h-10 w-10 rounded-md"
         alt="user-picture"
       />
-      <p className="font-semibold">username</p>
+      <p className="font-semibold">{user?.username}</p>
       <i className='bx bx-chevron-down'></i>
     </>
   )
