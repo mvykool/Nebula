@@ -19,22 +19,25 @@ const AuthProvider = ({ children }: any) => {
         },
         body: JSON.stringify(data),
       });
+
       const res = await response.json();
 
       if (response.ok) {
-        console.log('good')
-        console.log(res)
-        localStorage.setItem("site", res.access_token);
-        navigate("/");
-        return;
-      }
 
-      if (res.data) {
-        console.log('start')
-        console.log(localStorage)
-        setUser(res.data.user);
-        setToken(res.token);
-        return;
+        localStorage.setItem("site", res.access_token);
+        setToken(res.access_token);
+
+        // Ensure res.data and res.data.user exist before setting state
+        if (res.data && res.data.user) {
+          setUser(res.data.user);
+        } else {
+          console.error('User data is missing in the response');
+        }
+
+        navigate("/");
+      } else {
+        console.error('Login failed:', res.message);
+        alert("Invalid username or password");
       }
     } catch (err) {
       console.error(err);

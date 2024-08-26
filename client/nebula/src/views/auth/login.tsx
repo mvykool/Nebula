@@ -11,11 +11,16 @@ const Login = () => {
   //set authProvider
   const auth = useAuth();
 
-  const handleSubmitEvent = (e: any) => {
+  const handleSubmitEvent = async (e: any) => {
     e.preventDefault();
-    console.log(input.username, input.password)
     if (input.username !== "" && input.password !== "") {
-      auth.loginAction(input);
+      try {
+
+        await auth.loginAction(input);
+
+      } catch (error) {
+        console.log(error)
+      }
       return;
     }
     alert("please provide a valid input");

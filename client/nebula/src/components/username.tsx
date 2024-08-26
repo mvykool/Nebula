@@ -2,8 +2,6 @@ import { useAuth } from "../hooks/authProvider"
 const Username = () => {
   const { user } = useAuth()
 
-  console.log(user)
-
   return (
     <>
       <img
