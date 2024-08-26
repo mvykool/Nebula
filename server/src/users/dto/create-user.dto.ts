@@ -16,6 +16,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   name: string;
 
+  @IsString()
+  picture: string;
+
   @IsNotEmpty()
   @MinLength(2, { message: 'Username must have at least 2 letters' })
   @IsAlphanumeric(null, {

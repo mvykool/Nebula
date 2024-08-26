@@ -14,6 +14,7 @@ export class UsersService {
   createUser(createUserDto: CreateUserDto): Promise<User> {
     const user: User = new User();
     user.name = createUserDto.name;
+    user.picture = createUserDto.picture;
     user.username = createUserDto.username;
     user.email = createUserDto.email;
     user.password = createUserDto.password;
@@ -31,6 +32,7 @@ export class UsersService {
   updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user: User = new User();
     user.name = updateUserDto.name;
+    user.picture = updateUserDto.picture;
     user.username = updateUserDto.username;
     user.email = updateUserDto.email;
     user.password = updateUserDto.password;

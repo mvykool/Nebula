@@ -9,6 +9,9 @@ export class User {
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
+  @Column({ type: 'text', nullable: true })
+  picture: string;
+
   @Column({ type: 'varchar', length: 30 })
   username: string;
 
