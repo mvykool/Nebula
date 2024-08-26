@@ -17,15 +17,19 @@ const Profile = () => {
       </div>
 
       {/*main section*/}
-      <div className='w-4/6 mx-auto border border-white h-screen'>
-        <div className='flex relative p-10'>
+      <div className='w-5/6 mx-auto border border-white'>
+        <button type="button" className="flex items-center gap-1">
+          <i className='bx bx-left-arrow-alt text-xl' ></i>
+          back
+        </button>
+        <div className='flex relative m-20 border border-blue-500 w-3/6 h-full'>
           <img src={user?.picture} alt="profile-picture" className="rounded-full h-2/6 w-2/6 boder boder-white outline outline-2 outline-offset-2" />
 
           <div>
             <h3>Username</h3>
           </div>
         </div>
-      </div>
+      </div >
     </>
   )
 }
