@@ -4,6 +4,7 @@ import AuthProvider from "./hooks/authProvider";
 import Home from "./views/home";
 import Login from "./views/auth/login";
 import Profile from "./views/profile";
+import SignUp from "./views/auth/singup";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
