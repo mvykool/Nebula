@@ -44,12 +44,12 @@ const Profile = () => {
 
             <form action="" className="flex flex-col">
               <label htmlFor="" className="font-semibold">Name</label>
-              <input type="text" className="w-5/6 mb-4 mt-1" />
+              <input type="text" value={user?.name} className="w-5/6 mb-4 mt-1" />
               <label htmlFor="" className="font-semibold">Username</label>
-              <input type="text" className="w-5/6 mb-4 mt-1" />
+              <input type="text" value={user?.username} className="w-5/6 mb-4 mt-1" />
               <label htmlFor="" className="font-semibold">Email</label>
-              <input type="text" className="w-5/6 mb-4 mt-1" />
-              <button className="bg-pink-500 w-5/6 rounded-md py-2 my-3">Update</button>
+              <input type="text" value={user?.email} className="w-5/6 mb-4 mt-1" />
+              <button className="bg-pink-300 w-5/6 rounded-md py-2 my-3 cursor-not-allowed">Update</button>
             </form>
           </div>
         </div>

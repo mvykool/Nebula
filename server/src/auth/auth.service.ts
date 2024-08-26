@@ -7,7 +7,7 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async signIn(
     username: string,
@@ -24,6 +24,7 @@ export class AuthService {
       username: user.username,
       name: user.name,
       picture: user.picture,
+      email: user.email,
     };
     console.log('Payload:', payload);
     return {
