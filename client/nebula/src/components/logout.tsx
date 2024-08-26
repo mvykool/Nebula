@@ -16,13 +16,19 @@ const Logout = ({ auth, setIsOpen }: LogOutProps) => {
   }
 
   return (
-    <div className="border boder-white absolute w-full rounded-b-md py-5">
+    <div className="border boder-white absolute w-full flex flex-col gap-3 rounded-b-md py-5">
       <button
-        className="flex items-center gap-2 ml-5"
+        className="flex items-center ml-5 gap-3"
+      >
+        <i className='bx bx-user-circle'></i>
+        Profile
+      </button>
+      <button
+        className="flex items-center ml-5 gap-3"
         onClick={handleLogOut}
       >
+        <i className='bx bx-log-out text-red-400'></i>
         Logout
-        <i className='bx bx-exit text-red-400'></i>
       </button>
     </div>
   )
