@@ -5,7 +5,9 @@ import { useAuth } from '../../hooks/authProvider';
 
 const SignUp = () => {
   const [input, setInput] = useState({
+    name: "",
     username: "",
+    email: "",
     password: "",
   });
 
@@ -17,7 +19,7 @@ const SignUp = () => {
     if (input.username !== "" && input.password !== "") {
       try {
 
-        await auth.loginAction(input);
+        await auth.signupAction(input);
 
       } catch (error) {
         console.log(error)
@@ -44,10 +46,10 @@ const SignUp = () => {
           <input
             className='py-2 px-1 rounded-sm'
             type="text"
-            id="username"
-            name="username"
+            id="name"
+            name="name"
             placeholder="John smith"
-            aria-describedby="username"
+            aria-describedby="name"
             aria-invalid="false"
             onChange={handleInput}
           />
@@ -76,10 +78,10 @@ const SignUp = () => {
           <input
             className='py-2 px-1 rounded-sm'
             type="email"
-            id="username"
-            name="username"
+            id="email"
+            name="email"
             placeholder="user@gmail.com"
-            aria-describedby="username"
+            aria-describedby="email"
             aria-invalid="false"
             onChange={handleInput}
           />

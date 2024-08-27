@@ -44,6 +44,30 @@ const AuthProvider = ({ children }: any) => {
     }
   };
 
+  //create user
+  const signupAction = async (data: any) => {
+    try {
+      const response = await fetch("http://localhost:3000/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      });
+
+
+      if (response.ok) {
+        const res = await response.json();
+        console.log(res.data)
+        navigate("/login");
+        alert("user craeted, now login")
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // fetch user data 
   const fetchUserData = async () => {
     if (!token) {
@@ -84,7 +108,7 @@ const AuthProvider = ({ children }: any) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+    <AuthContext.Provider value={{ token, user, loginAction, signupAction, logOut }}>
       {children}
     </AuthContext.Provider>
   );
