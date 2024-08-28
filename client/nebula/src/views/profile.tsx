@@ -1,24 +1,53 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useAuth } from "../hooks/authProvider"
 import { useNavigate } from "react-router";
 
 interface FormData {
-  [key: string]: string;
+  name: string,
+  username: string,
+  email: string,
+  picture: string | null
 }
 
 const Profile = () => {
-  const { user } = useAuth();
 
-  //form this.state 
-  const [isModified, setIsModified] = useState<boolean>(false);
-  const [value, setValue] = useState<FormData>({
-    name: user?.name,
-    username: user?.username,
-    email: user?.email
-  });
-
+  const { user, defaultPfp } = useAuth();
   const navigate = useNavigate();
 
+  //view state  
+
+  const [isModified, setIsModified] = useState<boolean>(false);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    username: '',
+    email: '',
+    picture: null
+  });
+
+  const [initData, setInitData] = useState<FormData>({
+    name: '',
+    username: '',
+    email: '',
+    picture: null
+  })
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
+  // end of view state
+
+  useEffect(() => {
+    if (user) {
+      const userData = {
+        name: user?.name || '',
+        username: user?.username || '',
+        email: user?.email || '',
+        picture: user?.picture || ''
+      };
+      setFormData(userData);
+      setInitData(userData);
+      setPreviewUrl(user?.picture || null);
+    }
+  }, [user]);
 
   //temporal goback btn
   const goBack = () => {
@@ -28,12 +57,31 @@ const Profile = () => {
   //detect change
   const formModified = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
-    setValue((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    setIsModified(true);
   };
+
+  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setFormData(prev => ({ ...prev, picture: base64String }));
+        setPreviewUrl(base64String);
+      };
+      reader.readAsDataURL(file);
+
+    }
+  };
+
+  useEffect(() => {
+    const isChanged = Object.keys(formData).some(key => formData[key as keyof FormData] !== initData[key as keyof FormData]);
+    setIsModified(isChanged);
+  }, [formData, initData]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,10 +93,11 @@ const Profile = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(value),
+          body: JSON.stringify(formData),
         });
         if (response.ok) {
           console.log('Patch request successful');
+          setInitData(formData);
           setIsModified(false);
         } else {
           console.error('Patch request failed');
@@ -82,8 +131,22 @@ const Profile = () => {
         <div className=' flex border border-gray-100 rounded-md justify-between mt-8 h-full'>
 
           <div className="w-6/12 flex flex-col justify-center gap-6">
-            <img src={user?.picture} alt="profile-picture" className="mx-auto rounded-full m-1 h-56 w-56 boder boder-white outline outline-2 outline-offset-2" />
+            <img
+              src={previewUrl || formData.picture || defaultPfp}
+              alt="profile-picture"
+              className="mx-auto rounded-full m-1 h-56 w-56 boder boder-white outline outline-2 outline-offset-2"
+            />
 
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImage}
+              className="mx-auto"
+            />
+
+            {!formData.picture && (
+              <p className="text-sm text-gray-500 text-center" >No profile picture set. Upload one to get started!</p>
+            )}
             <p className="font-extrabold flex justify-center gap-3 items-center my-4">Active projects:  <span>0</span></p>
           </div>
 
@@ -97,21 +160,21 @@ const Profile = () => {
                 type="text"
                 name="name"
                 onChange={formModified}
-                value={value.name}
+                value={formData.name}
                 className="w-5/6 mb-4 mt-1"
               />
               <label className="font-semibold">Username</label>
               <input
                 type="text"
                 name="username"
-                value={value.username}
+                value={formData.username}
                 className="w-5/6 mb-4 mt-1"
               />
               <label className="font-semibold">Email</label>
               <input
                 type="text"
                 name="email"
-                value={value.email}
+                value={formData.email}
                 className="w-5/6 mb-4 mt-1"
               />
               <button type="submit" disabled={!isModified} className={!isModified ? 'bg-red-500' : 'bg-blue-500'}>Update</button>

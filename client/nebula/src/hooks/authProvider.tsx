@@ -107,8 +107,10 @@ const AuthProvider = ({ children }: any) => {
     navigate("/login");
   };
 
+  const defaultPfp = "https://i.pinimg.com/564x/4a/58/c8/4a58c821206a4b7534de8b3d4ed6ac85.jpg";
+
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, signupAction, logOut }}>
+    <AuthContext.Provider value={{ token, user, loginAction, signupAction, logOut, defaultPfp }}>
       {children}
     </AuthContext.Provider>
   );
