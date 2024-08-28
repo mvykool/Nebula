@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AuthContext = createContext<any>({});
 
 const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const [token, setToken] = useState(() => { return localStorage.getItem("site") || '' });
 
   const navigate = useNavigate();
@@ -107,10 +107,38 @@ const AuthProvider = ({ children }: any) => {
     navigate("/login");
   };
 
+  const updateUser = async (updateData: any) => {
+    if (!token) {
+      console.log('error')
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/user/" + user?.sub, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData)
+      });
+
+      if (response.ok) {
+        const updateUserDate = await response.json();
+        setUser(updateUserDate);
+        console.log(user)
+      } else {
+        console.log('error')
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const defaultPfp = "https://i.pinimg.com/564x/4a/58/c8/4a58c821206a4b7534de8b3d4ed6ac85.jpg";
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, signupAction, logOut, defaultPfp }}>
+    <AuthContext.Provider value={{ token, user, loginAction, updateUser, signupAction, logOut, defaultPfp }}>
       {children}
     </AuthContext.Provider>
   );

@@ -11,7 +11,7 @@ interface FormData {
 
 const Profile = () => {
 
-  const { user, defaultPfp } = useAuth();
+  const { user, defaultPfp, updateUser } = useAuth();
   const navigate = useNavigate();
 
   //view state  
@@ -87,28 +87,13 @@ const Profile = () => {
     e.preventDefault();
     if (isModified) {
       try {
-        // Perform your PATCH request here
-        const response = await fetch('http://localhost:3000/user/' + user.sub, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) {
-          console.log('Patch request successful');
-          setInitData(formData);
-          setIsModified(false);
-        } else {
-          console.error('Patch request failed');
-        }
+        await updateUser(formData);
+        setIsModified(false)
       } catch (error) {
         console.error('Error during patch request:', error);
       }
     }
   };
-
-  console.log("this is: ", user)
 
   return (
     <>
@@ -166,6 +151,7 @@ const Profile = () => {
               <label className="font-semibold">Username</label>
               <input
                 type="text"
+                onChange={formModified}
                 name="username"
                 value={formData.username}
                 className="w-5/6 mb-4 mt-1"
@@ -174,6 +160,7 @@ const Profile = () => {
               <input
                 type="text"
                 name="email"
+                onChange={formModified}
                 value={formData.email}
                 className="w-5/6 mb-4 mt-1"
               />
