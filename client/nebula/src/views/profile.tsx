@@ -17,6 +17,7 @@ const Profile = () => {
   //view state  
 
   const [isModified, setIsModified] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     username: '',
@@ -85,12 +86,20 @@ const Profile = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isModified) {
+    if (isModified && !isLoading) {
+      setIsLoading(true);
       try {
-        await updateUser(formData);
-        setIsModified(false)
+        const updatedUser = await updateUser(formData);
+        if (updatedUser) {
+          setFormData(updatedUser);
+          setInitData(updatedUser);
+          setIsModified(false);
+          setPreviewUrl(updatedUser.picture || null)
+        }
       } catch (error) {
         console.error('Error during patch request:', error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -164,7 +173,13 @@ const Profile = () => {
                 value={formData.email}
                 className="w-5/6 mb-4 mt-1"
               />
-              <button type="submit" disabled={!isModified} className={!isModified ? 'bg-red-500' : 'bg-blue-500'}>Update</button>
+              <button
+                type="submit"
+                disabled={!isModified}
+                className={!isModified ? 'bg-red-500' : 'bg-blue-500'}
+              >
+                {isLoading ? "updating..." : "Update"}
+              </button>
             </form>
           </div>
         </div>

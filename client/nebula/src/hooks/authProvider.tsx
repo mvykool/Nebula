@@ -108,7 +108,7 @@ const AuthProvider = ({ children }: any) => {
   };
 
   const updateUser = async (updateData: any) => {
-    if (!token) {
+    if (!token || !user?.sub) {
       console.log('error')
       return;
     }
@@ -125,7 +125,8 @@ const AuthProvider = ({ children }: any) => {
       if (response.ok) {
         const updateUserDate = await response.json();
         setUser(updateUserDate);
-        console.log(user)
+        fetchUserData();
+        return updateUserDate;
       } else {
         console.log('error')
       }
