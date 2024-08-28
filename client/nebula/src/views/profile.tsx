@@ -1,16 +1,65 @@
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useAuth } from "../hooks/authProvider"
 import { useNavigate } from "react-router";
 
+interface FormData {
+  [key: string]: string;
+}
+
 const Profile = () => {
+  const { user } = useAuth();
+
+  //form this.state 
+  const [isModified, setIsModified] = useState<boolean>(false);
+  const [value, setValue] = useState<FormData>({
+    name: user?.name,
+    username: user?.username,
+    email: user?.email
+  });
 
   const navigate = useNavigate();
 
-  const { user } = useAuth();
 
   //temporal goback btn
   const goBack = () => {
     navigate("/")
   }
+
+  //detect change
+  const formModified = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setValue((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setIsModified(true);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isModified) {
+      try {
+        // Perform your PATCH request here
+        const response = await fetch('http://localhost:3000/user/' + user.sub, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(value),
+        });
+        if (response.ok) {
+          console.log('Patch request successful');
+          setIsModified(false);
+        } else {
+          console.error('Patch request failed');
+        }
+      } catch (error) {
+        console.error('Error during patch request:', error);
+      }
+    }
+  };
+
+  console.log("this is: ", user)
 
   return (
     <>
@@ -42,14 +91,30 @@ const Profile = () => {
             <h3 className="my-5 font-extrabold text-lg">Update Profile</h3>
 
 
-            <form action="" className="flex flex-col">
-              <label htmlFor="" className="font-semibold">Name</label>
-              <input type="text" value={user?.name} className="w-5/6 mb-4 mt-1" />
-              <label htmlFor="" className="font-semibold">Username</label>
-              <input type="text" value={user?.username} className="w-5/6 mb-4 mt-1" />
-              <label htmlFor="" className="font-semibold">Email</label>
-              <input type="text" value={user?.email} className="w-5/6 mb-4 mt-1" />
-              <button className="bg-pink-300 w-5/6 rounded-md py-2 my-3 cursor-not-allowed">Update</button>
+            <form onSubmit={handleSubmit} className="flex flex-col">
+              <label className="font-semibold">Name</label>
+              <input
+                type="text"
+                name="name"
+                onChange={formModified}
+                value={value.name}
+                className="w-5/6 mb-4 mt-1"
+              />
+              <label className="font-semibold">Username</label>
+              <input
+                type="text"
+                name="username"
+                value={value.username}
+                className="w-5/6 mb-4 mt-1"
+              />
+              <label className="font-semibold">Email</label>
+              <input
+                type="text"
+                name="email"
+                value={value.email}
+                className="w-5/6 mb-4 mt-1"
+              />
+              <button type="submit" disabled={!isModified} className={!isModified ? 'bg-red-500' : 'bg-blue-500'}>Update</button>
             </form>
           </div>
         </div>
