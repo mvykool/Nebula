@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, createContext, useState, useEffect } from "react";
+import { useContext, createContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 const AuthContext = createContext<any>({});
 
 const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<any>(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [token, setToken] = useState(() => { return localStorage.getItem("site") || '' });
 
   const navigate = useNavigate();
@@ -27,9 +31,9 @@ const AuthProvider = ({ children }: any) => {
         localStorage.setItem("site", res.access_token);
         setToken(res.access_token);
 
-        // Ensure res.data and res.data.user exist before setting state
         if (res.data && res.data.user) {
           setUser(res.data.user);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
         } else {
           console.error('User data is missing in the response');
         }
@@ -69,7 +73,7 @@ const AuthProvider = ({ children }: any) => {
   }
 
   // fetch user data 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     if (!token) {
       return;
     }
@@ -85,25 +89,28 @@ const AuthProvider = ({ children }: any) => {
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
-        console.log(userData)
+        localStorage.setItem("user", JSON.stringify(userData));
       } else {
-        // If the token is invalid, clear it
         setToken('');
         localStorage.removeItem("site");
+        localStorage.removeItem("user");
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
-    fetchUserData();
-  }, [token]);
+    if (token && !user) {
+      fetchUserData();
+    }
+  }, [token, user, fetchUserData]);
 
   const logOut = () => {
     setUser(null);
     setToken("");
     localStorage.removeItem("site");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -123,23 +130,26 @@ const AuthProvider = ({ children }: any) => {
       });
 
       if (response.ok) {
-        const updateUserDate = await response.json();
-        setUser(updateUserDate);
-        fetchUserData();
-        return updateUserDate;
+        const updateUserData = await response.json();
+        const newUserData = { ...user, ...updateUserData }
+        setUser(newUserData);
+        localStorage.setItem("user", JSON.stringify(newUserData));
+        return newUserData;
       } else {
-        console.log('error')
+        console.log('error');
+        return null;
       }
 
     } catch (error) {
       console.log(error)
+      return null;
     }
   }
 
   const defaultPfp = "https://i.pinimg.com/564x/4a/58/c8/4a58c821206a4b7534de8b3d4ed6ac85.jpg";
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, updateUser, signupAction, logOut, defaultPfp }}>
+    <AuthContext.Provider value={{ token, fetchUserData, user, loginAction, updateUser, signupAction, logOut, defaultPfp }}>
       {children}
     </AuthContext.Provider>
   );
