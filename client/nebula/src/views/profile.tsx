@@ -144,7 +144,7 @@ const Profile = () => {
           <div className="w-6/12 flex flex-col justify-center gap-6">
             <img
               crossOrigin="anonymous"
-              src={prefixImage || defaultPfp}
+              src={prefixImage || previewUrl || defaultPfp}
               alt="profile-picture"
               className="mx-auto rounded-full m-1 h-56 w-56 boder boder-white outline outline-2 outline-offset-2"
             />
