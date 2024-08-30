@@ -75,9 +75,10 @@ const AuthProvider = ({ children }: any) => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/auth/profile", {
+      const response = await fetch("http://localhost:3000/user/" + user?.sub, {
         method: "GET",
         headers: {
+          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
       });
