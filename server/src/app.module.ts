@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { Project } from './projects/entities/project.entity';
 import { Page } from './pages/entities/page.entity';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { imagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     ProjectsModule,
     PagesModule,
     AuthModule,
+    imagesModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

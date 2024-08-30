@@ -19,7 +19,14 @@ async function bootstrap() {
 
   app.enableCors();
 
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginResourcePolicy: false,
+      crossOriginOpenerPolicy: false,
+      crossOriginEmbedderPolicy: false,
+    }),
+  );
   await app.listen(3000);
 }
 bootstrap();

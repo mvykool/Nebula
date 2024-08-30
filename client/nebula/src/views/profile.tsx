@@ -64,18 +64,31 @@ const Profile = () => {
     }));
   };
 
-  const handleImage = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        setFormData(prev => ({ ...prev, picture: base64String }));
-        setPreviewUrl(base64String);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('file', file);
 
+      try {
+        const response = await fetch('http://localhost:3000/upload/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const imageUrl = 'http://localhost:3000' + data.url;
+
+          setFormData(prev => ({ ...prev, picture: imageUrl }));
+          setPreviewUrl(imageUrl);
+        } else {
+          console.error('Image upload failed');
+        }
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
   };
 
@@ -86,6 +99,7 @@ const Profile = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (isModified && !isLoading) {
       setIsLoading(true);
       try {
@@ -103,6 +117,9 @@ const Profile = () => {
       }
     }
   };
+
+  const prefixImage = formData?.picture;
+  console.log(prefixImage)
 
   return (
     <>
@@ -126,7 +143,8 @@ const Profile = () => {
 
           <div className="w-6/12 flex flex-col justify-center gap-6">
             <img
-              src={previewUrl || formData.picture || defaultPfp}
+              crossOrigin="anonymous"
+              src={prefixImage || defaultPfp}
               alt="profile-picture"
               className="mx-auto rounded-full m-1 h-56 w-56 boder boder-white outline outline-2 outline-offset-2"
             />
