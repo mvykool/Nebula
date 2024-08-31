@@ -139,9 +139,9 @@ const Profile = () => {
           <i className='bx bx-left-arrow-alt text-xl' ></i>
           back
         </button>
-        <div className=' flex border border-hover rounded-md justify-between mt-8 w-4/6 mx-auto'>
+        <div className=' flex border border-hover rounded-md justify-between mt-8 py-20 w-4/6 mx-auto'>
 
-          <div className="w-6/12 flex flex-col justify-center gap-6">
+          <div className="w-6/12 flex flex-col justify-center gap-6 mt-10">
             <img
               crossOrigin="anonymous"
               src={prefixImage || previewUrl || defaultPfp}
@@ -150,7 +150,7 @@ const Profile = () => {
             />
 
             <label
-              className="mx-auto bg-primary px-2 py-1 text-black dark:text-white font-semibold tracking-wide rounded-md text-sm cursor-pointer"
+              className="mx-auto bg-primary p-2 text-black dark:text-white font-semibold tracking-wide rounded-md text-sm cursor-pointer"
               htmlFor="file-upload" >Change profile picture</label>
 
             <input
@@ -163,7 +163,7 @@ const Profile = () => {
             <p className="font-extrabold text-black dark:text-white flex justify-center gap-3 items-center mb-8">Active projects:  <span>0</span></p>
           </div>
 
-          <div className="w-7/12 p-5">
+          <div className="w-6/12 p-4">
             <h3 className="my-5 font-extrabold text-lg text-black dark:text-white">Update Profile</h3>
 
 
@@ -174,7 +174,7 @@ const Profile = () => {
                 name="name"
                 onChange={formModified}
                 value={formData.name}
-                className="w-5/6 mb-4 mt-1 text-black"
+                className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
               <label className="font-semibold">Username</label>
               <input
@@ -182,7 +182,7 @@ const Profile = () => {
                 onChange={formModified}
                 name="username"
                 value={formData.username}
-                className="w-5/6 mb-4 mt-1 text-black"
+                className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
               <label className="font-semibold">Email</label>
               <input
@@ -190,7 +190,7 @@ const Profile = () => {
                 name="email"
                 onChange={formModified}
                 value={formData.email}
-                className="w-5/6 mb-4 mt-1 text-black"
+                className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
               <button
                 type="submit"
