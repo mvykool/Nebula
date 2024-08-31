@@ -146,7 +146,7 @@ const AuthProvider = ({ children }: any) => {
     }
   }
 
-  const defaultPfp = "https://i.pinimg.com/564x/4a/58/c8/4a58c821206a4b7534de8b3d4ed6ac85.jpg";
+  const defaultPfp = "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
 
   return (
     <AuthContext.Provider value={{ token, fetchUserData, user, loginAction, updateUser, signupAction, logOut, defaultPfp }}>
