@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UserAndLogOut from "./userAndLogOut"
 
 const Navbar = () => {
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  //setting night and light toggle
   useEffect(() => {
     const theme = localStorage.getItem('theme');
     if (theme === 'dark') {
@@ -13,9 +16,11 @@ const Navbar = () => {
     if (document.documentElement.classList.contains('dark')) {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
+      setIsDark(false)
     } else {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
+      setIsDark(true)
     }
   }
 
@@ -39,7 +44,11 @@ const Navbar = () => {
         <ul className="flex gap-3 mr-4">
           <li>
             <button type="button" onClick={toggleTheme}>
-              <i className='bx bx-moon text-xl cursor-pointer'></i>
+              {isDark ?
+                <i className='bx bx-sun text-xl cursor-pointer'></i>
+                :
+                <i className='bx bx-moon text-xl cursor-pointer'></i>
+              }
             </button>
           </li>
           <li><i className='bx bx-bell text-xl cursor-pointer' ></i></li>
