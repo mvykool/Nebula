@@ -35,7 +35,7 @@ const UserAndLogOut = () => {
   return (
     <div ref={ref} className="relative">
       <div
-        className={`flex cursor-pointer items-center gap-3 hover:bg-hover dark:hover:bg-opacity-20 pr-12 ${isOpen ? 'bg-gray-200 rounded-t-md' : 'rounded-md bg-opacity-0'}`}
+        className={`flex cursor-pointer items-center gap-3 hover:bg-hover dark:hover:bg-opacity-20 pr-12 ${isOpen ? 'bg-hover dark:bg-opacity-20 rounded-t-md' : 'rounded-md bg-opacity-0'}`}
         onClick={toggleUsername}
       >
         <Username />
