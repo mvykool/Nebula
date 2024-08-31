@@ -1,16 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserAndLogOut from "./userAndLogOut"
 
 const Navbar = () => {
   const [isDark, setIsDark] = useState<boolean>(false);
-
-  //setting night and light toggle
-  useEffect(() => {
-    const theme = localStorage.getItem('theme');
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
 
   const toggleTheme = () => {
     if (document.documentElement.classList.contains('dark')) {

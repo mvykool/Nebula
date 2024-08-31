@@ -10,6 +10,7 @@ export default {
       'white': '#ffffff',
       'black': '#000000',
       'hover': '#e7dfff',
+      'invalid': '#b3b3b3',
       'bgLight': '#F0F0F0',
       'bgDark': '#191825',
       'primary': '#865DFF',

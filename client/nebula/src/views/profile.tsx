@@ -126,20 +126,20 @@ const Profile = () => {
       <div className="w-full h-16 flex justify-center items-center">
 
         {/*Logo*/}
-        <div className="flex gap-2">
-          <i className='bx bxs-analyse text-xl text-purple-700'></i>
-          <p className="font-bold text-lg">Neb<span className="text-purple-500">u</span>la</p>
+        <div className="flex gap-2 text-black dark:text-white">
+          <i className='bx bxs-analyse text-xl text-primary'></i>
+          <p className="font-bold text-lg">Neb<span className="text-primary">u</span>la</p>
         </div>
 
       </div>
 
       {/*main section*/}
       <div className='relative w-5/6 mx-auto mt-10'>
-        <button onClick={goBack} type="button" className="flex items-center bg-gray-200 px-3 py-1 rounded-md gap-1">
+        <button onClick={goBack} type="button" className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 px-3 py-1 rounded-md gap-1">
           <i className='bx bx-left-arrow-alt text-xl' ></i>
           back
         </button>
-        <div className=' flex border border-gray-100 rounded-md justify-between mt-8 h-full'>
+        <div className=' flex border border-hover rounded-md justify-between mt-8 w-4/6 mx-auto'>
 
           <div className="w-6/12 flex flex-col justify-center gap-6">
             <img
@@ -149,31 +149,32 @@ const Profile = () => {
               className="mx-auto rounded-full m-1 h-56 w-56 boder boder-white outline outline-2 outline-offset-2"
             />
 
+            <label
+              className="mx-auto bg-primary px-2 py-1 text-black dark:text-white font-semibold tracking-wide rounded-md text-sm cursor-pointer"
+              htmlFor="file-upload" >Change profile picture</label>
+
             <input
               type="file"
+              id="file-upload"
               accept="image/*"
               onChange={handleImage}
-              className="mx-auto"
             />
 
-            {!formData.picture && (
-              <p className="text-sm text-gray-500 text-center" >No profile picture set. Upload one to get started!</p>
-            )}
-            <p className="font-extrabold flex justify-center gap-3 items-center my-4">Active projects:  <span>0</span></p>
+            <p className="font-extrabold text-black dark:text-white flex justify-center gap-3 items-center mb-8">Active projects:  <span>0</span></p>
           </div>
 
           <div className="w-7/12 p-5">
-            <h3 className="my-5 font-extrabold text-lg">Update Profile</h3>
+            <h3 className="my-5 font-extrabold text-lg text-black dark:text-white">Update Profile</h3>
 
 
-            <form onSubmit={handleSubmit} className="flex flex-col">
+            <form onSubmit={handleSubmit} className="flex flex-col text-black dark:text-white">
               <label className="font-semibold">Name</label>
               <input
                 type="text"
                 name="name"
                 onChange={formModified}
                 value={formData.name}
-                className="w-5/6 mb-4 mt-1"
+                className="w-5/6 mb-4 mt-1 text-black"
               />
               <label className="font-semibold">Username</label>
               <input
@@ -181,7 +182,7 @@ const Profile = () => {
                 onChange={formModified}
                 name="username"
                 value={formData.username}
-                className="w-5/6 mb-4 mt-1"
+                className="w-5/6 mb-4 mt-1 text-black"
               />
               <label className="font-semibold">Email</label>
               <input
@@ -189,12 +190,12 @@ const Profile = () => {
                 name="email"
                 onChange={formModified}
                 value={formData.email}
-                className="w-5/6 mb-4 mt-1"
+                className="w-5/6 mb-4 mt-1 text-black"
               />
               <button
                 type="submit"
                 disabled={!isModified}
-                className={!isModified ? 'bg-red-500' : 'bg-blue-500'}
+                className={`w-5/6 py-2 font-semibold rounded-md mt-3 ${!isModified ? 'bg-invalid cursor-not-allowed' : 'bg-highlight cursor-pointer'}`}
               >
                 {isLoading ? "updating..." : "Update"}
               </button>
