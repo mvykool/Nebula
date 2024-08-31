@@ -8,11 +8,11 @@ const Navbar = () => {
     if (document.documentElement.classList.contains('dark')) {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
-      setIsDark(false)
+      setIsDark(true)
     } else {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
-      setIsDark(true)
+      setIsDark(false)
     }
   }
 
@@ -37,9 +37,9 @@ const Navbar = () => {
           <li>
             <button type="button" className="rounded-full hover:bg-hover dark:hover:bg-opacity-30" onClick={toggleTheme}>
               {isDark ?
-                <i className='bx bx-sun text-xl h-8 flex justify-center items-center w-8 cursor-pointer'></i>
-                :
                 <i className='bx bx-moon text-xl h-8 flex justify-center items-center w-8 cursor-pointer'></i>
+                :
+                <i className='bx bx-sun text-xl h-8 flex justify-center items-center w-8 cursor-pointer'></i>
               }
             </button>
           </li>
