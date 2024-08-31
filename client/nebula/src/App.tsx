@@ -6,6 +6,7 @@ import Login from "./views/auth/login";
 import Profile from "./views/profile";
 import SignUp from "./views/auth/singup";
 import { useEffect } from "react";
+import CreateProject from "./views/project/create";
 
 function App() {
 
@@ -27,6 +28,9 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
+
+              {/*PROJECT SECTION*/}
+              <Route path="/project/creation" element={<CreateProject />} />
             </Route>
           </Routes>
         </AuthProvider>
