@@ -29,29 +29,29 @@ const Navbar = () => {
 
       {/*Logo*/}
       <div className="flex gap-2 w-[205px]">
-        <i className='bx bxs-analyse text-xl text-purple-700'></i>
-        <p className="font-bold text-lg">Neb<span className="text-purple-500">u</span>la</p>
+        <i className='bx bxs-analyse text-xl text-primary'></i>
+        <p className="font-bold text-black dark:text-white text-lg">Neb<span className="text-primary">u</span>la</p>
       </div>
 
       {/*Main button*/}
       <div className=" flex items-center gap-3">
-        <button className="px-2 py-1 bg-purple-200 dark:bg-red-200 rounded-md">Projects</button>
+        <button className="px-2 text-black dark:text-white py-1 bg-primary-light font-semibold tracking-wide rounded-md">Projects</button>
       </div>
 
 
       {/*user info and logout*/}
-      <div className="flex items-center gap-3 w-[205px]">
+      <div className="flex items-center gap-3 w-[205px] text-black dark:text-white">
         <ul className="flex gap-3 mr-4">
           <li>
-            <button type="button" onClick={toggleTheme}>
+            <button type="button" className="rounded-full hover:bg-hover dark:hover:bg-opacity-30" onClick={toggleTheme}>
               {isDark ?
-                <i className='bx bx-sun text-xl cursor-pointer'></i>
+                <i className='bx bx-sun text-xl h-8 flex justify-center items-center w-8 cursor-pointer'></i>
                 :
-                <i className='bx bx-moon text-xl cursor-pointer'></i>
+                <i className='bx bx-moon text-xl h-8 flex justify-center items-center w-8 cursor-pointer'></i>
               }
             </button>
           </li>
-          <li><i className='bx bx-bell text-xl cursor-pointer' ></i></li>
+          <li><i className='bx bx-bell text-xl cursor-pointer rounded-full w-8 h-8 flex justify-center items-center hover:bg-hover dark:hover:bg-opacity-30' ></i></li>
         </ul>
 
         {/*image and name*/}

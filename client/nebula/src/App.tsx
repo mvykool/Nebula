@@ -8,7 +8,7 @@ import SignUp from "./views/auth/singup";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-bgLight dark:bg-bgDark h-screen">
       <Router>
         <AuthProvider>
           <Routes>
