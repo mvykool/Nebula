@@ -4,7 +4,7 @@ import AuthProvider from "./hooks/authProvider";
 import Home from "./views/home";
 import Login from "./views/auth/login";
 import Profile from "./views/profile";
-import SignUp from "./views/auth/singup";
+import SignUp from "./views/auth/signup";
 import { useEffect } from "react";
 import CreateProject from "./views/project/create";
 
