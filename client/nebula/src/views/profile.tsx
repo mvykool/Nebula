@@ -146,7 +146,7 @@ const Profile = () => {
               crossOrigin="anonymous"
               src={prefixImage || previewUrl || defaultPfp}
               alt="profile-picture"
-              className="mx-auto rounded-full m-1 h-56 w-56 boder boder-white outline outline-2 outline-offset-2"
+              className="mx-auto rounded-full m-1 h-56 w-56 outline outline-black dark:outline-hover outline-2 outline-offset-4"
             />
 
             <label
