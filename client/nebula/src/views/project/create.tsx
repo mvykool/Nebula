@@ -109,11 +109,6 @@ const CreateProject = () => {
           </div>
         </div>
       </div >
-      <h2>New Project</h2>
-
-      <form action="" onSubmit={handleSubmit}>
-        <input type="text" onChange={handleInput} />
-      </form>
     </>
   )
 }
