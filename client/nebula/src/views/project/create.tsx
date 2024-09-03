@@ -85,18 +85,21 @@ const CreateProject = () => {
               <label className="font-semibold">Name</label>
               <input
                 type="text"
+                onChange={handleInput}
                 name="name"
                 className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
               <label className="font-semibold">Username</label>
               <input
                 type="text"
+                onChange={handleInput}
                 name="username"
                 className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
               <label className="font-semibold">Email</label>
               <input
                 type="text"
+                onChange={handleInput}
                 name="email"
                 className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
