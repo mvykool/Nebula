@@ -30,7 +30,7 @@ export class Project {
   @UpdateDateColumn({ type: 'varchar', length: 40 })
   updated: Date;
 
-  @ManyToOne(() => User, (user) => user.project)
+  @ManyToOne(() => User, (user) => user.projects)
   owner: User;
 
   @OneToMany(() => Page, (page) => page.project)

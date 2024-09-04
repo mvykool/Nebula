@@ -28,6 +28,14 @@ export class ProjectsService {
     return this.projectRepository.find();
   }
 
+  async findByOwner(ownerId: number): Promise<Project[]> {
+    const projects = await this.projectRepository.find({
+      where: { owner: { id: ownerId } },
+      relations: ['owner', 'pages'],
+    });
+    return projects;
+  }
+
   findOne(id: number): Promise<Project> {
     return this.projectRepository.findOneBy({ id });
   }

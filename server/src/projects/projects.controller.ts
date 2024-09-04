@@ -40,6 +40,11 @@ export class ProjectsController {
     return this.projectsService.findOne(+id);
   }
 
+  @Get('owner/:ownerId')
+  async getProjectsByOwner(@Param('ownerId') ownerId: string) {
+    return this.projectsService.findByOwner(+ownerId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(+id, updateProjectDto);
