@@ -160,7 +160,6 @@ const Profile = () => {
               onChange={handleImage}
             />
 
-            <p className="font-extrabold text-black dark:text-white flex justify-center gap-3 items-center mb-8">Active projects:  <span>0</span></p>
           </div>
 
           <div className="w-6/12 p-4">
