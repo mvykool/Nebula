@@ -12,4 +12,6 @@ export class CreateProjectDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  ownereId: number;
 }

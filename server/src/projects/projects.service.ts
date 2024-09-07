@@ -4,18 +4,25 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from './entities/project.entity';
-import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ProjectsService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
+    public userService: UsersService,
   ) {}
-  createProject(
+  async createProject(
     createProjectDto: CreateProjectDto,
-    user: User,
+    userId: number,
   ): Promise<Project> {
+    const user = await this.userService.viewUser(userId);
+
+    if (!user) {
+      throw new Error('user no found');
+    }
+
     const project: Project = new Project();
     project.name = createProjectDto.name;
     project.cover = createProjectDto.cover;
@@ -29,11 +36,9 @@ export class ProjectsService {
   }
 
   async findByOwner(ownerId: number): Promise<Project[]> {
-    const projects = await this.projectRepository.find({
+    return this.projectRepository.find({
       where: { owner: { id: ownerId } },
-      relations: ['owner', 'pages'],
     });
-    return projects;
   }
 
   findOne(id: number): Promise<Project> {

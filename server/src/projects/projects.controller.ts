@@ -7,7 +7,10 @@ import {
   Param,
   Delete,
   Req,
+  Request,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -23,15 +26,15 @@ export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  create(
-    @Body() createProjectDto: CreateProjectDto,
-    @Req() req: IGetUserAuthInfoRequest,
-  ) {
-    return this.projectsService.createProject(createProjectDto, req.user);
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Request() req, @Body() createProjectDto: CreateProjectDto) {
+    // Extract user ID from request object
+    const ownerId = req.user.sub;
+    return this.projectsService.createProject(createProjectDto, ownerId);
   }
 
   @Get()
-  findAll() {
+  find() {
     return this.projectsService.findAll();
   }
 
@@ -40,9 +43,9 @@ export class ProjectsController {
     return this.projectsService.findOne(+id);
   }
 
-  @Get('owner/:ownerId')
-  async getProjectsByOwner(@Param('ownerId') ownerId: string) {
-    return this.projectsService.findByOwner(+ownerId);
+  @Get('mine')
+  async findAll(@Req() req: IGetUserAuthInfoRequest) {
+    return this.projectsService.findByOwner(req.user.id);
   }
 
   @Patch(':id')
