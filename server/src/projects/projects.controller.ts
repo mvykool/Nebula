@@ -16,7 +16,6 @@ import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { IGetUserAuthInfoRequest } from 'src/utils/interfaces';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('projects')
@@ -34,6 +33,12 @@ export class ProjectsController {
   }
 
   @Get()
+  async findMine(@Req() req) {
+    const ownerId = req.user.sub;
+    return this.projectsService.findByOwner(ownerId);
+  }
+
+  @Get('all')
   find() {
     return this.projectsService.findAll();
   }
@@ -41,11 +46,6 @@ export class ProjectsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.projectsService.findOne(+id);
-  }
-
-  @Get('mine')
-  async findAll(@Req() req: IGetUserAuthInfoRequest) {
-    return this.projectsService.findByOwner(req.user.id);
   }
 
   @Patch(':id')
