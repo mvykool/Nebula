@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react'
-import { useAuth } from '../../hooks/authProvider';
+import { useState } from "react";
+import { useAuth } from "../../hooks/authProvider";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -15,11 +15,9 @@ const Login = () => {
     e.preventDefault();
     if (input.username !== "" && input.password !== "") {
       try {
-
         await auth.loginAction(input);
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
       return;
     }
@@ -35,13 +33,18 @@ const Login = () => {
   };
 
   return (
-    <div className='flex flex-col justify-center items-center w-full min-h-screen'>
-      <h2 className="font-bold my-7 text-4xl">Sign <span className="text-primary">i</span>n</h2>
-      <form onSubmit={handleSubmitEvent} className='bg-gray-50 rounded-md px-8 py-10 w-2/6 shadow-md flex flex-col gap-4'>
+    <div className="flex flex-col justify-center items-center w-full min-h-screen">
+      <h2 className="font-bold my-7 text-4xl">
+        Sign <span className="text-primary">i</span>n
+      </h2>
+      <form
+        onSubmit={handleSubmitEvent}
+        className="bg-gray-50 rounded-md px-8 py-10 w-2/6 shadow-md flex flex-col gap-4"
+      >
         <div className="flex flex-col gap-2">
-          <label className='font-semibold'>Username</label>
+          <label className="font-semibold">Username</label>
           <input
-            className='py-2 px-1 rounded-sm'
+            className="py-2 px-1 rounded-sm"
             type="text"
             id="username"
             name="username"
@@ -51,13 +54,16 @@ const Login = () => {
             onChange={handleInput}
           />
           <div id="username" className="sr-only">
-            Please enter a valid username. It must contain at least 6 characters.
+            Please enter a valid username. It must contain at least 6
+            characters.
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label className='font-semibold' htmlFor="password">Password</label>
+          <label className="font-semibold" htmlFor="password">
+            Password
+          </label>
           <input
-            className='py-2 px-1 rounded-sm'
+            className="py-2 px-1 rounded-sm"
             type="password"
             id="password"
             name="password"
@@ -69,12 +75,22 @@ const Login = () => {
             your password should be more than 6 character
           </div>
         </div>
-        <button type="submit" className="mt-3 bg-purple-300 rounded-md py-2 px-1">Login</button>
+        <button
+          type="submit"
+          className="mt-3 bg-purple-300 rounded-md py-2 px-1"
+        >
+          Login
+        </button>
 
-        <a href='/signup' className='justify-center flex underline my-3 text-pink-200'>Create account</a>
+        <a
+          href="/signup"
+          className="justify-center flex underline my-3 text-pink-200"
+        >
+          Create account
+        </a>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
