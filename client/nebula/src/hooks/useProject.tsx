@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, createContext } from "react";
+import {
+  useContext,
+  createContext,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 import { useAuth } from "./authProvider";
 import { useNavigate } from "react-router";
 
@@ -8,6 +14,7 @@ const ProjectContext = createContext<any>({});
 const ProjectProvider = ({ children }: any) => {
   const { token } = useAuth();
   const navigate = useNavigate();
+  const [myProjects, setMyProjects] = useState("");
 
   // REQUESTS
 
@@ -38,8 +45,40 @@ const ProjectProvider = ({ children }: any) => {
     }
   };
 
+  // FETCH MY PROJECTS
+  const fetchMyProjects = useCallback(async () => {
+    if (!token) {
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/projects", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const projects = await response.json();
+        setMyProjects(projects);
+        console.log(projects);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token && !myProjects) {
+      fetchMyProjects();
+    }
+  }, [token, myProjects, fetchMyProjects]);
+
   return (
-    <ProjectContext.Provider value={{ createProject }}>
+    <ProjectContext.Provider
+      value={{ createProject, fetchMyProjects, myProjects }}
+    >
       {children}
     </ProjectContext.Provider>
   );
