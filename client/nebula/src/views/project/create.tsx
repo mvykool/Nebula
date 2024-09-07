@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react"
-import { useProject } from "../../hooks/useProject"
-import { useNavigate } from "react-router"
-import { useAuth } from "../../hooks/authProvider"
+import { useState } from "react";
+import { useProject } from "../../hooks/useProject";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../hooks/authProvider";
 
 const CreateProject = () => {
   const [input, setInput] = useState({
     name: "",
     cover: "",
-    description: ""
-  })
+    description: "",
+  });
 
   const project = useProject();
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const CreateProject = () => {
     e.PreventDefault();
 
     if (input.name !== "" && input.description !== "") {
-      console.log('random', project)
+      console.log("random", project);
     }
   };
 
@@ -33,87 +33,90 @@ const CreateProject = () => {
 
   //temporal goback btn
   const goBack = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   return (
     <>
       <div className="w-full h-16 flex justify-center items-center">
-
         {/*Logo*/}
         <div className="flex gap-2 text-black dark:text-white">
-          <i className='bx bxs-analyse text-xl text-primary'></i>
-          <p className="font-bold text-lg">Neb<span className="text-primary">u</span>la</p>
+          <i className="bx bxs-analyse text-xl text-primary"></i>
+          <p className="font-bold text-lg">
+            Neb<span className="text-primary">u</span>la
+          </p>
         </div>
-
       </div>
 
       {/*main section*/}
-      <div className='relative w-5/6 mx-auto mt-10'>
-        <button onClick={goBack} type="button" className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 px-3 py-1 rounded-md gap-1">
-          <i className='bx bx-left-arrow-alt text-xl' ></i>
+      <div className="relative w-5/6 mx-auto mt-10">
+        <button
+          onClick={goBack}
+          type="button"
+          className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 px-3 py-1 rounded-md gap-1"
+        >
+          <i className="bx bx-left-arrow-alt text-xl"></i>
           back
         </button>
-        <div className=' flex border border-hover rounded-md justify-between mt-8 py-20 w-4/6 mx-auto'>
 
-          <div className="w-6/12 flex flex-col justify-center gap-6 mt-10">
+        <div className=" flex flex-col border border-hover rounded-md pb-20 w-4/6 mx-auto">
+          <div className="w-full relative flex flex-col gap-6">
             <img
               crossOrigin="anonymous"
               src={defaultPfp}
               alt="profile-picture"
-              className="mx-auto rounded-full m-1 h-56 w-56 boder boder-white outline outline-2 outline-offset-2"
+              className="mx-auto relative h-[30vh] object-cover w-full boder boder-white outline outline-2 outline-offset-2"
             />
 
             <label
               className="mx-auto bg-primary p-2 text-black dark:text-white font-semibold tracking-wide rounded-md text-sm cursor-pointer"
-              htmlFor="file-upload" >Change profile picture</label>
+              htmlFor="file-upload"
+            >
+              Add a project image
+            </label>
 
-            <input
-              type="file"
-              id="file-upload"
-              accept="image/*"
-            />
-
-            <p className="font-extrabold text-black dark:text-white flex justify-center gap-3 items-center mb-8">Active projects:  <span>0</span></p>
+            <input type="file" id="file-upload" accept="image/*" />
           </div>
 
-          <div className="w-6/12 p-4">
-            <h3 className="my-5 font-extrabold text-lg text-black dark:text-white">Update Profile</h3>
+          <div className="w-6/12 p-4 mt-8 flex flex-col items-center mx-auto">
+            <h3 className="my-5 font-extrabold text-lg text-black dark:text-white">
+              Create your project
+            </h3>
 
-
-            <form onSubmit={handleSubmit} className="flex flex-col text-black dark:text-white">
+            <form
+              onSubmit={handleSubmit}
+              className="flex w-full flex-col text-black dark:text-white "
+            >
               <label className="font-semibold">Name</label>
               <input
                 type="text"
                 onChange={handleInput}
                 name="name"
-                className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
+                className="w-full mb-5 mt-1 rounded-md py-1 px-2 text-black"
               />
               <label className="font-semibold">Username</label>
               <input
                 type="text"
                 onChange={handleInput}
                 name="username"
-                className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
+                className="w-full mb-5 mt-1 rounded-md py-1 px-2 text-black"
               />
               <label className="font-semibold">Email</label>
               <input
                 type="text"
                 onChange={handleInput}
                 name="email"
-                className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
+                className="w-full mb-5 mt-1 rounded-md py-1 px-2 text-black"
               />
-              <button
-                type="submit"
-              >
-                create
+              <button type="submit" className="mt-8">
+                Create
               </button>
             </form>
           </div>
         </div>
-      </div >
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default CreateProject
+export default CreateProject;
