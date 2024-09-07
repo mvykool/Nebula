@@ -6,6 +6,7 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Page } from 'src/pages/entities/page.entity';
@@ -30,7 +31,11 @@ export class Project {
   @UpdateDateColumn({ type: 'varchar', length: 40 })
   updated: Date;
 
+  @Column({ type: 'boolean', default: false })
+  publish: boolean;
+
   @ManyToOne(() => User, (user) => user.projects)
+  @JoinColumn({ name: 'ownerId' })
   owner: User;
 
   @OneToMany(() => Page, (page) => page.project)

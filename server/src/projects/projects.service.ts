@@ -28,6 +28,7 @@ export class ProjectsService {
     project.cover = createProjectDto.cover;
     project.description = createProjectDto.description;
     project.owner = user;
+    project.publish = createProjectDto.published;
     return this.projectRepository.save(project);
   }
 
@@ -38,6 +39,14 @@ export class ProjectsService {
   async findByOwner(ownerId: number): Promise<Project[]> {
     return this.projectRepository.find({
       where: { owner: { id: ownerId } },
+      relations: ['owner'],
+    });
+  }
+
+  async findPublishedProjects(): Promise<Project[]> {
+    return this.projectRepository.find({
+      where: { publish: true },
+      relations: ['owner'],
     });
   }
 

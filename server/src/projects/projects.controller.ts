@@ -12,6 +12,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
+import { Project } from './entities/project.entity';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -33,9 +34,14 @@ export class ProjectsController {
   }
 
   @Get()
-  async findMine(@Req() req) {
+  async findMine(@Req() req): Promise<Project[]> {
     const ownerId = req.user.sub;
     return this.projectsService.findByOwner(ownerId);
+  }
+
+  @Get('published')
+  async getPublishedProjects() {
+    return this.projectsService.findPublishedProjects();
   }
 
   @Get('all')

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -14,4 +14,7 @@ export class CreateProjectDto {
   description?: string;
 
   ownereId: number;
+
+  @IsBoolean()
+  published: boolean;
 }
