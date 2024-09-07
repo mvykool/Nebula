@@ -78,8 +78,8 @@ const CreateProject = () => {
             <input type="file" id="file-upload" accept="image/*" />
           </div>
 
-          <div className="w-6/12 p-4 mt-8 flex flex-col items-center mx-auto">
-            <h3 className="my-5 font-extrabold text-lg text-black dark:text-white">
+          <div className="w-6/12 p-4 mt-10 flex flex-col items-center mx-auto">
+            <h3 className="my-3 font-extrabold text-lg text-black dark:text-white">
               Create your project
             </h3>
 
@@ -108,7 +108,10 @@ const CreateProject = () => {
                 name="email"
                 className="w-full mb-5 mt-1 rounded-md py-1 px-2 text-black"
               />
-              <button type="submit" className="mt-8">
+              <button
+                type="submit"
+                className="mt-8 px-2 py-1 rounded-md bg-secondary"
+              >
                 Create
               </button>
             </form>
