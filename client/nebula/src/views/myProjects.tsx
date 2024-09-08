@@ -1,9 +1,6 @@
-type Project = {
-  name: string;
-  cover: string;
-  description: string;
-  id: number;
-};
+import Greetings from "../components/greeting";
+import ProjectCard from "../components/projectCard";
+import { Project } from "../types/project.type";
 
 interface IProject {
   projects: Project[];
@@ -12,14 +9,21 @@ interface IProject {
 const MyProjects = ({ projects }: IProject) => {
   return (
     <div>
-      <h2>My projects</h2>
+      <Greetings />
 
-      {projects &&
-        projects.map((project: Project) => (
-          <div key={project?.id}>
-            <p>names: {project?.name}</p>
-          </div>
-        ))}
+      {/*PROJECT SECTION*/}
+      <div className="flex flex-wrap w-5/6 mx-auto m-10">
+        {projects &&
+          projects.map((project: Project) => (
+            <div key={project?.id}>
+              <ProjectCard
+                name={project?.name}
+                cover={project?.cover}
+                owner={project?.owner}
+              />
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

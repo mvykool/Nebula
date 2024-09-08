@@ -17,7 +17,7 @@ const Home = () => {
   }, [fetchMyProjects]);
 
   return (
-    <div>
+    <div className="w-4/6 mx-auto">
       <Navbar />
       {isLoading ? (
         <div>Loading...</div>
