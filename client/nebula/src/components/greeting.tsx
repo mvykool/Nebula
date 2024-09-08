@@ -7,11 +7,11 @@ const Greetings = () => {
     const currentHour = new Date().getHours();
 
     if (currentHour < 12) {
-      return `🌇Good morning, ${user?.username} `;
+      return `🌇 Good morning, ${user?.username} `;
     } else if (currentHour < 18) {
-      return `🌆Good afternoon, ${user?.username} `;
+      return `🌆 Good afternoon, ${user?.username} `;
     } else {
-      return `🌃Good evening, ${user?.username} `;
+      return `🌃 Good evening, ${user?.username} `;
     }
   };
   return (
