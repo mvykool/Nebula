@@ -1,3 +1,4 @@
+import CreateButton from "../components/createButton";
 import Greetings from "../components/greeting";
 import ProjectCard from "../components/projectCard";
 import { Project } from "../types/project.type";
@@ -12,18 +13,24 @@ const MyProjects = ({ projects }: IProject) => {
       <Greetings />
 
       {/*PROJECT SECTION*/}
-      <div className="flex flex-wrap w-5/6 mx-auto m-10">
-        {projects &&
-          projects.map((project: Project) => (
-            <div key={project?.id}>
-              <ProjectCard
-                name={project?.name}
-                cover={project?.cover}
-                owner={project?.owner}
-              />
-            </div>
-          ))}
-      </div>
+      <section className="w-5/6 mx-auto m-10">
+        {" "}
+        <div className="ml-2">
+          <CreateButton />
+        </div>
+        <div className="flex flex-wrap">
+          {projects &&
+            projects.map((project: Project) => (
+              <div key={project?.id}>
+                <ProjectCard
+                  name={project?.name}
+                  cover={project?.cover}
+                  owner={project?.owner}
+                />
+              </div>
+            ))}
+        </div>
+      </section>
     </div>
   );
 };

@@ -11,7 +11,7 @@ const ProjectCard = ({ name, cover, owner }: IProjectCard) => {
     "https://img.freepik.com/vector-gratis/gradiente-desenfoque-fondo-abstracto-azul-rosa_53876-117324.jpg?w=1380&t=st=1725799161~exp=1725799761~hmac=09c2108daa2ee5633d2cd336c80721b6af51ea968f6716cacedc0d9aab4abd4f";
 
   return (
-    <div className="bg-primary-dark rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white">
+    <div className="bg-primary-dark cursor-pointer rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white">
       <img
         src={cover || defPic}
         className="h-16 object-cover rounded-t-lg w-full"
