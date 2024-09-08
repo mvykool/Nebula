@@ -10,9 +10,9 @@ const CreateButton = () => {
   return (
     <button
       onClick={handleCreate}
-      className="my-5 px-8 py-2 rounded-md bg-secondary cursor-pointer hover:bg-highlight font-semibold tracking-wide text-black transition-all"
+      className="my-5 px-5 py-2 rounded-md bg-secondary cursor-pointer hover:bg-highlight font-semibold tracking-wide text-black transition-all"
     >
-      Create
+      Create new project
     </button>
   );
 };
