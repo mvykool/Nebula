@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useGenerateRandomColor } from "../hooks/useGenerateColor";
+import { colorArray } from "../utils/colors";
 import { User } from "../types/user.type";
 
 interface IProjectCard {
@@ -8,13 +9,7 @@ interface IProjectCard {
 }
 
 const ProjectCard = ({ name, cover, owner }: IProjectCard) => {
-  const [color, setColor] = useState<string>("");
-
-  useEffect(() => {
-    setColor(
-      "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"),
-    );
-  }, []);
+  const color = useGenerateRandomColor(colorArray);
 
   return (
     <div className="bg-primary-dark cursor-pointer rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white">

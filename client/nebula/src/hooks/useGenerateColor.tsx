@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const useGenerateRandomColor = () => {
+export const useGenerateRandomColor = (colors: string[]) => {
   const [color, setColor] = useState("");
-  const generateColor = () => {
-    setColor(
-      "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"),
-    );
-  };
-  return { color, generateColor };
+
+  useEffect(() => {
+    const randomColors = colors[Math.floor(Math.random() * colors.length)];
+    setColor(randomColors);
+  }, [colors]);
+  return color;
 };
-export default useGenerateRandomColor;
