@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { User } from "../types/user.type";
 
 interface IProjectCard {
@@ -7,16 +8,29 @@ interface IProjectCard {
 }
 
 const ProjectCard = ({ name, cover, owner }: IProjectCard) => {
-  const defPic =
-    "https://img.freepik.com/vector-gratis/gradiente-desenfoque-fondo-abstracto-azul-rosa_53876-117324.jpg?w=1380&t=st=1725799161~exp=1725799761~hmac=09c2108daa2ee5633d2cd336c80721b6af51ea968f6716cacedc0d9aab4abd4f";
+  const [color, setColor] = useState<string>("");
+
+  useEffect(() => {
+    setColor(
+      "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"),
+    );
+  }, []);
 
   return (
     <div className="bg-primary-dark cursor-pointer rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white">
-      <img
-        src={cover || defPic}
-        className="h-16 object-cover rounded-t-lg w-full"
-        alt=""
-      />
+      {cover ? (
+        <img
+          src={cover}
+          className="h-16 object-cover rounded-t-lg w-full"
+          alt=""
+        />
+      ) : (
+        <div
+          style={{ backgroundColor: color }}
+          className="w-full h-16 rounded-t-lg"
+        ></div>
+      )}
+
       <h4 className="m-2 font-semibold">{name}</h4>
 
       <div className="flex absolute items-center bottom-0 m-3 gap-2">
