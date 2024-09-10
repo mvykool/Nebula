@@ -31,6 +31,9 @@ const Navbar = () => {
         <button className="px-2 text-black dark:text-white py-1 bg-primary-light font-semibold tracking-wide rounded-md">
           Projects
         </button>
+        <button className="px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md">
+          Explore
+        </button>
       </div>
 
       {/*user info and logout*/}
