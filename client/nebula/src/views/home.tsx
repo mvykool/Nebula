@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/navbar";
 import Welcome from "../components/welcome";
 import { useProject } from "../hooks/useProject";
 import MyProjects from "./project/myProjects";
@@ -17,8 +16,7 @@ const Home = () => {
   }, [fetchMyProjects]);
 
   return (
-    <div className="w-4/6 mx-auto">
-      <Navbar />
+    <>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -32,7 +30,7 @@ const Home = () => {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

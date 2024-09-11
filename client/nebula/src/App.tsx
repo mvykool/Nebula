@@ -8,6 +8,7 @@ import Profile from "./views/profile";
 import SignUp from "./views/auth/signup";
 import CreateProject from "./views/project/create";
 import ExploreView from "./views/explore/exploreView";
+import Layout from "./views/layout";
 
 function App() {
   return (
@@ -15,19 +16,21 @@ function App() {
       <Router>
         <AuthProvider>
           <ProjectProvider>
-            {" "}
-            <Routes>
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route element={<PrivateRoute />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/explore" element={<ExploreView />} />
+            <Layout>
+              {" "}
+              <Routes>
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/explore" element={<ExploreView />} />
 
-                {/*PROJECT SECTION*/}
-                <Route path="/project/creation" element={<CreateProject />} />
-              </Route>
-            </Routes>
+                  {/*PROJECT SECTION*/}
+                  <Route path="/project/creation" element={<CreateProject />} />
+                </Route>
+              </Routes>
+            </Layout>
           </ProjectProvider>
         </AuthProvider>
       </Router>
