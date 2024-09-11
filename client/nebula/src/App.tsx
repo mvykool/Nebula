@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Outlet,
+} from "react-router-dom";
 import PrivateRoute from "./utils/privateRoute";
 import AuthProvider from "./hooks/authProvider";
 import ProjectProvider from "./hooks/useProject";
@@ -16,21 +21,25 @@ function App() {
       <Router>
         <AuthProvider>
           <ProjectProvider>
-            <Layout>
-              {" "}
-              <Routes>
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/login" element={<Login />} />
-                <Route element={<PrivateRoute />}>
+            {" "}
+            <Routes>
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+              <Route element={<PrivateRoute />}>
+                <Route
+                  element={
+                    <Layout>
+                      <Outlet />
+                    </Layout>
+                  }
+                >
                   <Route path="/" element={<Home />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/explore" element={<ExploreView />} />
-
-                  {/*PROJECT SECTION*/}
                   <Route path="/project/creation" element={<CreateProject />} />
                 </Route>
-              </Routes>
-            </Layout>
+              </Route>
+            </Routes>
           </ProjectProvider>
         </AuthProvider>
       </Router>

@@ -125,16 +125,6 @@ const Profile = () => {
 
   return (
     <>
-      <div className="w-full h-16 flex justify-center items-center">
-        {/*Logo*/}
-        <div className="flex gap-2 text-black dark:text-white">
-          <i className="bx bxs-analyse text-xl text-primary"></i>
-          <p className="font-bold text-lg">
-            Neb<span className="text-primary">u</span>la
-          </p>
-        </div>
-      </div>
-
       {/*main section*/}
       <div className="relative w-5/6 mx-auto mt-10">
         <button
