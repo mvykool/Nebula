@@ -1,7 +1,7 @@
-import CreateButton from "../components/createButton";
-import Greetings from "../components/greeting";
-import ProjectCard from "../components/projectCard";
-import { Project } from "../types/project.type";
+import CreateButton from "../../components/createButton";
+import Greetings from "../../components/greeting";
+import ProjectCard from "../../components/projectCard";
+import { Project } from "../../types/project.type";
 
 interface IProject {
   projects: Project[];

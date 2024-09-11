@@ -7,6 +7,7 @@ import Login from "./views/auth/login";
 import Profile from "./views/profile";
 import SignUp from "./views/auth/signup";
 import CreateProject from "./views/project/create";
+import ExploreView from "./views/explore/exploreView";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/explore" element={<ExploreView />} />
 
                 {/*PROJECT SECTION*/}
                 <Route path="/project/creation" element={<CreateProject />} />

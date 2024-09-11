@@ -1,8 +1,10 @@
 import { useState } from "react";
 import UserAndLogOut from "./userAndLogOut";
+import { useLocation } from "react-router";
 
 const Navbar = () => {
   const [isDark, setIsDark] = useState<boolean>(false);
+  const [explore, setExplore] = useState<boolean>(false);
 
   const toggleTheme = () => {
     if (document.documentElement.classList.contains("dark")) {
@@ -15,6 +17,12 @@ const Navbar = () => {
       setIsDark(false);
     }
   };
+
+  const { pathname } = useLocation();
+
+  if (pathname === "/explore") {
+    setExplore(true);
+  }
 
   return (
     <div className="w-full h-16 flex justify-between items-center">
@@ -31,7 +39,9 @@ const Navbar = () => {
         <button className="px-2 text-black dark:text-white py-1 bg-primary-light font-semibold tracking-wide rounded-md">
           Projects
         </button>
-        <button className="px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md">
+        <button
+          className={`${explore ? "bg-primary" : ""} px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md`}
+        >
           Explore
         </button>
       </div>

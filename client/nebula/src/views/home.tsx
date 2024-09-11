@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import Welcome from "../components/welcome";
 import { useProject } from "../hooks/useProject";
-import MyProjects from "./myProjects";
+import MyProjects from "./project/myProjects";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
