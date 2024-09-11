@@ -1,10 +1,9 @@
 import { useState } from "react";
 import UserAndLogOut from "./userAndLogOut";
-import { useLocation } from "react-router";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [isDark, setIsDark] = useState<boolean>(false);
-  const [explore, setExplore] = useState<boolean>(false);
 
   const toggleTheme = () => {
     if (document.documentElement.classList.contains("dark")) {
@@ -18,12 +17,6 @@ const Navbar = () => {
     }
   };
 
-  const { pathname } = useLocation();
-
-  if (pathname === "/explore") {
-    setExplore(true);
-  }
-
   return (
     <div className="w-full h-16 flex justify-between items-center">
       {/*Logo*/}
@@ -36,14 +29,18 @@ const Navbar = () => {
 
       {/*Main button*/}
       <div className=" flex items-center gap-3">
-        <button className="px-2 text-black dark:text-white py-1 bg-primary-light font-semibold tracking-wide rounded-md">
+        <NavLink
+          to={"/"}
+          className="aria-[current=page]:bg-primary-light px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md"
+        >
           Projects
-        </button>
-        <button
-          className={`${explore ? "bg-primary" : ""} px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md`}
+        </NavLink>
+        <NavLink
+          to={"/explore"}
+          className="aria-[current=page]:bg-primary-light px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md"
         >
           Explore
-        </button>
+        </NavLink>
       </div>
 
       {/*user info and logout*/}
