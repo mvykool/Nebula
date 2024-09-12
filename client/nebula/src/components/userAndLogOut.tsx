@@ -1,13 +1,17 @@
-import { useState, useRef, MouseEvent as ReactMouseEvent, useEffect } from "react";
-import { useAuth } from "../hooks/authProvider"
+import {
+  useState,
+  useRef,
+  MouseEvent as ReactMouseEvent,
+  useEffect,
+} from "react";
+import { useAuth } from "../hooks/authProvider";
 import Logout from "./logout";
 import Username from "./username";
 
 const UserAndLogOut = () => {
-
-  //set the button for username 
-  const [isOpen, setIsOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  //set the button for username
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   //set authProvider
   const auth = useAuth();
@@ -15,37 +19,35 @@ const UserAndLogOut = () => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
+    };
 
     // add event listener
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [isOpen]);
 
   const toggleUsername = (e: ReactMouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setIsOpen(prevState => !prevState);
-  }
+    setIsOpen((prevState) => !prevState);
+  };
 
   return (
     <div ref={ref} className="relative">
       <div
-        className={`flex cursor-pointer items-center gap-3 hover:bg-hover dark:hover:bg-opacity-20 pr-12 ${isOpen ? 'bg-hover dark:bg-opacity-20 rounded-t-md' : 'rounded-md bg-opacity-0'}`}
+        className={`flex cursor-pointer items-center gap-3 hover:bg-hover dark:hover:bg-opacity-20 pr-12 ${isOpen ? "bg-hover dark:bg-opacity-20 rounded-t-md" : "rounded-md bg-opacity-0"}`}
         onClick={toggleUsername}
       >
         <Username />
       </div>
 
-      {isOpen && (
-        <Logout auth={auth} setIsOpen={setIsOpen} />
-      )}
+      {isOpen && <Logout auth={auth} setIsOpen={setIsOpen} />}
     </div>
-  )
-}
+  );
+};
 
-export default UserAndLogOut
+export default UserAndLogOut;
