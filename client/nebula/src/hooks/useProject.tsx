@@ -15,6 +15,7 @@ const ProjectProvider = ({ children }: any) => {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
+  const [selectedProject, setSelectedProject] = useState("");
 
   // REQUESTS
 
@@ -69,6 +70,11 @@ const ProjectProvider = ({ children }: any) => {
     }
   }, [token]);
 
+  //STORE PROJECT SELECTED
+  const pickProject = (project: any) => {
+    setSelectedProject(project);
+  };
+
   useEffect(() => {
     if (token && !myProjects) {
       fetchMyProjects();
@@ -77,7 +83,13 @@ const ProjectProvider = ({ children }: any) => {
 
   return (
     <ProjectContext.Provider
-      value={{ createProject, fetchMyProjects, myProjects }}
+      value={{
+        createProject,
+        fetchMyProjects,
+        myProjects,
+        pickProject,
+        selectedProject,
+      }}
     >
       {children}
     </ProjectContext.Provider>
