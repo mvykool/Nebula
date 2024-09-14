@@ -68,6 +68,26 @@ const ProjectProvider = ({ children }: any) => {
       console.error("Error fetching user data:", error);
     }
   }, [token]);
+
+  const fetchProject = async (id: any) => {
+    console.log(id, "project");
+    try {
+      const response = await fetch(`http://localhost:3000/projects/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const projects = await response.json();
+        return projects.data;
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   useEffect(() => {
     if (token && !myProjects) {
       fetchMyProjects();
@@ -80,6 +100,7 @@ const ProjectProvider = ({ children }: any) => {
         createProject,
         fetchMyProjects,
         myProjects,
+        fetchProject,
       }}
     >
       {children}
