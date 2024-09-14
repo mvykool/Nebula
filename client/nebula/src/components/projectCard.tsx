@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGenerateRandomColor } from "../hooks/useGenerateColor";
 import { colorArray } from "../utils/colors";
 import { User } from "../types/user.type";
@@ -16,7 +15,6 @@ const ProjectCard = ({ name, cover, owner, projectId }: IProjectCard) => {
   const navigate = useNavigate();
 
   // TAKE TO CLICKED PROJECT
-  //
 
   const goToProject = async () => {
     navigate(`/projects/${projectId}`);
