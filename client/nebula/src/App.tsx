@@ -38,9 +38,9 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/explore" element={<ExploreView />} />
                   <Route path="/project/creation" element={<CreateProject />} />
-                  <Route path="/projects/">
-                    <Route path=":projectId" element={<Project />} />
-                  </Route>
+                </Route>
+                <Route path="/projects/">
+                  <Route path=":projectId" element={<Project />} />
                 </Route>
               </Route>
             </Routes>

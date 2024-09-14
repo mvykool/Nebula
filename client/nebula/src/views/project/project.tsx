@@ -1,8 +1,10 @@
+import Sidebar from "../../components/sidebar";
+
 const Project = () => {
   return (
-    <>
+    <div className="w-full flex">
       {/*SIDE BAR*/}
-      <div>sidebar</div>
+      <Sidebar />
 
       {/* MAIN CONTENT */}
       <div>
@@ -14,7 +16,7 @@ const Project = () => {
         {/*CONTENT*/}
         <p>content</p>
       </div>
-    </>
+    </div>
   );
 };
 
