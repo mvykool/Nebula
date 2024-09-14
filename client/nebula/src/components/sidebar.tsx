@@ -18,6 +18,19 @@ const Sidebar = () => {
       {/*PROJECT SECTIONS*/}
       <div className="p-8 mt-5">
         <span className="font-bold">Pages:</span>
+
+        {/*IMPORTANT BUTTONS*/}
+        <div className="gap-4 items-start flex flex-col">
+          <button type="button" className="px-2 py-1 rounded-md bg-primary">
+            Delete
+          </button>
+          <button type="button" className="px-2 py-1 rounded-md bg-primary">
+            Save changes
+          </button>
+          <button type="button" className="px-2 py-1 rounded-md bg-primary">
+            Publish
+          </button>
+        </div>
       </div>
     </div>
   );
