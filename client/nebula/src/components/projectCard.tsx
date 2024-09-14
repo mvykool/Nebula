@@ -1,18 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useGenerateRandomColor } from "../hooks/useGenerateColor";
 import { colorArray } from "../utils/colors";
 import { User } from "../types/user.type";
+import { useNavigate } from "react-router";
 
 interface IProjectCard {
+  projectId: number;
   name: string;
   cover: string;
   owner: User;
 }
 
-const ProjectCard = ({ name, cover, owner }: IProjectCard) => {
+const ProjectCard = ({ name, cover, owner, projectId }: IProjectCard) => {
   const color = useGenerateRandomColor(colorArray);
+  const navigate = useNavigate();
+
+  // TAKE TO CLICKED PROJECT
+  //
+
+  const goToProject = async () => {
+    navigate(`/projects/${projectId}`);
+  };
 
   return (
-    <div className="bg-primary-dark cursor-pointer rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white">
+    <div
+      onClick={goToProject}
+      className="bg-primary-dark cursor-pointer rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white"
+    >
       {cover ? (
         <img
           src={cover}

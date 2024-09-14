@@ -23,6 +23,7 @@ const MyProjects = ({ projects }: IProject) => {
             projects.map((project: Project) => (
               <div key={project?.id}>
                 <ProjectCard
+                  projectId={project?.id}
                   name={project?.name}
                   cover={project?.cover}
                   owner={project?.owner}

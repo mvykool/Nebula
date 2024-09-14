@@ -14,6 +14,7 @@ import SignUp from "./views/auth/signup";
 import CreateProject from "./views/project/create";
 import ExploreView from "./views/explore/exploreView";
 import Layout from "./views/layout";
+import Project from "./views/project/project";
 
 function App() {
   return (
@@ -37,6 +38,9 @@ function App() {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/explore" element={<ExploreView />} />
                   <Route path="/project/creation" element={<CreateProject />} />
+                  <Route path="/projects/">
+                    <Route path=":projectId" element={<Project />} />
+                  </Route>
                 </Route>
               </Route>
             </Routes>
