@@ -4,7 +4,7 @@ const Sidebar = () => {
   const { user, defaultPfp } = useAuth();
 
   return (
-    <div className="border border-white left-0 top-0 w-2/12 h-screen text-black dark:text-white">
+    <div className="border border-white left-0 top-0 sticky w-2/12 h-screen text-black dark:text-white bg-bgLight dark:bg-bgDark">
       {/*OWNER INFO*/}
       <div className="flex gap-3 mt-5 items-end p-8">
         <img

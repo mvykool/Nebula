@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 const Project = () => {
   const { projectId } = useParams();
   const { fetchProject } = useProject();
-  const [data, setData] = useState("");
+  const [data, setData] = useState({
+    name: "",
+    cover: "",
+    description: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,21 +27,25 @@ const Project = () => {
   }, [projectId, fetchProject]);
 
   return (
-    <div className="w-full flex">
+    <div className="w-full flex text-black dark:text-white">
       {/*SIDE BAR*/}
       <Sidebar />
-      <p>{projectId}</p>
 
       {/* MAIN CONTENT */}
-      <div>
-        {data}
-        <img src="#" alt="cover-image" />
+      <div className="w-full bg-bgLight dark:bg-bgDark">
+        <img
+          src={data?.cover}
+          alt="cover-image"
+          className="w-full object-cover h-[25vh]"
+        />
 
-        {/*TITLE*/}
-        <h3>title</h3>
+        <div className="w-5/6 mx-auto">
+          {/*TITLE*/}
+          <h3 className="text-5xl py-24 px-5">{data?.name}</h3>
 
-        {/*CONTENT*/}
-        <p>content</p>
+          {/*CONTENT*/}
+          <p className="p-5">{data?.description}</p>
+        </div>
       </div>
     </div>
   );

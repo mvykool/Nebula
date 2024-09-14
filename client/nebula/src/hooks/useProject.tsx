@@ -81,7 +81,7 @@ const ProjectProvider = ({ children }: any) => {
 
       if (response.ok) {
         const projects = await response.json();
-        return projects.data;
+        return projects;
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
