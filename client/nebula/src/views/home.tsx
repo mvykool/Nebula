@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Welcome from "../components/welcome";
 import { useProject } from "../hooks/useProject";
 import MyProjects from "./project/myProjects";
+import Loading from "../components/loading";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -18,7 +19,7 @@ const Home = () => {
   return (
     <>
       {isLoading ? (
-        <div>Loading...</div>
+        <Loading />
       ) : (
         <div>
           {" "}
