@@ -15,7 +15,6 @@ const ProjectProvider = ({ children }: any) => {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
-  const [selectedProject, setSelectedProject] = useState("");
 
   // REQUESTS
 
@@ -69,12 +68,6 @@ const ProjectProvider = ({ children }: any) => {
       console.error("Error fetching user data:", error);
     }
   }, [token]);
-
-  //STORE PROJECT SELECTED
-  const pickProject = (project: any) => {
-    setSelectedProject(project);
-  };
-
   useEffect(() => {
     if (token && !myProjects) {
       fetchMyProjects();
@@ -87,8 +80,6 @@ const ProjectProvider = ({ children }: any) => {
         createProject,
         fetchMyProjects,
         myProjects,
-        pickProject,
-        selectedProject,
       }}
     >
       {children}

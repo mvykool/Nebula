@@ -1,10 +1,14 @@
 import Sidebar from "../../components/sidebar";
+import { useParams } from "react-router";
 
 const Project = () => {
+  const { projectId } = useParams();
+
   return (
     <div className="w-full flex">
       {/*SIDE BAR*/}
       <Sidebar />
+      <p>{projectId}</p>
 
       {/* MAIN CONTENT */}
       <div>

@@ -2,8 +2,6 @@ import { useGenerateRandomColor } from "../hooks/useGenerateColor";
 import { colorArray } from "../utils/colors";
 import { User } from "../types/user.type";
 import { useNavigate } from "react-router";
-import { useProject } from "../hooks/useProject";
-import { useState } from "react";
 
 interface IProjectCard {
   projectId: number;
@@ -15,24 +13,11 @@ interface IProjectCard {
 const ProjectCard = ({ name, cover, owner, projectId }: IProjectCard) => {
   const color = useGenerateRandomColor(colorArray);
   const navigate = useNavigate();
-  const { pickProject } = useProject();
-  const [project, setProject] = useState({
-    name: "",
-    cover: "",
-    owner: {},
-  });
 
   // TAKE TO CLICKED PROJECT
-  setProject({
-    name: name,
-    cover: cover,
-    owner: owner,
-  });
 
   const goToProject = async () => {
     navigate(`/projects/${projectId}`);
-
-    pickProject(project);
   };
 
   return (
