@@ -38,7 +38,7 @@ const Project = () => {
       },
       {
         type: "paragraph",
-        content: `${data?.description}`,
+        content: "",
       },
     ],
   });
@@ -46,7 +46,7 @@ const Project = () => {
   return (
     <div className="w-full flex text-black dark:text-white">
       {/*SIDE BAR*/}
-      <Sidebar />
+      <Sidebar desc={data?.description} />
 
       {/* MAIN CONTENT */}
       <div className="w-full bg-bgLight dark:bg-bgDark">
