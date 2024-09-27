@@ -1,11 +1,25 @@
 import { useAuth } from "../hooks/authProvider";
+import { useNavigate } from "react-router";
 
 const Sidebar = () => {
   const { user, defaultPfp } = useAuth();
 
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate("/");
+  };
   return (
     <div className="border border-white left-0 top-0 sticky w-2/12 h-screen text-black dark:text-white bg-bgLight dark:bg-bgDark">
       {/*OWNER INFO*/}
+      <button
+        onClick={goBack}
+        type="button"
+        className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 px-3 py-1 rounded-md gap-1"
+      >
+        <i className="bx bx-left-arrow-alt text-xl"></i>
+        back
+      </button>
       <div className="flex gap-3 mt-5 items-end p-8">
         <img
           src={user?.picture || defaultPfp}
