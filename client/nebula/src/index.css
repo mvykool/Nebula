@@ -36,6 +36,6 @@ input[type="file"] {
   --bn-colors-side-menu: #ffffff;
 }
 
-.bn-container[data-theming-css-demo] .bn-editor * {
-  color: blue !important;
+.bn-container[data-theming-css-variables-demo] {
+  min-height: 30vh;
 }
