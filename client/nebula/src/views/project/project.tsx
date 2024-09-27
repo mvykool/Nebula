@@ -51,7 +51,7 @@ const Project = () => {
 
           {/*CONTENT*/}
           <p className="p-5">{data?.description}</p>
-          <BlockNoteView editor={editor} />
+          <BlockNoteView editor={editor} data-theming-css-variables-demo />
         </div>
       </div>
     </div>

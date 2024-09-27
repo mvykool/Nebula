@@ -2,7 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-
-input[type='file'] {
+input[type="file"] {
   display: none;
+}
+
+/* THEME FOR EDITOR */
+/* Base theme */
+.bn-container[data-theming-css-variables-demo][data-color-scheme] {
+  --bn-colors-editor-text: #222222;
+  --bn-colors-editor-background: #f0f0f0;
+  --bn-colors-menu-text: #ffffff;
+  --bn-colors-menu-background: #865dff;
+  --bn-colors-tooltip-text: #ffffff;
+  --bn-colors-tooltip-background: ##e384ff;
+  --bn-colors-hovered-text: #ffffff;
+  --bn-colors-hovered-background: #e384ff;
+  --bn-colors-selected-text: #ffffff;
+  --bn-colors-selected-background: #e384ff;
+  --bn-colors-disabled-text: #865dff;
+  --bn-colors-disabled-background: #865dff;
+  --bn-colors-shadow: #ffa3fd;
+  --bn-colors-border: #ffa3fd;
+  --bn-colors-side-menu: #bababa;
+  --bn-color-highlight-colors: #ffffff;
+  --bn-border-radius: 4px;
+  --bn-font-family: Helvetica Neue, sans-serif;
+}
+
+/* Changes for dark mode */
+.bn-container[data-theming-css-variables-demo][data-color-scheme="dark"] {
+  --bn-colors-editor-text: #ffffff;
+  --bn-colors-editor-background: ##6b4acc;
+  --bn-colors-side-menu: #ffffff;
 }
