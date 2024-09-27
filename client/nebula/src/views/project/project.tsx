@@ -2,6 +2,8 @@ import Sidebar from "../../components/sidebar";
 import { useParams } from "react-router";
 import { useProject } from "../../hooks/useProject";
 import { useEffect, useState } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 const Project = () => {
   const { projectId } = useParams();
@@ -26,6 +28,11 @@ const Project = () => {
     fetchData();
   }, [projectId, fetchProject]);
 
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: "<p>Hello World! 🌎️</p>",
+  });
+
   return (
     <div className="w-full flex text-black dark:text-white">
       {/*SIDE BAR*/}
@@ -45,6 +52,7 @@ const Project = () => {
 
           {/*CONTENT*/}
           <p className="p-5">{data?.description}</p>
+          <EditorContent editor={editor} />
         </div>
       </div>
     </div>
