@@ -30,7 +30,18 @@ const Project = () => {
     fetchData();
   }, [projectId, fetchProject]);
 
-  const editor = useCreateBlockNote();
+  const editor = useCreateBlockNote({
+    initialContent: [
+      {
+        type: "heading",
+        content: `${data?.name}`,
+      },
+      {
+        type: "paragraph",
+        content: `${data?.description}`,
+      },
+    ],
+  });
 
   return (
     <div className="w-full flex text-black dark:text-white">
@@ -39,18 +50,18 @@ const Project = () => {
 
       {/* MAIN CONTENT */}
       <div className="w-full bg-bgLight dark:bg-bgDark">
+        {/* TOP BAR */}
+        <div className="w-full h-16 p-5 flex justify-start items-center">
+          <p className="font-bold">{data?.name}</p>
+        </div>
+
         <img
           src={data?.cover}
           alt="cover-image"
-          className="w-full object-cover h-[25vh]"
+          className="w-full object-cover h-[28vh]"
         />
 
-        <div className="w-5/6 mx-auto">
-          {/*TITLE*/}
-          <h3 className="text-5xl py-24 px-5">{data?.name}</h3>
-
-          {/*CONTENT*/}
-          <p className="p-5">{data?.description}</p>
+        <div className="w-5/6 my-10 mx-auto">
           <BlockNoteView editor={editor} data-theming-css-variables-demo />
         </div>
       </div>
