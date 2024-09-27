@@ -34,7 +34,7 @@ const Project = () => {
     initialContent: [
       {
         type: "heading",
-        content: `${data?.name}`,
+        content: data?.name,
       },
       {
         type: "paragraph",

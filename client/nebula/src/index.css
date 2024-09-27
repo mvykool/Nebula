@@ -35,3 +35,7 @@ input[type="file"] {
   --bn-colors-editor-background: ##6b4acc;
   --bn-colors-side-menu: #ffffff;
 }
+
+.bn-container[data-theming-css-demo] .bn-editor * {
+  color: blue !important;
+}
