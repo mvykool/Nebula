@@ -30,18 +30,7 @@ const Project = () => {
     fetchData();
   }, [projectId, fetchProject]);
 
-  const editor = useCreateBlockNote({
-    initialContent: [
-      {
-        type: "heading",
-        content: data?.name,
-      },
-      {
-        type: "paragraph",
-        content: "",
-      },
-    ],
-  });
+  const editor = useCreateBlockNote({});
 
   return (
     <div className="w-full flex text-black dark:text-white">
@@ -62,6 +51,7 @@ const Project = () => {
         />
 
         <div className="w-5/6 my-10 mx-auto">
+          <h2 className="font-extrabold text-5xl ml-10 my-20">{data?.name}</h2>
           <BlockNoteView editor={editor} data-theming-css-variables-demo />
         </div>
       </div>
