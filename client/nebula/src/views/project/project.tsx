@@ -43,6 +43,8 @@ const Project = () => {
             content: result.description,
           },
         ]);
+
+        console.log(editor.getBlock("description"));
       } catch (err) {
         console.error("Error fetching data:", err);
       }
