@@ -33,6 +33,11 @@ const Project = () => {
   const editor = useCreateBlockNote({
     initialContent: [
       {
+        id: "header",
+        type: "heading",
+        content: "...",
+      },
+      {
         id: "init",
         type: "paragraph",
         content: "Loading...",
@@ -41,13 +46,18 @@ const Project = () => {
   });
 
   useEffect(() => {
-    if (data.description && editor) {
+    if (data.description && data.name && editor) {
       editor.updateBlock("init", {
         type: "paragraph",
         content: data.description,
       });
+
+      editor.updateBlock("header", {
+        type: "heading",
+        content: data.name,
+      });
     }
-  }, [data.description, editor]);
+  }, [data.description, editor, data.name]);
 
   return (
     <div className="w-full flex text-black dark:text-white">
@@ -68,7 +78,6 @@ const Project = () => {
         />
 
         <div className="w-5/6 my-10 mx-auto">
-          <h2 className="font-extrabold text-4xl ml-10 my-20">{data?.name}</h2>
           <BlockNoteView editor={editor} data-theming-css-variables-demo />
         </div>
       </div>
