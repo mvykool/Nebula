@@ -40,9 +40,6 @@ const Sidebar = () => {
           <button type="button" className="px-2 py-1 rounded-md bg-primary">
             Delete Project
           </button>
-          <button type="button" className="px-2 py-1 rounded-md bg-invalid">
-            Save Project
-          </button>
           <button type="button" className="px-2 py-1 rounded-md bg-primary">
             Publish Project
           </button>
