@@ -1,11 +1,7 @@
 import { useAuth } from "../hooks/authProvider";
 import { useNavigate } from "react-router";
 
-interface SidebarProps {
-  desc: string;
-}
-
-const Sidebar = ({ desc }: SidebarProps) => {
+const Sidebar = () => {
   const { user, defaultPfp } = useAuth();
 
   const navigate = useNavigate();
@@ -32,8 +28,6 @@ const Sidebar = ({ desc }: SidebarProps) => {
         />
         <p className="font-semibold text-xl">{user?.username}</p>
       </div>
-
-      <h3 className="px-8">{desc}</h3>
 
       {/*PROJECT SECTIONS*/}
       <div className="p-8 ">

@@ -30,12 +30,29 @@ const Project = () => {
     fetchData();
   }, [projectId, fetchProject]);
 
-  const editor = useCreateBlockNote({});
+  const editor = useCreateBlockNote({
+    initialContent: [
+      {
+        id: "init",
+        type: "paragraph",
+        content: "Loading...",
+      },
+    ],
+  });
+
+  useEffect(() => {
+    if (data.description && editor) {
+      editor.updateBlock("init", {
+        type: "paragraph",
+        content: data.description,
+      });
+    }
+  }, [data.description, editor]);
 
   return (
     <div className="w-full flex text-black dark:text-white">
       {/*SIDE BAR*/}
-      <Sidebar desc={data?.description} />
+      <Sidebar />
 
       {/* MAIN CONTENT */}
       <div className="w-full bg-bgLight dark:bg-bgDark">
