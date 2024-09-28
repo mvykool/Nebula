@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useContext,
@@ -94,6 +95,30 @@ const ProjectProvider = ({ children }: any) => {
     }
   }, [token, myProjects, fetchMyProjects]);
 
+  //UPDATE PROJECTS
+  const updateProject = async (projectId: number, updatedData: any) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/projects/${projectId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedData),
+        },
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update project");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error updating project:", error);
+      throw error;
+    }
+  };
+
   return (
     <ProjectContext.Provider
       value={{
@@ -101,6 +126,7 @@ const ProjectProvider = ({ children }: any) => {
         fetchMyProjects,
         myProjects,
         fetchProject,
+        updateProject,
       }}
     >
       {children}
