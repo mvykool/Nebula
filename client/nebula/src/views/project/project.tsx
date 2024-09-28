@@ -51,7 +51,7 @@ const Project = () => {
         />
 
         <div className="w-5/6 my-10 mx-auto">
-          <h2 className="font-extrabold text-5xl ml-10 my-20">{data?.name}</h2>
+          <h2 className="font-extrabold text-4xl ml-10 my-20">{data?.name}</h2>
           <BlockNoteView editor={editor} data-theming-css-variables-demo />
         </div>
       </div>
