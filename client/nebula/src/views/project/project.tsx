@@ -85,6 +85,7 @@ const Project = () => {
       });
       setData(updatedData);
       console.log("Data saved successfully");
+      console.log(editor.getBlock("description"));
     } catch (err) {
       console.error("Error saving data:", err);
     }
