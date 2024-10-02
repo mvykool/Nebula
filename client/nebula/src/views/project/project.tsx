@@ -28,8 +28,22 @@ const Project = () => {
         const result = await fetchProject(projectId);
         setData(result);
         console.log(result);
+
+        // Parse the description
+        let descriptionContent = [];
+        try {
+          const parsedContent = JSON.parse(result.description || "[]");
+          descriptionContent = parsedContent
+            .flat()
+            .map((item: { content: any }) => ({
+              type: "paragraph",
+              content: item.content,
+            }));
+        } catch (error) {
+          console.error("Error parsing description:", error);
+        }
+
         // Update editor content
-        const descriptionContent = JSON.parse(result.description || "[]");
         editor.replaceBlocks(editor.document, [
           {
             id: "header",
@@ -46,20 +60,20 @@ const Project = () => {
   }, [projectId, fetchProject, editor]);
 
   const extractContentFromBlock = (block: any): any => {
-    if (Array.isArray(block?.content)) {
-      return block.content.map((b: any) => ({
-        type: b.type,
-        content: b.text,
-        children: extractContentFromBlock(b.children),
-      }));
-    } else if (block?.content) {
+    if (block.type === "paragraph") {
       return {
-        type: block.type,
-        content: block.content.text,
-        children: extractContentFromBlock(block.children),
+        type: "text",
+        content: block.content.map((c: any) => c.text).join(""),
+        children: [],
       };
     }
-    return [];
+    return {
+      type: block.type,
+      content: block.content,
+      children: block.children
+        ? block.children.map(extractContentFromBlock)
+        : [],
+    };
   };
 
   const saveData = useCallback(async () => {
@@ -69,11 +83,23 @@ const Project = () => {
     }
     const blocks = editor.topLevelBlocks;
     const content = blocks.map(extractContentFromBlock);
+
+    // Extract name from the first block if it's a heading
+    const name =
+      blocks[0].type === "heading"
+        ? blocks[0].content.map((c: any) => c.text).join("")
+        : data.name;
+
+    // Convert content to the expected format
+    const description = JSON.stringify(
+      content.slice(1).map((block) => [block]),
+    );
+
     try {
       const updatedData = await updateProject(projectId, {
         ...data,
-        name: content[0]?.content || "",
-        description: JSON.stringify(content.slice(1)),
+        name,
+        description,
       });
       setData(updatedData);
       console.log("Data saved successfully");
