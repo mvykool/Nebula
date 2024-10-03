@@ -35,10 +35,12 @@ const Project = () => {
           const parsedContent = JSON.parse(result.description || "[]");
           descriptionContent = parsedContent
             .flat()
-            .map((item: { content: any }) => ({
-              type: "paragraph",
+            .map((item: { content: any; type: string; props: any }) => ({
+              type: item.type,
+              props: item.props,
               content: item.content,
             }));
+          console.log(descriptionContent);
         } catch (error) {
           console.error("Error parsing description:", error);
         }
@@ -60,15 +62,9 @@ const Project = () => {
   }, [projectId, fetchProject, editor]);
 
   const extractContentFromBlock = (block: any): any => {
-    if (block.type === "paragraph") {
-      return {
-        type: "text",
-        content: block.content.map((c: any) => c.text).join(""),
-        children: [],
-      };
-    }
     return {
       type: block.type,
+      props: block.props,
       content: block.content,
       children: block.children
         ? block.children.map(extractContentFromBlock)
@@ -81,7 +77,7 @@ const Project = () => {
       console.error("Project ID is undefined");
       return;
     }
-    const blocks = editor.topLevelBlocks;
+    const blocks = editor.document;
     const content = blocks.map(extractContentFromBlock);
 
     // Extract name from the first block if it's a heading
