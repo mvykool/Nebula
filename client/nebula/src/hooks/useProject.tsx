@@ -126,7 +126,7 @@ const ProjectProvider = ({ children }: any) => {
       const response = await fetch(
         `http://localhost:3000/projects/${projectId}`,
         {
-          method: "PATCH",
+          method: "DELETE",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
