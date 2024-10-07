@@ -1,5 +1,6 @@
 import { useAuth } from "../hooks/authProvider";
 import { useNavigate } from "react-router";
+import { strings } from "../constants/strings";
 
 const Sidebar = () => {
   const { user, defaultPfp } = useAuth();
@@ -38,7 +39,7 @@ const Sidebar = () => {
         {/*IMPORTANT BUTTONS*/}
         <div className="gap-4 items-start flex flex-col">
           <button type="button" className="px-2 py-1 rounded-md bg-primary">
-            Delete Project
+            {strings.deleteButton}
           </button>
           <button type="button" className="px-2 py-1 rounded-md bg-primary">
             Publish Project
