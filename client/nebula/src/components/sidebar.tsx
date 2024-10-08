@@ -39,7 +39,7 @@ const Sidebar = () => {
         {/*IMPORTANT BUTTONS*/}
         <div className="gap-4 items-start flex flex-col">
           <button type="button" className="px-2 py-1 rounded-md bg-primary">
-            {strings.deleteButton}
+            {strings.sidebar.delete}
           </button>
           <button type="button" className="px-2 py-1 rounded-md bg-primary">
             Publish Project

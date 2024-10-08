@@ -1,3 +1,5 @@
 export const strings = {
-  deleteButton: "delete",
+  sidebar: {
+    delete: "Delete project",
+  },
 };
