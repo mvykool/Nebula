@@ -42,7 +42,7 @@ const Sidebar = () => {
             {strings.sidebar.delete}
           </button>
           <button type="button" className="px-2 py-1 rounded-md bg-primary">
-            Publish Project
+            {strings.sidebar.publish}
           </button>
         </div>
       </div>
