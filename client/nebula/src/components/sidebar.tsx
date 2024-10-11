@@ -32,7 +32,7 @@ const Sidebar = () => {
 
       {/*PROJECT SECTIONS*/}
       <div className="p-8 ">
-        <span className="font-bold">Pages:</span>
+        <span className="font-bold">{strings.sidebar.pages}</span>
 
         <div className="w-full h-96"></div>
 
