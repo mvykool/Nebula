@@ -32,7 +32,10 @@ export class AuthService {
     };
   }
 
-  async generateRefreshToken(username: string, pass: string) {
+  async generateRefreshToken(
+    username: string,
+    pass: string,
+  ): Promise<{ refresh_token: string }> {
     const user = await this.usersService.findOne(username);
 
     if (user?.password !== pass) {
@@ -46,9 +49,11 @@ export class AuthService {
       email: user.email,
     };
 
-    return this.jwtService.sign(payload, {
-      secret: 'secret',
-      expiresIn: '7d',
-    });
+    return {
+      refresh_token: this.jwtService.sign(payload, {
+        secret: 'secret',
+        expiresIn: '7d',
+      }),
+    };
   }
 }
