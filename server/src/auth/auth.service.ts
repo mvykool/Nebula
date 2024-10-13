@@ -31,4 +31,24 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  async generateRefreshToken(username: string, pass: string) {
+    const user = await this.usersService.findOne(username);
+
+    if (user?.password !== pass) {
+      throw new UnauthorizedException();
+    }
+    const payload = {
+      sub: user.id,
+      username: user.username,
+      name: user.name,
+      picture: user.picture,
+      email: user.email,
+    };
+
+    return this.jwtService.sign(payload, {
+      secret: 'secret',
+      expiresIn: '7d',
+    });
+  }
 }
