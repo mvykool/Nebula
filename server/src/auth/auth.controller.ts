@@ -51,7 +51,7 @@ export class AuthController {
     try {
       // Verify the refresh token
       const decoded = this.jwtService.verify(body.refreshToken, {
-        secret: 'REFRESH_TOKEN_SECRET',
+        secret: process.env.SECRET_REFRESH,
       });
 
       // If the token is valid, issue a new access token
