@@ -40,6 +40,7 @@ export class AuthController {
 
   @Post('refresh')
   async refresh(@Body() body: { refresh_token: string }) {
+    //calling refresh method
     try {
       const newTokens = await this.authService.refreshTokens(
         body.refresh_token,
