@@ -7,6 +7,7 @@ import {
   UseGuards,
   Get,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
@@ -47,7 +48,7 @@ export class AuthController {
       );
       return newTokens;
     } catch (err) {
-      throw new Error('Invalid refresh token');
+      throw new UnauthorizedException('Invalid refresh token');
     }
   }
 }
