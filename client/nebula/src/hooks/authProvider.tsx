@@ -16,10 +16,10 @@ const AuthProvider = ({ children }: any) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const [accessToken, setAccessToken] = useState(() => {
-    return localStorage.getItem("site") || "";
+    return localStorage.getItem("access_token") || "";
   });
   const [refreshToken, setRefreshToken] = useState(() => {
-    return localStorage.getItem("refreshToken") || "";
+    return localStorage.getItem("refresh_token") || "";
   });
 
   const navigate = useNavigate();
@@ -37,8 +37,8 @@ const AuthProvider = ({ children }: any) => {
       const res = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("site", res.access_token);
-        localStorage.setItem("refreshToken", res.refresh_token);
+        localStorage.setItem("access_token", res.access_token);
+        localStorage.setItem("refresh_token", res.refresh_token);
         setAccessToken(res.access_token);
         setRefreshToken(res.refresh_token);
 
@@ -141,7 +141,7 @@ const AuthProvider = ({ children }: any) => {
         localStorage.setItem("refreshToken", res.refresh_token);
         setAccessToken(res.access_token);
         setRefreshToken(res.refresh_token);
-        return res.accessToken;
+        return res.access_token;
       } else {
         throw new Error("Token refresh failed");
       }
@@ -153,7 +153,7 @@ const AuthProvider = ({ children }: any) => {
 
   const fetchWithToken = useCallback(
     async (url: string, options: RequestInit = {}) => {
-      const currentToken = token;
+      const currentToken = accessToken;
 
       const makeRequest = async (token: string) => {
         const response = await fetch(url, {
@@ -178,12 +178,12 @@ const AuthProvider = ({ children }: any) => {
 
       return makeRequest(currentToken);
     },
-    [token, refreshTokens],
+    [accessToken, refreshTokens],
   );
 
   // Use fetchWithToken in your fetchUserData function
   const fetchUserData = useCallback(async () => {
-    if (!token) {
+    if (!accessToken) {
       return;
     }
 
@@ -203,13 +203,13 @@ const AuthProvider = ({ children }: any) => {
       console.error("Error fetching user data:", error);
       logOut();
     }
-  }, [token, fetchWithToken]);
+  }, [accessToken, fetchWithToken]);
 
   useEffect(() => {
-    if (token && !user) {
+    if (accessToken && !user) {
       fetchUserData();
     }
-  }, [token, user, fetchUserData]);
+  }, [accessToken, user, fetchUserData]);
 
   const defaultPfp =
     "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
@@ -217,7 +217,7 @@ const AuthProvider = ({ children }: any) => {
   return (
     <AuthContext.Provider
       value={{
-        token,
+        accessToken,
         fetchUserData,
         user,
         loginAction,
