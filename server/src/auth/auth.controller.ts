@@ -24,18 +24,14 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Body() signInDto: Record<string, any>) {
-    const accessToken = await this.authService.signIn(
-      signInDto.username,
-      signInDto.password,
-    );
-    const refreshToken = await this.authService.generateRefreshToken(
+    const { access_token, refresh_token } = await this.authService.signIn(
       signInDto.username,
       signInDto.password,
     );
 
     return {
-      accessToken,
-      refreshToken,
+      access_token,
+      refresh_token,
     };
   }
 
@@ -49,20 +45,8 @@ export class AuthController {
   @Post('refresh')
   async refresh(@Body() body: { refreshToken: string }) {
     try {
-      // Verify the refresh token
-      const decoded = this.jwtService.verify(body.refreshToken, {
-        secret: process.env.SECRET_REFRESH,
-      });
-
-      // If the token is valid, issue a new access token
-      const newAccessToken = await this.authService.generateRefreshToken(
-        decoded.username,
-        decoded.password,
-      );
-
-      return {
-        accessToken: newAccessToken,
-      };
+      const newTokens = await this.authService.refreshTokens(body.refreshToken);
+      return newTokens;
     } catch (err) {
       throw new Error('Invalid refresh token');
     }
