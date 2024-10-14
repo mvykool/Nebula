@@ -43,9 +43,11 @@ export class AuthController {
   }
 
   @Post('refresh')
-  async refresh(@Body() body: { refreshToken: string }) {
+  async refresh(@Body() body: { refresh_token: string }) {
     try {
-      const newTokens = await this.authService.refreshTokens(body.refreshToken);
+      const newTokens = await this.authService.refreshTokens(
+        body.refresh_token,
+      );
       return newTokens;
     } catch (err) {
       throw new Error('Invalid refresh token');
