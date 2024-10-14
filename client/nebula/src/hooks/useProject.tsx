@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 const ProjectContext = createContext<any>({});
 
 const ProjectProvider = ({ children }: any) => {
-  const { token } = useAuth();
+  const { token, fetchWithToken } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
 
@@ -48,27 +48,19 @@ const ProjectProvider = ({ children }: any) => {
 
   // FETCH MY PROJECTS
   const fetchMyProjects = useCallback(async () => {
-    if (!token) {
-      return;
-    }
-
     try {
-      const response = await fetch("http://localhost:3000/projects", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      const response = await fetchWithToken("http://localhost:3000/projects");
       if (response.ok) {
         const projects = await response.json();
         setMyProjects(projects);
         console.log(projects);
+      } else {
+        console.error("Failed to fetch projects:", await response.text());
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error("Error fetching projects:", error);
     }
-  }, [token]);
+  }, [fetchWithToken]);
 
   const fetchProject = async (id: any) => {
     console.log(id, "project");

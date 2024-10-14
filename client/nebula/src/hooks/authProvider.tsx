@@ -15,7 +15,7 @@ const AuthProvider = ({ children }: any) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const [token, setToken] = useState(() => {
+  const [accessToken, setAccessToken] = useState(() => {
     return localStorage.getItem("site") || "";
   });
   const [refreshToken, setRefreshToken] = useState(() => {
@@ -39,7 +39,7 @@ const AuthProvider = ({ children }: any) => {
       if (response.ok) {
         localStorage.setItem("site", res.access_token);
         localStorage.setItem("refreshToken", res.refresh_token);
-        setToken(res.access_token);
+        setAccessToken(res.access_token);
         setRefreshToken(res.refresh_token);
 
         if (res.data && res.data.user) {
@@ -83,7 +83,7 @@ const AuthProvider = ({ children }: any) => {
 
   const logOut = () => {
     setUser(null);
-    setToken("");
+    setAccessToken("");
     setRefreshToken("");
     localStorage.removeItem("site");
     localStorage.removeItem("refreshToken");
@@ -92,7 +92,7 @@ const AuthProvider = ({ children }: any) => {
   };
 
   const updateUser = async (updateData: any) => {
-    if (!token || !user?.sub) {
+    if (!accessToken || !user?.sub) {
       console.log("error");
       return;
     }
@@ -132,15 +132,15 @@ const AuthProvider = ({ children }: any) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ refreshToken }),
+        body: JSON.stringify({ refresh_token: refreshToken }),
       });
 
       if (response.ok) {
         const res = await response.json();
-        localStorage.setItem("site", res.accessToken);
-        localStorage.setItem("refreshToken", res.refreshToken);
-        setToken(res.accessToken);
-        setRefreshToken(res.refreshToken);
+        localStorage.setItem("site", res.access_token);
+        localStorage.setItem("refreshToken", res.refresh_token);
+        setAccessToken(res.access_token);
+        setRefreshToken(res.refresh_token);
         return res.accessToken;
       } else {
         throw new Error("Token refresh failed");
