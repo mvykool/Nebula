@@ -18,6 +18,9 @@ const AuthProvider = ({ children }: any) => {
   const [token, setToken] = useState(() => {
     return localStorage.getItem("site") || "";
   });
+  const [refreshToken, setRefreshToken] = useState(() => {
+    return localStorage.getItem("refreshToken") || "";
+  });
 
   const navigate = useNavigate();
 
@@ -35,7 +38,9 @@ const AuthProvider = ({ children }: any) => {
 
       if (response.ok) {
         localStorage.setItem("site", res.access_token);
+        localStorage.setItem("refreshToken", res.refresh_token);
         setToken(res.access_token);
+        setRefreshToken(res.refresh_token);
 
         if (res.data && res.data.user) {
           setUser(res.data.user);
@@ -76,44 +81,12 @@ const AuthProvider = ({ children }: any) => {
     }
   };
 
-  // fetch user data
-  const fetchUserData = useCallback(async () => {
-    if (!token) {
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:3000/auth/profile", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
-        localStorage.setItem("user", JSON.stringify(userData));
-      } else {
-        setToken("");
-        localStorage.removeItem("site");
-        localStorage.removeItem("user");
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (token && !user) {
-      fetchUserData();
-    }
-  }, [token, user, fetchUserData]);
-
   const logOut = () => {
     setUser(null);
     setToken("");
+    setRefreshToken("");
     localStorage.removeItem("site");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
     navigate("/login");
   };
@@ -149,6 +122,95 @@ const AuthProvider = ({ children }: any) => {
     }
   };
 
+  //refresh token logic
+  const refreshTokens = useCallback(async () => {
+    if (!refreshToken) return;
+
+    try {
+      const response = await fetch("http://localhost:3000/auth/refresh", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (response.ok) {
+        const res = await response.json();
+        localStorage.setItem("site", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
+        setToken(res.accessToken);
+        setRefreshToken(res.refreshToken);
+        return res.accessToken;
+      } else {
+        throw new Error("Token refresh failed");
+      }
+    } catch (error) {
+      console.error("Token refresh failed:", error);
+      logOut();
+    }
+  }, [refreshToken]);
+
+  const fetchWithToken = useCallback(
+    async (url: string, options: RequestInit = {}) => {
+      const currentToken = token;
+
+      const makeRequest = async (token: string) => {
+        const response = await fetch(url, {
+          ...options,
+          headers: {
+            ...options.headers,
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 401) {
+          const newToken = await refreshTokens();
+          if (newToken) {
+            return makeRequest(newToken);
+          } else {
+            throw new Error("Authentication failed");
+          }
+        }
+
+        return response;
+      };
+
+      return makeRequest(currentToken);
+    },
+    [token, refreshTokens],
+  );
+
+  // Use fetchWithToken in your fetchUserData function
+  const fetchUserData = useCallback(async () => {
+    if (!token) {
+      return;
+    }
+
+    try {
+      const response = await fetchWithToken(
+        "http://localhost:3000/auth/profile",
+      );
+
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
+      } else {
+        throw new Error("Failed to fetch user data");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      logOut();
+    }
+  }, [token, fetchWithToken]);
+
+  useEffect(() => {
+    if (token && !user) {
+      fetchUserData();
+    }
+  }, [token, user, fetchUserData]);
+
   const defaultPfp =
     "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
 
@@ -163,6 +225,7 @@ const AuthProvider = ({ children }: any) => {
         signupAction,
         logOut,
         defaultPfp,
+        fetchWithToken,
       }}
     >
       {children}
