@@ -123,9 +123,9 @@ const ProjectProvider = ({ children }: any) => {
   //DELETE PROJECTS
 
   const deleteProject = useCallback(
-    async (projectId: number, updatedData: any) => {
+    async (projectId: number) => {
       try {
-        const response = await fetch(
+        const response = await fetchWithToken(
           `http://localhost:3000/projects/${projectId}`,
           {
             method: "DELETE",
@@ -133,7 +133,6 @@ const ProjectProvider = ({ children }: any) => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${aceessToken}`,
             },
-            body: JSON.stringify(updatedData),
           },
         );
         if (!response.ok) {

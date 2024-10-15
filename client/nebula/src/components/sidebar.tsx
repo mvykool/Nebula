@@ -1,4 +1,5 @@
 import { useAuth } from "../hooks/authProvider";
+import { useParams } from "react-router";
 import { useProject } from "../hooks/useProject";
 import { useNavigate } from "react-router";
 import { strings } from "../constants/strings";
@@ -8,11 +9,13 @@ const Sidebar = () => {
 
   //context for project
   const { deleteProject } = useProject();
+  const { projectId } = useParams();
 
   const navigate = useNavigate();
 
   const handleDelete = () => {
-    deleteProject();
+    deleteProject(projectId);
+    navigate("/");
   };
 
   const goBack = () => {
