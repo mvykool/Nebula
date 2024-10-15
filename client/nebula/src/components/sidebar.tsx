@@ -1,11 +1,19 @@
 import { useAuth } from "../hooks/authProvider";
+import { useProject } from "../hooks/useProject";
 import { useNavigate } from "react-router";
 import { strings } from "../constants/strings";
 
 const Sidebar = () => {
   const { user, defaultPfp } = useAuth();
 
+  //context for project
+  const { deleteProject } = useProject();
+
   const navigate = useNavigate();
+
+  const handleDelete = () => {
+    deleteProject();
+  };
 
   const goBack = () => {
     navigate("/");
@@ -38,7 +46,11 @@ const Sidebar = () => {
 
         {/*IMPORTANT BUTTONS*/}
         <div className="gap-4 items-start flex flex-col">
-          <button type="button" className="px-2 py-1 rounded-md bg-primary">
+          <button
+            onClick={handleDelete}
+            type="button"
+            className="px-2 py-1 rounded-md bg-primary"
+          >
             {strings.sidebar.delete}
           </button>
           <button type="button" className="px-2 py-1 rounded-md bg-primary">

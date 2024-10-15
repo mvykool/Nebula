@@ -122,28 +122,31 @@ const ProjectProvider = ({ children }: any) => {
 
   //DELETE PROJECTS
 
-  const deleteProject = async (projectId: number, updatedData: any) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/projects/${projectId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${aceessToken}`,
+  const deleteProject = useCallback(
+    async (projectId: number, updatedData: any) => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/projects/${projectId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${aceessToken}`,
+            },
+            body: JSON.stringify(updatedData),
           },
-          body: JSON.stringify(updatedData),
-        },
-      );
-      if (!response.ok) {
-        throw new Error("Failed to update project");
+        );
+        if (!response.ok) {
+          throw new Error("Failed to update project");
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("Error updating project:", error);
+        throw error;
       }
-      return await response.json();
-    } catch (error) {
-      console.error("Error updating project:", error);
-      throw error;
-    }
-  };
+    },
+    [fetchWithToken],
+  );
 
   return (
     <ProjectContext.Provider
