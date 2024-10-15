@@ -13,38 +13,43 @@ import { useNavigate } from "react-router";
 const ProjectContext = createContext<any>({});
 
 const ProjectProvider = ({ children }: any) => {
-  const { aceessToken, fetchWithToken } = useAuth();
+  const { accessToken, fetchWithToken } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
 
   // REQUESTS
 
   // CREATE PROJECT
-  const createProject = async (data: any) => {
-    if (!aceessToken) {
-      console.log("error");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:3000/projects", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${aceessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        const res = await response.json();
-        console.log("project created: ", res);
-        navigate("/");
+  const createProject = useCallback(
+    async (data: any) => {
+      if (!accessToken) {
+        return;
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+      try {
+        const response = await fetchWithToken(
+          "http://localhost:3000/projects",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          },
+        );
+
+        if (response.ok) {
+          const res = await response.json();
+          console.log("project created: ", res);
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [fetchWithToken, accessToken],
+  );
 
   // FETCH MY PROJECTS
   const fetchMyProjects = useCallback(async () => {
@@ -71,7 +76,7 @@ const ProjectProvider = ({ children }: any) => {
           {
             method: "GET",
             headers: {
-              Authorization: `Bearer ${aceessToken}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         );
@@ -88,10 +93,10 @@ const ProjectProvider = ({ children }: any) => {
   );
 
   useEffect(() => {
-    if (aceessToken && !myProjects) {
+    if (accessToken && !myProjects) {
       fetchMyProjects();
     }
-  }, [aceessToken, myProjects, fetchMyProjects]);
+  }, [accessToken, myProjects, fetchMyProjects]);
 
   //UPDATE PROJECTS
   const updateProject = useCallback(
@@ -103,7 +108,7 @@ const ProjectProvider = ({ children }: any) => {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${aceessToken}`,
+              Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify(updatedData),
           },
@@ -131,7 +136,7 @@ const ProjectProvider = ({ children }: any) => {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${aceessToken}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           },
         );
