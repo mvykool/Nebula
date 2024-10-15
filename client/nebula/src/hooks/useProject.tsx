@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 const ProjectContext = createContext<any>({});
 
 const ProjectProvider = ({ children }: any) => {
-  const { token, fetchWithToken } = useAuth();
+  const { aceessToken, fetchWithToken } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
 
@@ -21,7 +21,7 @@ const ProjectProvider = ({ children }: any) => {
 
   // CREATE PROJECT
   const createProject = async (data: any) => {
-    if (!token) {
+    if (!aceessToken) {
       console.log("error");
       return;
     }
@@ -30,7 +30,7 @@ const ProjectProvider = ({ children }: any) => {
       const response = await fetch("http://localhost:3000/projects", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${aceessToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -62,30 +62,36 @@ const ProjectProvider = ({ children }: any) => {
     }
   }, [fetchWithToken]);
 
-  const fetchProject = async (id: any) => {
-    console.log(id, "project");
-    try {
-      const response = await fetch(`http://localhost:3000/projects/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const fetchProject = useCallback(
+    async (id: any) => {
+      console.log(id, "project");
+      try {
+        const response = await fetchWithToken(
+          `http://localhost:3000/projects/${id}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${aceessToken}`,
+            },
+          },
+        );
 
-      if (response.ok) {
-        const projects = await response.json();
-        return projects;
+        if (response.ok) {
+          const projects = await response.json();
+          return projects;
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
+    },
+    [fetchWithToken],
+  );
 
   useEffect(() => {
-    if (token && !myProjects) {
+    if (aceessToken && !myProjects) {
       fetchMyProjects();
     }
-  }, [token, myProjects, fetchMyProjects]);
+  }, [aceessToken, myProjects, fetchMyProjects]);
 
   //UPDATE PROJECTS
   const updateProject = async (projectId: number, updatedData: any) => {
@@ -96,7 +102,7 @@ const ProjectProvider = ({ children }: any) => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${aceessToken}`,
           },
           body: JSON.stringify(updatedData),
         },
@@ -121,7 +127,7 @@ const ProjectProvider = ({ children }: any) => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${aceessToken}`,
           },
           body: JSON.stringify(updatedData),
         },
