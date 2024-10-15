@@ -1,4 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { Page } from 'src/pages/entities/page.entity';
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -17,4 +18,7 @@ export class CreateProjectDto {
 
   @IsBoolean()
   published: boolean;
+
+  @IsOptional()
+  pages?: Page[];
 }

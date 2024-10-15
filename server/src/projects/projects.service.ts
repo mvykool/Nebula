@@ -29,6 +29,7 @@ export class ProjectsService {
     project.description = createProjectDto.description;
     project.owner = user;
     project.publish = createProjectDto.published;
+    project.pages = createProjectDto.pages;
     return this.projectRepository.save(project);
   }
 
