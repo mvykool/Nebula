@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from './entities/project.entity';
 import { UsersService } from 'src/users/users.service';
+import { PagesService } from 'src/pages/pages.service';
 
 @Injectable()
 export class ProjectsService {
@@ -12,12 +13,14 @@ export class ProjectsService {
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
     public userService: UsersService,
+    public pagesService: PagesService,
   ) {}
   async createProject(
     createProjectDto: CreateProjectDto,
     userId: number,
   ): Promise<Project> {
     const user = await this.userService.viewUser(userId);
+    const pages = await this.pagesService.findAll();
 
     if (!user) {
       throw new Error('user no found');
@@ -29,7 +32,7 @@ export class ProjectsService {
     project.description = createProjectDto.description;
     project.owner = user;
     project.publish = createProjectDto.published;
-    project.pages = createProjectDto.pages;
+    project.pages = pages;
     return this.projectRepository.save(project);
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +11,7 @@ export class PagesService {
   constructor(
     @InjectRepository(Page)
     private readonly pageRepository: Repository<Page>,
+    @Inject(forwardRef(() => ProjectsService))
     private readonly projectsService: ProjectsService,
   ) {}
 
