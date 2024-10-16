@@ -1,4 +1,5 @@
 import { useAuth } from "../hooks/authProvider";
+import { strings } from "../constants/strings";
 
 const Greetings = () => {
   const { user } = useAuth();
@@ -7,11 +8,11 @@ const Greetings = () => {
     const currentHour = new Date().getHours();
 
     if (currentHour < 12) {
-      return `🌇 Good morning, ${user?.username} `;
+      return `🌇 ${strings.homePage.greetings.morning} ${user?.username} `;
     } else if (currentHour < 18) {
-      return `🌆 Good afternoon, ${user?.username} `;
+      return `🌆 ${strings.homePage.greetings.afternoon} ${user?.username} `;
     } else {
-      return `🌃 Good evening, ${user?.username} `;
+      return `🌃 ${strings.homePage.greetings.evening} ${user?.username} `;
     }
   };
   return (
