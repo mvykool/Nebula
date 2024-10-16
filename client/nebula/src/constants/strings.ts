@@ -1,4 +1,8 @@
 export const strings = {
+  navbar: {
+    project: "Projects",
+    explore: "Explore",
+  },
   backButton: "Back",
   homePage: {
     createProject: "Create your first project",

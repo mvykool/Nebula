@@ -1,6 +1,7 @@
 import { useState } from "react";
 import UserAndLogOut from "./userAndLogOut";
 import { NavLink } from "react-router-dom";
+import { strings } from "../constants/strings";
 
 const Navbar = () => {
   const [isDark, setIsDark] = useState<boolean>(false);
@@ -33,13 +34,13 @@ const Navbar = () => {
           to={"/"}
           className="aria-[current=page]:bg-primary-light px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md"
         >
-          Projects
+          {strings.navbar.project}
         </NavLink>
         <NavLink
           to={"/explore"}
           className="aria-[current=page]:bg-primary-light px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md"
         >
-          Explore
+          {strings.navbar.explore}
         </NavLink>
       </div>
 
