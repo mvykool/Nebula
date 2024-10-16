@@ -8,7 +8,6 @@ const CreateProject = () => {
   const [input, setInput] = useState({
     name: "",
     cover: "",
-    description: "",
   });
 
   const { createProject } = useProject();
@@ -45,7 +44,7 @@ const CreateProject = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (input.name !== "" && input.description !== "") {
+    if (input.name !== "") {
       try {
         await createProject(input);
       } catch (error) {
@@ -124,14 +123,6 @@ const CreateProject = () => {
                 type="text"
                 onChange={handleInput}
                 name="name"
-                className="w-full mb-5 mt-1 rounded-md py-1 px-2 text-black"
-              />
-              <label className="font-semibold">Description</label>
-              <input
-                id="description"
-                type="text"
-                onChange={handleInput}
-                name="description"
                 className="w-full mb-5 mt-1 rounded-md py-1 px-2 text-black"
               />
               <button

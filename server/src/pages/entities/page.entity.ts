@@ -20,7 +20,10 @@ export class Page {
   @Column({ type: 'text', nullable: true })
   content: string;
 
-  @ManyToOne(() => Project, (project) => project.pages)
+  @ManyToOne(() => Project, (project) => project.pages, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   project: Project;
 
   @ManyToOne(() => Page, (page) => page.children, { nullable: true })

@@ -38,6 +38,6 @@ export class Project {
   @JoinColumn({ name: 'ownerId' })
   owner: User;
 
-  @OneToMany(() => Page, (page) => page.project)
+  @OneToMany(() => Page, (page) => page.project, { cascade: true })
   pages: Page[];
 }

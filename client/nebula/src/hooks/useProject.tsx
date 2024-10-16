@@ -122,7 +122,7 @@ const ProjectProvider = ({ children }: any) => {
         throw error;
       }
     },
-    [fetchWithToken],
+    [fetchWithToken, accessToken],
   );
 
   //DELETE PROJECTS
