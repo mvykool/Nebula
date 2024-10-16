@@ -15,6 +15,7 @@ const Project = () => {
     name: "",
     cover: "",
     description: "",
+    pages: [""],
   });
   const editor = useCreateBlockNote();
 
@@ -119,7 +120,7 @@ const Project = () => {
 
   return (
     <div className="w-full flex text-black dark:text-white">
-      <Sidebar />
+      <Sidebar pages={data?.pages} />
       <div className="w-full bg-bgLight dark:bg-bgDark">
         <div className="w-full h-16 p-5 flex justify-start items-center">
           <p className="font-bold">{data?.name}</p>

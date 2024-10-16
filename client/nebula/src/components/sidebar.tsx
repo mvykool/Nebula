@@ -4,7 +4,11 @@ import { useProject } from "../hooks/useProject";
 import { useNavigate } from "react-router";
 import { strings } from "../constants/strings";
 
-const Sidebar = () => {
+interface Iprops {
+  pages: string[];
+}
+
+const Sidebar = ({ pages }: Iprops) => {
   const { user, defaultPfp } = useAuth();
 
   //context for project
@@ -45,7 +49,7 @@ const Sidebar = () => {
       <div className="p-8 ">
         <span className="font-bold">{strings.sidebar.pages}</span>
 
-        <div className="w-full h-96"></div>
+        <div className="w-full h-96">{pages}</div>
 
         {/*IMPORTANT BUTTONS*/}
         <div className="gap-4 items-start flex flex-col">
