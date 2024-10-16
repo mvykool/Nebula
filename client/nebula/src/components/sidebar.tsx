@@ -34,7 +34,7 @@ const Sidebar = ({ pages }: Iprops) => {
         className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 ml-8 mt-3 px-3 py-1 rounded-md gap-1"
       >
         <i className="bx bx-left-arrow-alt text-xl"></i>
-        back
+        {strings.backButton}
       </button>
       <div className="flex gap-3 mt-2 items-end p-8">
         <img
