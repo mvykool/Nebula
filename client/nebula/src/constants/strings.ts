@@ -8,6 +8,15 @@ export const strings = {
       evening: "Good evening",
     },
   },
+  profile: {
+    updateProfile: "Update Profile",
+    changePicture: "Change profile picture",
+    name: "Name",
+    username: "Username",
+    emailL: "Email",
+    updateBtn: "Update",
+    updating: "Updating...",
+  },
   sidebar: {
     pages: "Pages:",
     delete: "Delete project",

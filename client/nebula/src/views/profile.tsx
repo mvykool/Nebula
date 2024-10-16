@@ -1,6 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useAuth } from "../hooks/authProvider";
 import { useNavigate } from "react-router";
+import { strings } from "../constants/strings";
 
 interface FormData {
   name: string;
@@ -133,7 +134,7 @@ const Profile = () => {
           className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 px-3 py-1 rounded-md gap-1"
         >
           <i className="bx bx-left-arrow-alt text-xl"></i>
-          back
+          {strings.backButton}
         </button>
         <div className=" flex border border-hover rounded-md justify-between mt-8 py-20 w-4/6 mx-auto">
           <div className="w-6/12 flex flex-col justify-center gap-6 mt-10">
@@ -148,7 +149,7 @@ const Profile = () => {
               className="mx-auto bg-primary p-2 text-black dark:text-white font-semibold tracking-wide rounded-md text-sm cursor-pointer"
               htmlFor="file-upload"
             >
-              Change profile picture
+              {strings.profile.changePicture}
             </label>
 
             <input
@@ -161,14 +162,14 @@ const Profile = () => {
 
           <div className="w-6/12 p-4">
             <h3 className="my-5 font-extrabold text-lg text-black dark:text-white">
-              Update Profile
+              {strings.profile.updateProfile}
             </h3>
 
             <form
               onSubmit={handleSubmit}
               className="flex flex-col text-black dark:text-white"
             >
-              <label className="font-semibold">Name</label>
+              <label className="font-semibold">{strings.profile.name}</label>
               <input
                 type="text"
                 name="name"
@@ -176,7 +177,9 @@ const Profile = () => {
                 value={formData.name}
                 className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
-              <label className="font-semibold">Username</label>
+              <label className="font-semibold">
+                {strings.profile.username}
+              </label>
               <input
                 type="text"
                 onChange={formModified}
@@ -184,7 +187,7 @@ const Profile = () => {
                 value={formData.username}
                 className="w-5/6 mb-4 mt-1 rounded-md py-1 px-2 text-black"
               />
-              <label className="font-semibold">Email</label>
+              <label className="font-semibold">{strings.profile.emailL}</label>
               <input
                 type="text"
                 name="email"
@@ -197,7 +200,9 @@ const Profile = () => {
                 disabled={!isModified}
                 className={`w-5/6 py-2 font-semibold rounded-md mt-3 ${!isModified ? "bg-invalid cursor-not-allowed" : "bg-highlight cursor-pointer"}`}
               >
-                {isLoading ? "updating..." : "Update"}
+                {isLoading
+                  ? strings.profile.updating
+                  : strings.profile.updateBtn}
               </button>
             </form>
           </div>
