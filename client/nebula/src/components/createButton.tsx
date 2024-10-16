@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { strings } from "../constants/strings";
 
 const CreateButton = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const CreateButton = () => {
       onClick={handleCreate}
       className="my-5 px-5 py-2 rounded-md bg-secondary cursor-pointer hover:bg-highlight font-semibold tracking-wide text-black transition-all"
     >
-      Create new project
+      {strings.project.createNew}
     </button>
   );
 };

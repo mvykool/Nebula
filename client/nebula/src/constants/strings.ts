@@ -26,4 +26,7 @@ export const strings = {
     delete: "Delete project",
     publish: "Publish project",
   },
+  project: {
+    createNew: "Create new project",
+  },
 };
