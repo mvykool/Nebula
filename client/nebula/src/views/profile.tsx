@@ -52,7 +52,7 @@ const Profile = () => {
 
   //temporal goback btn
   const goBack = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   //detect change

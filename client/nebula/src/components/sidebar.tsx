@@ -25,7 +25,7 @@ const Sidebar = ({ pages, id }: Iprops) => {
   };
 
   const goBack = () => {
-    navigate("/");
+    navigate(-1);
   };
   return (
     <div className="border border-white left-0 top-0 sticky w-2/12 h-screen text-black dark:text-white bg-bgLight dark:bg-bgDark">
