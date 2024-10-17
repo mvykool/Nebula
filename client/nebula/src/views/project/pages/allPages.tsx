@@ -1,7 +1,13 @@
-const AllPages = ({ pages }: any) => {
+interface Iprops {
+  pages: string[];
+}
+
+const AllPages = ({ pages }: Iprops) => {
   return (
     <div>
-      <h2>pages</h2>
+      <div className="flex justify-between">
+        <p>pages</p> <button type="button">add page</button>
+      </div>
       {pages}
     </div>
   );
