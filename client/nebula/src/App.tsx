@@ -15,6 +15,7 @@ import CreateProject from "./views/project/create";
 import ExploreView from "./views/explore/exploreView";
 import Layout from "./views/layout";
 import Project from "./views/project/project";
+import Page from "./views/project/pages/page";
 
 function App() {
   return (
@@ -39,8 +40,10 @@ function App() {
                   <Route path="/explore" element={<ExploreView />} />
                   <Route path="/project/creation" element={<CreateProject />} />
                 </Route>
-                <Route path="/projects/">
-                  <Route path=":projectId" element={<Project />} />
+                <Route path="/projects">
+                  <Route path=":projectId" element={<Project />}>
+                    <Route path="pages/:pageId" element={<Page />} />
+                  </Route>
                 </Route>
               </Route>
             </Routes>
