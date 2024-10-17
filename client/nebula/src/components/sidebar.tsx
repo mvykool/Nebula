@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { useProject } from "../hooks/useProject";
 import { useNavigate } from "react-router";
 import { strings } from "../constants/strings";
+import AllPages from "../views/project/pages/allPages";
 
 interface Iprops {
   pages: string[];
@@ -49,7 +50,10 @@ const Sidebar = ({ pages }: Iprops) => {
       <div className="p-8 ">
         <span className="font-bold">{strings.sidebar.pages}</span>
 
-        <div className="w-full h-96">{pages}</div>
+        <div className="w-full h-96">
+          {" "}
+          <AllPages pages={pages} />
+        </div>
 
         {/*IMPORTANT BUTTONS*/}
         <div className="gap-4 items-start flex flex-col">
