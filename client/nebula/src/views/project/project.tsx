@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Sidebar from "../../components/sidebar";
-import { useParams } from "react-router";
+import { Outlet, useParams } from "react-router";
 import { useProject } from "../../hooks/useProject";
 import { useEffect, useState, useCallback } from "react";
 import "@blocknote/core/fonts/inter.css";
@@ -120,20 +120,24 @@ const Project = () => {
 
   return (
     <div className="w-full flex text-black dark:text-white">
-      <Sidebar pages={data?.pages} />
-      <div className="w-full bg-bgLight dark:bg-bgDark">
-        <div className="w-full h-16 p-5 flex justify-start items-center">
-          <p className="font-bold">{data?.name}</p>
+      <Sidebar pages={data?.pages} id={projectId} />
+      {window.location.pathname == `/projects/${projectId}` ? (
+        <div className="w-full bg-bgLight dark:bg-bgDark">
+          <div className="w-full h-16 p-5 flex justify-start items-center">
+            <p className="font-bold">{data?.name}</p>
+          </div>
+          <img
+            src={data?.cover}
+            alt="cover-image"
+            className="w-full object-cover h-[28vh]"
+          />
+          <div className="w-5/6 my-10 mx-auto">
+            <BlockNoteView editor={editor} data-theming-css-variables-demo />
+          </div>
         </div>
-        <img
-          src={data?.cover}
-          alt="cover-image"
-          className="w-full object-cover h-[28vh]"
-        />
-        <div className="w-5/6 my-10 mx-auto">
-          <BlockNoteView editor={editor} data-theming-css-variables-demo />
-        </div>
-      </div>
+      ) : (
+        <Outlet context={{ projectData: data }} />
+      )}
     </div>
   );
 };

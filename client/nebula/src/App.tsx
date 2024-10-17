@@ -40,9 +40,9 @@ function App() {
                   <Route path="/explore" element={<ExploreView />} />
                   <Route path="/project/creation" element={<CreateProject />} />
                 </Route>
-                <Route path="/projects">
+                <Route path="/projects" element={<Outlet />}>
                   <Route path=":projectId" element={<Project />}>
-                    <Route path="pages/:pageId" element={<Page />} />
+                    <Route path="pages" element={<Page />} />
                   </Route>
                 </Route>
               </Route>

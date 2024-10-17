@@ -7,9 +7,10 @@ import AllPages from "../views/project/pages/allPages";
 
 interface Iprops {
   pages: string[];
+  id: string | undefined;
 }
 
-const Sidebar = ({ pages }: Iprops) => {
+const Sidebar = ({ pages, id }: Iprops) => {
   const { user, defaultPfp } = useAuth();
 
   //context for project
@@ -52,7 +53,7 @@ const Sidebar = ({ pages }: Iprops) => {
 
         <div className="w-full h-96">
           {" "}
-          <AllPages pages={pages} />
+          <AllPages pages={pages} id={id} />
         </div>
 
         {/*IMPORTANT BUTTONS*/}
