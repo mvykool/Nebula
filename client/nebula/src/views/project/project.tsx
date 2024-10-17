@@ -136,7 +136,7 @@ const Project = () => {
           </div>
         </div>
       ) : (
-        <Outlet context={{ projectData: data }} />
+        <Outlet />
       )}
     </div>
   );
