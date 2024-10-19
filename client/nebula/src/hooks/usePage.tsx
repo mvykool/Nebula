@@ -97,19 +97,16 @@ const PageProvider = ({ children }: any) => {
 
   //UPDATE PROJECTS
   const updatePages = useCallback(
-    async (projectId: number, updatedData: any) => {
+    async (pageId: number, updatedData: any) => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/pages/${projectId}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(updatedData),
+        const response = await fetch(`http://localhost:3000/pages/${pageId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
-        );
+          body: JSON.stringify(updatedData),
+        });
         if (!response.ok) {
           throw new Error("Failed to update project");
         }
