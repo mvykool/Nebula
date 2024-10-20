@@ -1,4 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router";
+import { usePages } from "../../../hooks/usePage";
+import { useState } from "react";
+
 interface Iprops {
   pages: string[];
   id: string | undefined;
@@ -6,9 +10,20 @@ interface Iprops {
 
 const AllPages = ({ pages, id }: Iprops) => {
   const navigate = useNavigate();
+  const [data, setData] = useState({
+    title: "",
+    content: "",
+    project: id,
+  });
+  const { createPage } = usePages();
 
-  const goPage = () => {
-    navigate(`/projects/${id}/pages`);
+  const goPage = async () => {
+    try {
+      await createPage(data);
+    } catch (error) {
+      console.log(error);
+    }
+    return;
   };
 
   return (

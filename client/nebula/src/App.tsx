@@ -16,6 +16,7 @@ import ExploreView from "./views/explore/exploreView";
 import Layout from "./views/layout";
 import Project from "./views/project/project";
 import Page from "./views/project/pages/page";
+import PageProvider from "./hooks/usePage";
 
 function App() {
   return (
@@ -23,30 +24,35 @@ function App() {
       <Router>
         <AuthProvider>
           <ProjectProvider>
-            {" "}
-            <Routes>
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/login" element={<Login />} />
-              <Route element={<PrivateRoute />}>
-                <Route
-                  element={
-                    <Layout>
-                      <Outlet />
-                    </Layout>
-                  }
-                >
-                  <Route path="/" element={<Home />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/explore" element={<ExploreView />} />
-                  <Route path="/project/creation" element={<CreateProject />} />
-                </Route>
-                <Route path="/projects" element={<Outlet />}>
-                  <Route path=":projectId" element={<Project />}>
-                    <Route path="pages" element={<Page />} />
+            <PageProvider>
+              {" "}
+              <Routes>
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route element={<PrivateRoute />}>
+                  <Route
+                    element={
+                      <Layout>
+                        <Outlet />
+                      </Layout>
+                    }
+                  >
+                    <Route path="/" element={<Home />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/explore" element={<ExploreView />} />
+                    <Route
+                      path="/project/creation"
+                      element={<CreateProject />}
+                    />
+                  </Route>
+                  <Route path="/projects" element={<Outlet />}>
+                    <Route path=":projectId" element={<Project />}>
+                      <Route path="pages" element={<Page />} />
+                    </Route>
                   </Route>
                 </Route>
-              </Route>
-            </Routes>
+              </Routes>
+            </PageProvider>
           </ProjectProvider>
         </AuthProvider>
       </Router>
