@@ -55,7 +55,10 @@ export class ProjectsService {
   }
 
   findOne(id: number): Promise<Project> {
-    return this.projectRepository.findOneBy({ id });
+    return this.projectRepository.findOne({
+      where: { id },
+      relations: ['owner', 'pages'],
+    });
   }
 
   async update(id: number, updateProject: UpdateProjectDto): Promise<Project> {
