@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 import { usePages } from "../../../hooks/usePage";
 
 const Page = () => {
-  const { projectId } = useParams();
+  const { projectId, pageId } = useParams();
   const { fetchPage, updatePages } = usePages();
   const [data, setData] = useState({
     title: "",
@@ -18,12 +18,10 @@ const Page = () => {
 
   const editor = useCreateBlockNote();
 
-  const id = 1;
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await fetchPage(id);
+        const result = await fetchPage(pageId);
         setData(result);
         console.log(result);
 
