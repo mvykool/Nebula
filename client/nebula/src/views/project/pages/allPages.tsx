@@ -23,6 +23,7 @@ const AllPages = ({ pages, id }: Iprops) => {
 
       if (newPage && newPage.id) {
         console.log(newPage);
+        console.log(`projects/${id}/pages/${newPage.id}`);
       }
     } catch (error) {
       console.log(error);

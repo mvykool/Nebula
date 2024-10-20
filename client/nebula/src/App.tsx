@@ -47,7 +47,7 @@ function App() {
                   </Route>
                   <Route path="/projects" element={<Outlet />}>
                     <Route path=":projectId" element={<Project />}>
-                      <Route path="pages" element={<Page />} />
+                      <Route path="pages/:pageId" element={<Page />} />
                     </Route>
                   </Route>
                 </Route>
