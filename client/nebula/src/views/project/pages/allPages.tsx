@@ -34,7 +34,6 @@ const AllPages = ({ pages, id }: Iprops) => {
           add page
         </button>
       </div>
-      {pages}
     </div>
   );
 };
