@@ -5,6 +5,7 @@
 /uploads
 /.uploads
 .uploads
+uploads/
 
 # Logs
 logs
