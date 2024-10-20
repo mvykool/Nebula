@@ -6,8 +6,8 @@ import { UploadController } from './images.controller';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads'), // Directory to serve static files from
-      serveRoot: '/uploads', // URL path for serving static files
+      rootPath: join(process.cwd(), '.uploads'), // Directory to serve static files from
+      serveRoot: '/.uploads', // URL path for serving static files
     }),
   ],
   controllers: [UploadController],

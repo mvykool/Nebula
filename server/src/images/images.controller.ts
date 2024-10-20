@@ -14,7 +14,7 @@ const multerOptions = {
   storage: diskStorage({
     destination: (req, file, cb) => {
       // Specify the folder where files will be stored
-      cb(null, './uploads');
+      cb(null, './.uploads');
     },
     filename: (req, file, cb) => {
       // Create a unique file name
@@ -42,6 +42,6 @@ export class UploadController {
       throw new HttpException('No file uploaded', HttpStatus.BAD_REQUEST);
     }
     // Return the URL where the file can be accessed
-    return { url: `/uploads/${file.filename}` };
+    return { url: `/.uploads/${file.filename}` };
   }
 }
