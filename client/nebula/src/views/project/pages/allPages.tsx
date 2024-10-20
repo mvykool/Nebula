@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router";
 import { usePages } from "../../../hooks/usePage";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface Iprops {
   pages: any;
@@ -10,7 +10,7 @@ interface Iprops {
 
 const AllPages = ({ pages, id }: Iprops) => {
   const navigate = useNavigate();
-  const [data, setData] = useState({
+  const [data] = useState({
     title: "undefined",
     content: "",
     project: id,
@@ -19,28 +19,27 @@ const AllPages = ({ pages, id }: Iprops) => {
 
   const goPage = async () => {
     try {
-      await createPage(data);
+      const newPage = await createPage(data);
+
+      if (newPage && newPage.id) {
+        console.log(newPage);
+      }
     } catch (error) {
       console.log(error);
     }
     return;
   };
 
-  useEffect(() => {
-    console.log(
-      pages.map((page: any) => {
-        return page.title;
-      }),
-    );
-  }, []);
-
   return (
     <div>
-      <div className="flex justify-between">
-        <p>pages</p>{" "}
-        <button onClick={goPage} type="button">
-          add page
-        </button>
+      <div className="flex flex-col ">
+        <div className="flex justify-between my-5">
+          {" "}
+          <p>pages</p>{" "}
+          <button onClick={goPage} type="button">
+            add page
+          </button>
+        </div>
         {pages.map((page: any, index: number) => {
           return (
             <div key={index}>

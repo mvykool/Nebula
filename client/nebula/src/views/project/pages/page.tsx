@@ -30,7 +30,7 @@ const Page = () => {
         // Parse the description
         let descriptionContent = [];
         try {
-          const parsedContent = JSON.parse(result.description || "[]");
+          const parsedContent = JSON.parse(result.content || "[]");
           descriptionContent = parsedContent
             .flat()
             .map((item: { content: any; type: string; props: any }) => ({

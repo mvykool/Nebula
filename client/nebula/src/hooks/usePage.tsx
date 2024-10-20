@@ -8,13 +8,11 @@ import {
   useEffect,
 } from "react";
 import { useAuth } from "./authProvider";
-import { useNavigate } from "react-router";
 
 const PageContext = createContext<any>({});
 
 const PageProvider = ({ children }: any) => {
   const { accessToken, fetchWithToken } = useAuth();
-  const navigate = useNavigate();
   const [myPages, setMyPages] = useState("");
 
   // REQUESTS
@@ -38,8 +36,8 @@ const PageProvider = ({ children }: any) => {
 
         if (response.ok) {
           const res = await response.json();
-          console.log("project created: ", res);
-          navigate("/");
+          console.log("page created: ", res);
+          return res;
         }
       } catch (error) {
         console.log(error);
