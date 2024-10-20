@@ -11,21 +11,19 @@ const Page = () => {
   const { projectId } = useParams();
   const { fetchPage, updatePages } = usePages();
   const [data, setData] = useState({
-    title: "title",
+    title: "",
     content: "",
     project: projectId,
   });
 
   const editor = useCreateBlockNote();
 
+  const id = 1;
+
   useEffect(() => {
     const fetchData = async () => {
-      if (!projectId) {
-        console.error("Project ID is undefined");
-        return;
-      }
       try {
-        const result = await fetchPage(projectId);
+        const result = await fetchPage(id);
         setData(result);
         console.log(result);
 
