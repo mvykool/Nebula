@@ -15,7 +15,7 @@ const AllPages = ({ pages, id }: Iprops) => {
     content: "",
     project: id,
   });
-  const { createPage } = usePages();
+  const { createPage, deletePages } = usePages();
 
   const goPage = async () => {
     try {
@@ -31,6 +31,15 @@ const AllPages = ({ pages, id }: Iprops) => {
     return;
   };
 
+  const deletePage = (id: any) => {
+    try {
+      deletePages(id);
+      console.log("page deleted");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col ">
@@ -43,8 +52,9 @@ const AllPages = ({ pages, id }: Iprops) => {
         </div>
         {pages.map((page: any, index: number) => {
           return (
-            <div key={index}>
+            <div className="flex justify-between items-center" key={index}>
               <p>{page.title}</p>
+              <button onClick={() => deletePage(page.id)}>X</button>
             </div>
           );
         })}
