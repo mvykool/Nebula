@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAuth } from "../hooks/authProvider";
 import { useParams } from "react-router";
 import { useProject } from "../hooks/useProject";
@@ -6,7 +7,7 @@ import { strings } from "../constants/strings";
 import AllPages from "../views/project/pages/allPages";
 
 interface Iprops {
-  pages: string[];
+  pages: any;
   id: string | undefined;
 }
 

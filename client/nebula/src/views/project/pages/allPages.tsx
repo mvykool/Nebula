@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router";
 import { usePages } from "../../../hooks/usePage";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface Iprops {
-  pages: string[];
+  pages: any;
   id: string | undefined;
 }
 
 const AllPages = ({ pages, id }: Iprops) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
-    title: "",
+    title: "undefined",
     content: "",
     project: id,
   });
@@ -26,6 +26,14 @@ const AllPages = ({ pages, id }: Iprops) => {
     return;
   };
 
+  useEffect(() => {
+    console.log(
+      pages.map((page: any) => {
+        return page.title;
+      }),
+    );
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between">
@@ -33,6 +41,13 @@ const AllPages = ({ pages, id }: Iprops) => {
         <button onClick={goPage} type="button">
           add page
         </button>
+        {pages.map((page: any, index: number) => {
+          return (
+            <div key={index}>
+              <p>{page.title}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
