@@ -16,7 +16,7 @@ const AllPages = ({ id }: Iprops) => {
   });
   const { createPage, deletePages, myPages } = usePages();
 
-  const goPage = async () => {
+  const addPage = async () => {
     try {
       const newPage = await createPage(data);
 
@@ -41,20 +41,24 @@ const AllPages = ({ id }: Iprops) => {
     }
   };
 
+  const goPage = (id: string) => {
+    navigate(`pages/${id}`);
+  };
+
   return (
     <div>
       <div className="flex flex-col ">
         <div className="flex justify-between my-5">
           {" "}
           <p>pages</p>{" "}
-          <button onClick={goPage} type="button">
+          <button onClick={addPage} type="button">
             add page
           </button>
         </div>
         {Array.isArray(myPages) && myPages.length > 0 ? (
           myPages.map((page) => (
             <div className="flex justify-between items-center" key={page.id}>
-              <p>{page.title}</p>
+              <p onClick={() => goPage(page.id)}>{page.title}</p>
               <button onClick={() => deletePage(page.id)}>X</button>
             </div>
           ))

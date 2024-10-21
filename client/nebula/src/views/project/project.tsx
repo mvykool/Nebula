@@ -7,10 +7,12 @@ import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
+import { usePages } from "../../hooks/usePage";
 
 const Project = () => {
   const { projectId } = useParams();
   const { fetchProject, updateProject } = useProject();
+  const { myPages } = usePages();
   const [data, setData] = useState({
     name: "",
     cover: "",
@@ -92,11 +94,14 @@ const Project = () => {
       content.slice(1).map((block) => [block]),
     );
 
+    const pages = myPages;
+
     try {
       const updatedData = await updateProject(projectId, {
         ...data,
         name,
         description,
+        pages,
       });
       setData(updatedData);
       console.log("Data saved successfully");

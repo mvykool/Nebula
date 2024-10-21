@@ -103,6 +103,7 @@ const PageProvider = ({ children }: any) => {
         if (!response.ok) {
           throw new Error("Failed to update project");
         }
+        console.log("page updated");
         return await response.json();
       } catch (error) {
         console.error("Error updating project:", error);

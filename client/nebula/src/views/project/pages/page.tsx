@@ -88,7 +88,7 @@ const Page = () => {
     );
 
     try {
-      const updatedData = await updatePages(projectId, {
+      const updatedData = await updatePages(pageId, {
         ...data,
         title,
         content,
@@ -101,6 +101,7 @@ const Page = () => {
   }, [editor, projectId, data, updatePages]);
 
   useEffect(() => {
+    console.log(pageId);
     const handleKeyDown = (event: any) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
