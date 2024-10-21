@@ -5,8 +5,11 @@ import {
   Body,
   Patch,
   Param,
+  Request,
   Delete,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { CreatePageDto } from './dto/create-page.dto';
@@ -21,8 +24,16 @@ export class PagesController {
   constructor(private readonly pagesService: PagesService) {}
 
   @Post()
-  create(@Body() createPageDto: CreatePageDto) {
-    return this.pagesService.createPage(createPageDto);
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Request() req, @Body() createPageDto: CreatePageDto) {
+    const projectId = req.project?.id;
+    return this.pagesService.createPage(createPageDto, projectId);
+  }
+
+  @Get(':projectId')
+  async findMine(@Param('projectId') projectId: number) {
+    const id = projectId;
+    return this.pagesService.findByProject(id);
   }
 
   @Get()

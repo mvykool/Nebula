@@ -15,13 +15,16 @@ export class PagesService {
     private readonly projectsService: ProjectsService,
   ) {}
 
-  async createPage(createPageDto: CreatePageDto): Promise<Page> {
+  async createPage(
+    createPageDto: CreatePageDto,
+    projectId: number,
+  ): Promise<Page> {
     const page: Page = new Page();
     page.title = createPageDto.title;
     page.content = createPageDto.content;
 
     // set project for pages
-    const project = await this.projectsService.findOne(createPageDto.projectId);
+    const project = await this.projectsService.findOne(projectId);
     page.project = project;
 
     // provide parentid if exist
@@ -41,6 +44,13 @@ export class PagesService {
 
   findAll(): Promise<Page[]> {
     return this.pageRepository.find();
+  }
+
+  async findByProject(projectId: number): Promise<Page[]> {
+    return this.pageRepository.find({
+      where: { project: { id: projectId } },
+      relations: ['project'],
+    });
   }
 
   findOne(id: number): Promise<Page> {
