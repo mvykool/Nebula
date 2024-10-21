@@ -1,4 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -63,15 +68,55 @@ export class PagesService {
   async update(id: number, updatePageDto: UpdatePageDto): Promise<Page> {
     const page = await this.findOne(id);
 
-    if (updatePageDto.title) page.title = updatePageDto.title;
-    if (updatePageDto.content) page.content = updatePageDto.content;
+    // If changing parent, verify it exists and belongs to same project
+    if (updatePageDto.parentId) {
+      const newParent = await this.pageRepository.findOne({
+        where: {
+          id: updatePageDto.parentId,
+          project: { id: page.project.id },
+        },
+      });
 
-    page.updated = new Date();
+      if (!newParent) {
+        throw new BadRequestException(
+          `Parent page with ID ${updatePageDto.parentId} not found in project`,
+        );
+      }
 
-    return this.pageRepository.save(page);
+      // Prevent circular references
+      if (await this.wouldCreateCircularReference(newParent, page.id)) {
+        throw new BadRequestException(
+          'Cannot set parent: would create circular reference',
+        );
+      }
+
+      page.parent = newParent;
+    }
+
+    // Update other fields
+    Object.assign(page, updatePageDto);
+
+    return await this.pageRepository.save(page);
   }
 
   remove(id: number): Promise<{ affected?: number }> {
     return this.pageRepository.delete(id);
+  }
+
+  private async wouldCreateCircularReference(
+    parent: Page,
+    childId: number,
+  ): Promise<boolean> {
+    let currentPage = parent;
+    while (currentPage.parent) {
+      if (currentPage.parent.id === childId) {
+        return true;
+      }
+      currentPage = await this.pageRepository.findOne({
+        where: { id: currentPage.parent.id },
+        relations: ['parent'],
+      });
+    }
+    return false;
   }
 }
