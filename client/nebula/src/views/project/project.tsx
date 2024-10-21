@@ -120,7 +120,7 @@ const Project = () => {
 
   return (
     <div className="w-full flex text-black dark:text-white">
-      <Sidebar pages={data?.pages} id={projectId} />
+      <Sidebar id={projectId} />
       {window.location.pathname == `/projects/${projectId}` ? (
         <div className="w-full bg-bgLight dark:bg-bgDark">
           <div className="w-full h-16 p-5 flex justify-start items-center">

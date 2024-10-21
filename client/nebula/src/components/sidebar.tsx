@@ -7,11 +7,10 @@ import { strings } from "../constants/strings";
 import AllPages from "../views/project/pages/allPages";
 
 interface Iprops {
-  pages: any;
   id: string | undefined;
 }
 
-const Sidebar = ({ pages, id }: Iprops) => {
+const Sidebar = ({ id }: Iprops) => {
   const { user, defaultPfp } = useAuth();
 
   //context for project
@@ -54,7 +53,7 @@ const Sidebar = ({ pages, id }: Iprops) => {
 
         <div className="w-full h-96">
           {" "}
-          <AllPages pages={pages} id={id} />
+          <AllPages id={id} />
         </div>
 
         {/*IMPORTANT BUTTONS*/}

@@ -13,7 +13,7 @@ const PageContext = createContext<any>({});
 
 const PageProvider = ({ children }: any) => {
   const { accessToken, fetchWithToken } = useAuth();
-  const [myPages, setMyPages] = useState("");
+  const [myPages, setMyPages] = useState<any>([]);
 
   // REQUESTS
 
@@ -37,6 +37,7 @@ const PageProvider = ({ children }: any) => {
         if (response.ok) {
           const res = await response.json();
           console.log("page created: ", res);
+          setMyPages((prev: any) => [...prev, res]);
           return res;
         }
       } catch (error) {
@@ -87,12 +88,6 @@ const PageProvider = ({ children }: any) => {
     [fetchWithToken],
   );
 
-  useEffect(() => {
-    if (accessToken && !myPages) {
-      fetchMyPages();
-    }
-  }, [accessToken, myPages, fetchMyPages]);
-
   //UPDATE PROJECTS
   const updatePages = useCallback(
     async (pageId: number, updatedData: any) => {
@@ -135,6 +130,9 @@ const PageProvider = ({ children }: any) => {
         if (!response.ok) {
           throw new Error("Failed to update project");
         }
+        setMyPages((prevPages: any) =>
+          prevPages.filter((page: any) => page.id !== pageId),
+        );
         return await response.json();
       } catch (error) {
         console.error("Error updating project:", error);
@@ -143,6 +141,12 @@ const PageProvider = ({ children }: any) => {
     },
     [fetchWithToken],
   );
+
+  useEffect(() => {
+    if (accessToken && (!myPages || myPages.length === 0)) {
+      fetchMyPages();
+    }
+  }, [accessToken, fetchMyPages]);
 
   return (
     <PageContext.Provider

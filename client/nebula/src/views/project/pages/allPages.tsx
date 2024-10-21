@@ -4,18 +4,17 @@ import { usePages } from "../../../hooks/usePage";
 import { useState } from "react";
 
 interface Iprops {
-  pages: any;
   id: string | undefined;
 }
 
-const AllPages = ({ pages, id }: Iprops) => {
+const AllPages = ({ id }: Iprops) => {
   const navigate = useNavigate();
-  const [data] = useState({
+  const [data, setData] = useState({
     title: "undefined",
     content: "",
     project: id,
   });
-  const { createPage, deletePages } = usePages();
+  const { createPage, deletePages, myPages } = usePages();
 
   const goPage = async () => {
     try {
@@ -23,6 +22,7 @@ const AllPages = ({ pages, id }: Iprops) => {
 
       if (newPage && newPage.id) {
         console.log(newPage);
+        setData(newPage);
         console.log(`projects/${id}/pages/${newPage.id}`);
         navigate(`pages/${newPage.id}`);
       }
@@ -32,9 +32,9 @@ const AllPages = ({ pages, id }: Iprops) => {
     return;
   };
 
-  const deletePage = (id: any) => {
+  const deletePage = async (id: any) => {
     try {
-      deletePages(id);
+      await deletePages(id);
       console.log("page deleted");
     } catch (error) {
       console.log(error);
@@ -51,14 +51,16 @@ const AllPages = ({ pages, id }: Iprops) => {
             add page
           </button>
         </div>
-        {pages.map((page: any, index: number) => {
-          return (
-            <div className="flex justify-between items-center" key={index}>
+        {Array.isArray(myPages) && myPages.length > 0 ? (
+          myPages.map((page) => (
+            <div className="flex justify-between items-center" key={page.id}>
               <p>{page.title}</p>
               <button onClick={() => deletePage(page.id)}>X</button>
             </div>
-          );
-        })}
+          ))
+        ) : (
+          <p>No pages available</p>
+        )}
       </div>
     </div>
   );
