@@ -18,7 +18,7 @@ export class CreateProjectDto {
 
   @IsBoolean()
   @IsOptional()
-  published?: boolean;
+  publish?: boolean;
 
   @IsOptional()
   pages?: Page[];

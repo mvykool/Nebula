@@ -31,7 +31,7 @@ export class ProjectsService {
     project.cover = createProjectDto.cover;
     project.description = createProjectDto.description;
     project.owner = user;
-    project.publish = createProjectDto.published;
+    project.publish = createProjectDto.publish;
     project.pages = pages;
     return this.projectRepository.save(project);
   }
@@ -80,8 +80,8 @@ export class ProjectsService {
     if (updateProjectDto.description !== undefined) {
       project.description = updateProjectDto.description;
     }
-    if (updateProjectDto.published !== undefined) {
-      project.publish = updateProjectDto.published;
+    if (updateProjectDto.publish !== undefined) {
+      project.publish = updateProjectDto.publish;
     }
 
     // Save the updated project
