@@ -5,6 +5,7 @@ import { useProject } from "../hooks/useProject";
 import { useNavigate } from "react-router";
 import { strings } from "../constants/strings";
 import AllPages from "../views/project/pages/allPages";
+import PublishProject from "./publishProject";
 
 interface Iprops {
   id: string | undefined;
@@ -65,9 +66,7 @@ const Sidebar = ({ id }: Iprops) => {
           >
             {strings.sidebar.delete}
           </button>
-          <button type="button" className="px-2 py-1 rounded-md bg-primary">
-            {strings.sidebar.publish}
-          </button>
+          <PublishProject />
         </div>
       </div>
     </div>

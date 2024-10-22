@@ -65,7 +65,7 @@ const ProjectProvider = ({ children }: any) => {
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }, [fetchWithToken]);
+  }, []);
 
   const fetchProject = useCallback(
     async (id: any) => {
@@ -116,6 +116,7 @@ const ProjectProvider = ({ children }: any) => {
         if (!response.ok) {
           throw new Error("Failed to update project");
         }
+        console.log(response);
         return await response.json();
       } catch (error) {
         console.error("Error updating project:", error);
