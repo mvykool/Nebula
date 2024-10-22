@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Repository } from 'typeorm';
@@ -60,10 +60,32 @@ export class ProjectsService {
       relations: ['owner', 'pages'],
     });
   }
+  async update(
+    id: number,
+    updateProjectDto: UpdateProjectDto,
+  ): Promise<Project> {
+    const project = await this.findOne(id);
 
-  async update(id: number, updateProject: UpdateProjectDto): Promise<Project> {
-    await this.projectRepository.update(id, updateProject);
-    return this.findOne(id);
+    if (!project) {
+      throw new BadRequestException(`Project with ID ${id} not found`);
+    }
+
+    // Update only the fields that are present in the DTO
+    if (updateProjectDto.name !== undefined) {
+      project.name = updateProjectDto.name;
+    }
+    if (updateProjectDto.cover !== undefined) {
+      project.cover = updateProjectDto.cover;
+    }
+    if (updateProjectDto.description !== undefined) {
+      project.description = updateProjectDto.description;
+    }
+    if (updateProjectDto.published !== undefined) {
+      project.publish = updateProjectDto.published;
+    }
+
+    // Save the updated project
+    return this.projectRepository.save(project);
   }
 
   remove(id: number): Promise<{ affected?: number }> {

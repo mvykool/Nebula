@@ -66,36 +66,58 @@ export class PagesService {
   }
 
   async update(id: number, updatePageDto: UpdatePageDto): Promise<Page> {
-    const page = await this.findOne(id);
+    // First, fetch the existing page with all necessary relations
+    const page = await this.pageRepository.findOne({
+      where: { id },
+      relations: ['project', 'parent', 'children'],
+    });
+
+    if (!page) {
+      throw new BadRequestException(`Page with ID ${id} not found`);
+    }
 
     // If changing parent, verify it exists and belongs to same project
-    if (updatePageDto.parentId) {
-      const newParent = await this.pageRepository.findOne({
-        where: {
-          id: updatePageDto.parentId,
-          project: { id: page.project.id },
-        },
-      });
+    if (updatePageDto.parentId !== undefined) {
+      if (updatePageDto.parentId === null) {
+        // Remove parent relationship
+        page.parent = null;
+      } else {
+        const newParent = await this.pageRepository.findOne({
+          where: {
+            id: updatePageDto.parentId,
+            project: { id: page.project.id },
+          },
+          relations: ['project'],
+        });
 
-      if (!newParent) {
-        throw new BadRequestException(
-          `Parent page with ID ${updatePageDto.parentId} not found in project`,
-        );
+        if (!newParent) {
+          throw new BadRequestException(
+            `Parent page with ID ${updatePageDto.parentId} not found in project`,
+          );
+        }
+
+        // Prevent circular references
+        if (await this.wouldCreateCircularReference(newParent, page.id)) {
+          throw new BadRequestException(
+            'Cannot set parent: would create circular reference',
+          );
+        }
+
+        page.parent = newParent;
       }
-
-      // Prevent circular references
-      if (await this.wouldCreateCircularReference(newParent, page.id)) {
-        throw new BadRequestException(
-          'Cannot set parent: would create circular reference',
-        );
-      }
-
-      page.parent = newParent;
     }
 
     // Update other fields
-    Object.assign(page, updatePageDto);
+    if (updatePageDto.title !== undefined) {
+      page.title = updatePageDto.title;
+    }
+    if (updatePageDto.content !== undefined) {
+      page.content = updatePageDto.content;
+    }
 
+    page.updated = new Date();
+
+    // Save the updated page
     return await this.pageRepository.save(page);
   }
 
@@ -108,15 +130,26 @@ export class PagesService {
     childId: number,
   ): Promise<boolean> {
     let currentPage = parent;
+    const visited = new Set<number>();
+
     while (currentPage.parent) {
+      if (visited.has(currentPage.id)) {
+        return true; // Detected existing circular reference
+      }
       if (currentPage.parent.id === childId) {
         return true;
       }
+
+      visited.add(currentPage.id);
+
       currentPage = await this.pageRepository.findOne({
         where: { id: currentPage.parent.id },
         relations: ['parent'],
       });
+
+      if (!currentPage) break;
     }
+
     return false;
   }
 }

@@ -1,10 +1,10 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 import { Page } from 'src/pages/entities/page.entity';
 
 export class CreateProjectDto {
-  @IsNotEmpty()
   @IsString()
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @IsString()
   @IsOptional()
@@ -17,7 +17,8 @@ export class CreateProjectDto {
   ownereId: number;
 
   @IsBoolean()
-  published: boolean;
+  @IsOptional()
+  published?: boolean;
 
   @IsOptional()
   pages?: Page[];
