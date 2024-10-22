@@ -13,22 +13,26 @@ const Page = () => {
   const [data, setData] = useState({
     title: "",
     content: "",
-    project: projectId,
   });
 
   const editor = useCreateBlockNote();
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!projectId) {
+        console.error("Project ID is undefined");
+        return;
+      }
+
       try {
-        const result = await fetchPage(pageId);
-        setData(result);
-        console.log(result);
+        const result = await fetchPage(projectId);
+        setData(result[0]);
+        console.log("updated page:", result[0]);
 
         // Parse the description
         let descriptionContent = [];
         try {
-          const parsedContent = JSON.parse(result.content || "[]");
+          const parsedContent = JSON.parse(result[0].content || "[]");
           descriptionContent = parsedContent
             .flat()
             .map((item: { content: any; type: string; props: any }) => ({
@@ -46,7 +50,7 @@ const Page = () => {
           {
             id: "header",
             type: "heading",
-            content: result.title,
+            content: result[0].title,
           },
           ...descriptionContent,
         ]);
@@ -55,7 +59,7 @@ const Page = () => {
       }
     };
     fetchData();
-  }, [projectId, fetchPage, editor]);
+  }, [projectId, pageId, fetchPage, editor]);
 
   const extractContentFromBlock = (block: any): any => {
     return {
@@ -101,7 +105,6 @@ const Page = () => {
   }, [editor, projectId, data, updatePages]);
 
   useEffect(() => {
-    console.log(pageId);
     const handleKeyDown = (event: any) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
@@ -113,6 +116,7 @@ const Page = () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [saveData]);
+
   return (
     <div className="w-full">
       <BlockNoteView editor={editor} data-theming-css-variables-demo />
