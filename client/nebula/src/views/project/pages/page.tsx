@@ -25,14 +25,14 @@ const Page = () => {
       }
 
       try {
-        const result = await fetchPage(projectId);
-        setData(result[0]);
+        const result = await fetchPage(pageId);
+        setData(result);
         console.log("updated page:", result[0]);
 
         // Parse the description
         let descriptionContent = [];
         try {
-          const parsedContent = JSON.parse(result[0].content || "[]");
+          const parsedContent = JSON.parse(result.content || "[]");
           descriptionContent = parsedContent
             .flat()
             .map((item: { content: any; type: string; props: any }) => ({
@@ -50,7 +50,7 @@ const Page = () => {
           {
             id: "header",
             type: "heading",
-            content: result[0].title,
+            content: result.title,
           },
           ...descriptionContent,
         ]);

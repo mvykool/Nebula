@@ -30,12 +30,6 @@ export class PagesController {
     return this.pagesService.createPage(createPageDto, projectId);
   }
 
-  @Get(':projectId')
-  async findMine(@Param('projectId') projectId: number) {
-    const id = projectId;
-    return this.pagesService.findByProject(id);
-  }
-
   @Get()
   findAll() {
     return this.pagesService.findAll();
