@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { strings } from "../constants/strings";
 import { useProject } from "../hooks/useProject";
 import { useParams } from "react-router";
@@ -6,17 +5,11 @@ import { useParams } from "react-router";
 const PublishProject = () => {
   const { projectId } = useParams();
   const { updateProject } = useProject();
-  const [data, setData] = useState({
-    publish: false,
-  });
 
   const publish = () => {
-    setData((prevData) => {
-      const updatedData = { ...prevData, publish: true };
-      console.log(updatedData); // This will log the updated state
-      updateProject(projectId, updatedData);
-      return updatedData;
-    });
+    const updatedData = { publish: true };
+    console.log(updatedData); // Log the updated state
+    updateProject(projectId, updatedData);
   };
 
   return (
