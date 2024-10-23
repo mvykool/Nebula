@@ -24,7 +24,7 @@ const Sidebar = ({ id }: Iprops) => {
     navigate("/");
   };
 
-  const goBack = () => {
+  const goBack = (): void => {
     navigate(-1);
   };
   return (
