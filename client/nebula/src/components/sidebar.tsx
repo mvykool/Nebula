@@ -19,7 +19,7 @@ const Sidebar = ({ id }: Iprops) => {
 
   const navigate = useNavigate();
 
-  const handleDelete = () => {
+  const handleDelete = (): void => {
     deleteProject(projectId);
     navigate("/");
   };
