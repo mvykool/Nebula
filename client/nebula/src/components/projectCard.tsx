@@ -16,7 +16,7 @@ const ProjectCard = ({ name, cover, owner, projectId }: IProjectCard) => {
 
   // TAKE TO CLICKED PROJECT
 
-  const goToProject = async () => {
+  const goToProject = async (): Promise<void> => {
     navigate(`/projects/${projectId}`);
   };
 

@@ -6,9 +6,9 @@ const PublishProject = () => {
   const { projectId } = useParams();
   const { updateProject } = useProject();
 
-  const publish = () => {
+  const publish = (): void => {
     const updatedData = { publish: true };
-    console.log(updatedData); // Log the updated state
+    console.log(updatedData);
     updateProject(projectId, updatedData);
   };
 
