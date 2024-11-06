@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useAuth } from "../../hooks/authProvider";
 
 const Login = () => {
@@ -11,7 +10,7 @@ const Login = () => {
   //set authProvider
   const auth = useAuth();
 
-  const handleSubmitEvent = async (e: any) => {
+  const handleSubmitEvent = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     if (input.username !== "" && input.password !== "") {
       try {
@@ -24,8 +23,9 @@ const Login = () => {
     alert("please provide a valid input");
   };
 
-  const handleInput = (e: any) => {
-    const { name, value } = e.target;
+  const handleInput = (e: FormEvent<HTMLInputElement>): void => {
+    const { name, value } = e.currentTarget;
+
     setInput((prev) => ({
       ...prev,
       [name]: value,
