@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useProject } from "../../hooks/useProject";
 import { useNavigate } from "react-router";
 
@@ -41,7 +40,7 @@ const CreateProject = () => {
     }
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
 
     if (input.name !== "") {
@@ -55,8 +54,8 @@ const CreateProject = () => {
     alert("please provide a valid input");
   };
 
-  const handleInput = (e: any) => {
-    const { name, value } = e.target;
+  const handleInput = (e: FormEvent<HTMLInputElement>): void => {
+    const { name, value } = e.currentTarget;
     setInput((prev) => ({
       ...prev,
       [name]: value,
