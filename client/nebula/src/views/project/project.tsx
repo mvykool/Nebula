@@ -131,11 +131,15 @@ const Project = () => {
           <div className="w-full h-16 p-5 flex justify-start items-center">
             <p className="font-bold">{data?.name}</p>
           </div>
-          <img
-            src={data?.cover}
-            alt="cover-image"
-            className="w-full object-cover h-[28vh]"
-          />
+
+          {data?.cover && (
+            <img
+              src={data?.cover}
+              alt="cover-image"
+              className="w-full object-cover h-[28vh]"
+            />
+          )}
+
           <div className="w-5/6 my-10 mx-auto">
             <BlockNoteView editor={editor} data-theming-css-variables-demo />
           </div>
