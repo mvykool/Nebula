@@ -48,10 +48,12 @@ const Sidebar = ({ id }: Iprops) => {
       </div>
 
       {/*PROJECT SECTIONS*/}
+      <div className="p-8 ">
+        <div className="w-full h-96">
+          {" "}
+          <AllPages id={id} />
+        </div>
 
-      <div className="w-full p-8 h-96">
-        {" "}
-        <AllPages id={id} />
         {/*IMPORTANT BUTTONS*/}
         <div className="gap-4 items-start flex flex-col">
           <button
