@@ -63,7 +63,7 @@ const AllPages = ({ id }: Iprops) => {
             </div>
           ))
         ) : (
-          <p>No pages available</p>
+          <p> </p>
         )}
       </div>
     </div>

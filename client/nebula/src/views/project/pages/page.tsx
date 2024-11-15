@@ -17,8 +17,8 @@ const Page = () => {
 
   const editor = useCreateBlockNote();
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect((): void => {
+    const fetchData = async (): Promise<void> => {
       if (!projectId) {
         console.error("Project ID is undefined");
         return;
@@ -72,7 +72,7 @@ const Page = () => {
     };
   };
 
-  const saveData = useCallback(async () => {
+  const saveData = useCallback(async (): Promise<void> => {
     if (!projectId) {
       console.error("Project ID is undefined");
       return;
@@ -99,6 +99,7 @@ const Page = () => {
       });
       setData(updatedData);
       console.log("Data saved successfully");
+      location.reload();
     } catch (err) {
       console.error("Error saving data:", err);
     }
