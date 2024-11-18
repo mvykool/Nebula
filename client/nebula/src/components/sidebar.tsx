@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAuth } from "../hooks/authProvider";
 import { useParams } from "react-router";
 import { useProject } from "../hooks/useProject";
