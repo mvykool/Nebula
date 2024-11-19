@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router";
 import { usePages } from "../../../hooks/usePage";
 import { useState } from "react";
+import { strings } from "../../../constants/strings";
 
 interface Iprops {
   id: string | undefined;
@@ -50,7 +51,7 @@ const AllPages = ({ id }: Iprops) => {
       <div className="flex flex-col ">
         <div className="flex justify-between my-5">
           {" "}
-          <p>pages</p>{" "}
+          <p>{strings.sidebar.pages}</p>{" "}
           <button onClick={addPage} type="button">
             add page
           </button>

@@ -99,7 +99,6 @@ const Page = () => {
       });
       setData(updatedData);
       console.log("Data saved successfully");
-      location.reload();
     } catch (err) {
       console.error("Error saving data:", err);
     }
