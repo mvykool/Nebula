@@ -23,6 +23,7 @@ export const strings = {
   },
   sidebar: {
     pages: "Pages:",
+    addPage: "Add page:",
     delete: "Delete project",
     publish: "Publish project",
   },

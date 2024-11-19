@@ -53,7 +53,7 @@ const AllPages = ({ id }: Iprops) => {
           {" "}
           <p>{strings.sidebar.pages}</p>{" "}
           <button onClick={addPage} type="button">
-            add page
+            {strings.sidebar.addPage}
           </button>
         </div>
         {Array.isArray(myPages) && myPages.length > 0 ? (
