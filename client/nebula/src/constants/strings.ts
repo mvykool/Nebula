@@ -30,4 +30,7 @@ export const strings = {
   project: {
     createNew: "Create new project",
   },
+  explore: {
+    gretting: "🌐 Explore projects",
+  },
 };

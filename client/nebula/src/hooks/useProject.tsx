@@ -15,6 +15,7 @@ const ProjectProvider = ({ children }: any) => {
   const { accessToken, fetchWithToken } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
+  const [publishedProjects, setPublishedProjects] = useState("");
 
   // REQUESTS
 
@@ -57,6 +58,24 @@ const ProjectProvider = ({ children }: any) => {
       if (response.ok) {
         const projects = await response.json();
         setMyProjects(projects);
+        console.log(projects);
+      } else {
+        console.error("Failed to fetch projects:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    }
+  }, []);
+
+  // FETCH PUBLISHED PROJECTS
+  const fetchPublishedProjects = useCallback(async () => {
+    try {
+      const response = await fetchWithToken(
+        "http://localhost:3000/projects/published",
+      );
+      if (response.ok) {
+        const projects = await response.json();
+        setPublishedProjects(projects);
         console.log(projects);
       } else {
         console.error("Failed to fetch projects:", await response.text());
@@ -157,8 +176,10 @@ const ProjectProvider = ({ children }: any) => {
       value={{
         createProject,
         fetchMyProjects,
+        fetchPublishedProjects,
         myProjects,
         fetchProject,
+        publishedProjects,
         updateProject,
         deleteProject,
       }}
