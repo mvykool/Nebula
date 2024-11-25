@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useContext,
   createContext,
@@ -8,10 +7,16 @@ import {
 } from "react";
 import { useAuth } from "./authProvider";
 import { useNavigate } from "react-router";
+import { ProjectContextType } from "../types/contexts.type";
+import { Project } from "../types/project.type";
 
-const ProjectContext = createContext<any>({});
+interface ProjectProviderProps {
+  children: React.ReactNode;
+}
 
-const ProjectProvider = ({ children }: any) => {
+const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
+
+const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const { accessToken, fetchWithToken } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
@@ -21,7 +26,7 @@ const ProjectProvider = ({ children }: any) => {
 
   // CREATE PROJECT
   const createProject = useCallback(
-    async (data: any) => {
+    async (data: Project) => {
       if (!accessToken) {
         return;
       }
@@ -118,7 +123,7 @@ const ProjectProvider = ({ children }: any) => {
 
   //UPDATE PROJECTS
   const updateProject = useCallback(
-    async (projectId: number, updatedData: any) => {
+    async (projectId: number, updatedData: Partial<Project>) => {
       try {
         const response = await fetch(
           `http://localhost:3000/projects/${projectId}`,
