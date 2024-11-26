@@ -7,3 +7,12 @@ export type Page = {
   parent: Page;
   children: Page;
 };
+
+export interface PageContextType {
+  createPage: (data: Page) => Promise<Page | undefined>;
+  fetchMyPages: () => Promise<void>;
+  fetchPage: (id: number) => Promise<Page | undefined>;
+  myPages: Page[]; // Array of Page objects
+  updatePages: (pageId: number, updatedData: Partial<Page>) => Promise<Page>;
+  deletePages: (pageId: number) => Promise<void>;
+}

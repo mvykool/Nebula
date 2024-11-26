@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useContext,
   createContext,
@@ -7,18 +6,23 @@ import {
   useEffect,
 } from "react";
 import { useAuth } from "./authProvider";
+import { Page, PageContextType } from "../types/page.type";
 
-const PageContext = createContext<any>({});
+interface PageContextProps {
+  children: React.ReactNode;
+}
 
-const PageProvider = ({ children }: any) => {
+const PageContext = createContext<PageContextType | undefined>(undefined);
+
+const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   const { accessToken, fetchWithToken } = useAuth();
-  const [myPages, setMyPages] = useState<any>([]);
+  const [myPages, setMyPages] = useState<Page[]>([]);
 
   // REQUESTS
 
   // CREATE PROJECT
   const createPage = useCallback(
-    async (data: any) => {
+    async (data: Page) => {
       if (!accessToken) {
         return;
       }
@@ -36,7 +40,7 @@ const PageProvider = ({ children }: any) => {
         if (response.ok) {
           const res = await response.json();
           console.log("page created: ", res);
-          setMyPages((prev: any) => [...prev, res]);
+          setMyPages((prev: Page[]) => [...prev, res]);
           return res;
         }
       } catch (error) {
