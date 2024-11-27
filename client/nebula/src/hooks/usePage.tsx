@@ -67,7 +67,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   }, [fetchWithToken]);
 
   const fetchPage = useCallback(
-    async (id: any) => {
+    async (id: number) => {
       console.log(id, "project");
       try {
         const response = await fetchWithToken(
@@ -93,7 +93,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
 
   //UPDATE PROJECTS
   const updatePages = useCallback(
-    async (pageId: number, updatedData: any) => {
+    async (pageId: number, updatedData: Partial<Page>) => {
       try {
         const response = await fetch(`http://localhost:3000/pages/${pageId}`, {
           method: "PATCH",
@@ -134,8 +134,8 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
         if (!response.ok) {
           throw new Error("Failed to update project");
         }
-        setMyPages((prevPages: any) =>
-          prevPages.filter((page: any) => page.id !== pageId),
+        setMyPages((prevPages) =>
+          prevPages.filter((page) => page.id !== pageId),
         );
         return await response.json();
       } catch (error) {

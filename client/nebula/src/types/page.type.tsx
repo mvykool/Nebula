@@ -1,6 +1,7 @@
 import { Project } from "./project.type";
 
 export type Page = {
+  id: number;
   title: string;
   content: string;
   project: Project;
