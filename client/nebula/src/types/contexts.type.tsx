@@ -25,7 +25,7 @@ export interface ProjectContextType {
   myProjects: Project[] | string; // Use string for error message or loading state
   publishedProjects: Project[] | string;
   updateProject: (
-    projectId: number,
+    projectId: string,
     updatedData: Partial<Project>,
   ) => Promise<Project>;
   deleteProject: (projectId: number) => Promise<void>;

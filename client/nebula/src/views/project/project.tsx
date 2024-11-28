@@ -8,16 +8,24 @@ import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
 import { usePages } from "../../hooks/usePage";
+import { Page } from "../../types/page.type";
+
+interface ProjectData {
+  name: string;
+  cover: string;
+  description: string;
+  pages: Page[];
+}
 
 const Project = () => {
-  const { projectId } = useParams();
+  const { projectId } = useParams<{ projectId: string }>();
   const { fetchProject, updateProject } = useProject();
   const { myPages } = usePages();
-  const [data, setData] = useState({
+  const [data, setData] = useState<ProjectData>({
     name: "",
     cover: "",
     description: "",
-    pages: [""],
+    pages: [],
   });
   const editor = useCreateBlockNote();
 
@@ -29,34 +37,39 @@ const Project = () => {
       }
       try {
         const result = await fetchProject(projectId);
-        setData(result);
-        console.log(result);
+        if (result) {
+          // Ensure result is not undefined before updating state
+          setData(result);
+          console.log(result);
 
-        // Parse the description
-        let descriptionContent = [];
-        try {
-          const parsedContent = JSON.parse(result.description || "[]");
-          descriptionContent = parsedContent
-            .flat()
-            .map((item: { content: any; type: string; props: any }) => ({
-              type: item.type,
-              props: item.props,
-              content: item.content,
-            }));
-          console.log(descriptionContent);
-        } catch (error) {
-          console.error("Error parsing description:", error);
+          // Parse and update the description content
+          let descriptionContent = [];
+          try {
+            const parsedContent = JSON.parse(result.description || "[]");
+            descriptionContent = parsedContent
+              .flat()
+              .map((item: { content: any; type: string; props: any }) => ({
+                type: item.type,
+                props: item.props,
+                content: item.content,
+              }));
+            console.log(descriptionContent);
+          } catch (error) {
+            console.error("Error parsing description:", error);
+          }
+
+          // Update editor content
+          editor.replaceBlocks(editor.document, [
+            {
+              id: "header",
+              type: "heading",
+              content: result?.name,
+            },
+            ...descriptionContent,
+          ]);
+        } else {
+          console.error("Project not found or invalid response.");
         }
-
-        // Update editor content
-        editor.replaceBlocks(editor.document, [
-          {
-            id: "header",
-            type: "heading",
-            content: result.name,
-          },
-          ...descriptionContent,
-        ]);
       } catch (err) {
         console.error("Error fetching data:", err);
       }

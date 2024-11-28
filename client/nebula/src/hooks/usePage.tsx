@@ -170,5 +170,11 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
 export default PageProvider;
 
 export const usePages = () => {
-  return useContext(PageContext);
+  const context = useContext(PageContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+
+  return context;
 };

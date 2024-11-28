@@ -123,7 +123,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   //UPDATE PROJECTS
   const updateProject = useCallback(
-    async (projectId: number, updatedData: Partial<Project>) => {
+    async (projectId: string, updatedData: Partial<Project>) => {
       try {
         const response = await fetch(
           `http://localhost:3000/projects/${projectId}`,
@@ -196,5 +196,10 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 export default ProjectProvider;
 
 export const useProject = () => {
-  return useContext(ProjectContext);
+  const context = useContext(ProjectContext);
+
+  if (!context) {
+    throw new Error("useProject must be used within provider");
+  }
+  return context;
 };
