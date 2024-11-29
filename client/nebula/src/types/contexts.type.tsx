@@ -23,7 +23,7 @@ export interface ProjectContextType {
   fetchPublishedProjects: () => Promise<void>;
   fetchProject: (id: string) => Promise<Project | undefined>;
   myProjects: Project[] | string; // Use string for error message or loading state
-  publishedProjects: Project[] | string;
+  publishedProjects: Project[];
   updateProject: (
     projectId: string,
     updatedData: Partial<Project>,

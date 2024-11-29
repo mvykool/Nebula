@@ -20,7 +20,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const { accessToken, fetchWithToken } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState("");
-  const [publishedProjects, setPublishedProjects] = useState("");
+  const [publishedProjects, setPublishedProjects] = useState<Project[]>([]);
 
   // REQUESTS
 
