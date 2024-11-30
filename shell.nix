@@ -33,11 +33,11 @@ pkgs.mkShell {
 # Sample environment variables for NestJS backend
 DB_HOST="localhost"
 DB_PORT="5432"
-DB_USERNAME=${DB_USERNAME:-user}
-DB_NAME=${DB_NAME:-db_name}
-DB_PASSWORD=${DB_PASSWORD:-your_password}
-SECRET=${SECRET:-secret}
-SECRET_REFRESH=${SECRET_REFRESH:-secret_refresh}
+DB_USERNAME=${toString (builtins.getEnv "DB_USERNAME" or "default_user")}
+DB_NAME=${toString (builtins.getEnv "DB_NAME" or "default_name")}
+DB_PASSWORD=${toString (builtins.getEnv "DB_PASSWORD" or "default_password")}
+SECRET=${toString (builtins.getEnv "SECRET" or "default_secret")}
+SECRET_REFRESH=${toString (builtins.getEnv "SECRET_REFRESH" or "default_refresh")}
 EOF
 
 fi
