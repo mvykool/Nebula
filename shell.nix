@@ -1,11 +1,11 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-  buildInputs = with pkgs; [
-    nodejs
-    dockerTools  # Docker for managing Docker containers
-    docker       # Docker CLI tools to interact with Docker
-    git          # Git for version control
+  buildInputs = [
+    pkgs.nodejs       # Node.js for the client and backend
+    pkgs.dockerTools  # Docker for managing Docker containers
+    pkgs.docker       # Docker CLI tools to interact with Docker
+    pkgs.git          # Git for version control
   ];
 
   shellHook = ''
