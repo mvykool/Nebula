@@ -31,6 +31,6 @@ export const strings = {
     createNew: "Create new project",
   },
   explore: {
-    gretting: "🌐 Explore new projects",
+    gretting: "🌐 Explore new projectss",
   },
 };
