@@ -111,7 +111,7 @@ const Project = () => {
   }, [editor, projectId, data, updateProject]);
 
   useEffect(() => {
-    const handleKeyDown = (event: any) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
         saveData();

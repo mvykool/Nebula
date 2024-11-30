@@ -1,14 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router";
 import { usePages } from "../../../hooks/usePage";
 import { useState } from "react";
 import { strings } from "../../../constants/strings";
 
-interface Iprops {
-  id: string | undefined;
-}
-
-const AllPages = ({ id }: Iprops) => {
+const AllPages = (id: string) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     title: "undefined",
@@ -33,7 +28,7 @@ const AllPages = ({ id }: Iprops) => {
     return;
   };
 
-  const deletePage = async (id: any) => {
+  const deletePage = async (id: string) => {
     try {
       await deletePages(id);
       console.log("page deleted");
