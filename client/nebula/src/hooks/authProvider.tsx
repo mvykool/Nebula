@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useContext,
   createContext,
@@ -7,11 +6,17 @@ import {
   useCallback,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContextType } from "../types/contexts.type";
+import { User } from "../types/user.type";
 
-const AuthContext = createContext<any>({});
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
 
-const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<any>(() => {
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
@@ -24,7 +29,7 @@ const AuthProvider = ({ children }: any) => {
 
   const navigate = useNavigate();
 
-  const loginAction = async (data: any) => {
+  const loginAction = async (data: { username: string; password: string }) => {
     try {
       const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
@@ -60,7 +65,7 @@ const AuthProvider = ({ children }: any) => {
   };
 
   //create user
-  const signupAction = async (data: any) => {
+  const signupAction = async (data: { username: string; password: string }) => {
     try {
       const response = await fetch("http://localhost:3000/user", {
         method: "POST",
@@ -91,7 +96,7 @@ const AuthProvider = ({ children }: any) => {
     navigate("/login");
   };
 
-  const updateUser = async (updateData: any) => {
+  const updateUser = async (updateData: Partial<User>) => {
     if (!accessToken || !user?.sub) {
       console.log("error");
       return;
@@ -236,5 +241,11 @@ const AuthProvider = ({ children }: any) => {
 export default AuthProvider;
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+
+  return context;
 };
