@@ -32,14 +32,14 @@ pkgs.mkShell {
 # Sample environment variables for NestJS backend
 DB_HOST="localhost"
 DB_PORT="5432"
-DB_USERNAME="''${DB_USERNAME:-default_user}"
-DB_NAME="''${DB_NAME:-default_name}"
-DB_PASSWORD="''${DB_PASSWORD:-default_password}"
-SECRET="''${SECRET:-default_secret}"
-SECRET_REFRESH="''${SECRET_REFRESH:-default_refresh}"
+DB_USERNAME=${toString (if builtins.getEnv "DB_USERNAME" == "" then "default_user" else builtins.getEnv "DB_USERNAME")}
+DB_NAME=${toString (if builtins.getEnv "DB_NAME" == "" then "default_name" else builtins.getEnv "DB_NAME")}
+DB_PASSWORD=${toString (if builtins.getEnv "DB_PASSWORD" == "" then "default_password" else builtins.getEnv "DB_PASSWORD")}
+SECRET=${toString (if builtins.getEnv "SECRET" == "" then "default_secret" else builtins.getEnv "SECRET")}
+SECRET_REFRESH=${toString (if builtins.getEnv "SECRET_REFRESH" == "" then "default_refresh" else builtins.getEnv "SECRET_REFRESH")}
 EOF
 
-  fi
+fi
 
     # --- Docker setup ---
     # Check if Docker is running, if not, try to start it
