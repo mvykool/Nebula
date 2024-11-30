@@ -86,7 +86,7 @@ const ProjectProvider = ({ children }: any) => {
   }, []);
 
   const fetchProject = useCallback(
-    async (id: any) => {
+    async (id: string) => {
       console.log(id, "project");
       try {
         const response = await fetchWithToken(

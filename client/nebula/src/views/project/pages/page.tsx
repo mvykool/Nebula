@@ -105,7 +105,7 @@ const Page = () => {
   }, [editor, projectId, data, updatePages]);
 
   useEffect(() => {
-    const handleKeyDown = (event: any) => {
+    const handleKeyDown = (event: ) => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
         saveData();
