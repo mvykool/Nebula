@@ -7,7 +7,7 @@ const Greetings = () => {
   const getGreeting = () => {
     const currentHour = new Date().getHours();
 
-    if (currentHour < 12) {
+    if (currentHour < 01) {
       return `🌇 ${strings.homePage.greetings.morning} ${user?.username} `;
     } else if (currentHour < 18) {
       return `🌆 ${strings.homePage.greetings.afternoon} ${user?.username} `;
