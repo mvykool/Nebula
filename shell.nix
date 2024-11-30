@@ -3,7 +3,6 @@
 pkgs.mkShell {
   buildInputs = [
     pkgs.nodejs       # Node.js for the client and backend
-    pkgs.npm          # NPM for managing client dependencies
     pkgs.dockerTools  # Docker for managing Docker containers
     pkgs.docker       # Docker CLI tools to interact with Docker
     pkgs.git          # Git for version control
