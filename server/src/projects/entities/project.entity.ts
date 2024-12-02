@@ -8,8 +8,8 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Page } from 'src/pages/entities/page.entity';
+import { User } from '../../users/entities/user.entity';
+import { Page } from '../../pages/entities/page.entity';
 
 @Entity()
 export class Project {
