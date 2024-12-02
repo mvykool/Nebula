@@ -19,7 +19,7 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const { accessToken, fetchWithToken } = useAuth();
   const navigate = useNavigate();
-  const [myProjects, setMyProjects] = useState("");
+  const [myProjects, setMyProjects] = useState([]);
   const [publishedProjects, setPublishedProjects] = useState<Project[]>([]);
 
   // REQUESTS
@@ -70,7 +70,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }, []);
+  }, [fetchWithToken]);
 
   // FETCH PUBLISHED PROJECTS
   const fetchPublishedProjects = useCallback(async () => {
@@ -117,6 +117,24 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (accessToken && !myProjects) {
+      fetchMyProjects();
+    }
+  }, [accessToken, myProjects, fetchMyProjects]);
+
+  // Clear Projects
+  const clearProjects = () => {
+    setMyProjects([]);
+  };
+
+  // Trigger clear on logout
+  useEffect(() => {
+    if (!accessToken) {
+      clearProjects();
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (accessToken && myProjects.length === 0) {
       fetchMyProjects();
     }
   }, [accessToken, myProjects, fetchMyProjects]);
