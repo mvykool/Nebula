@@ -15,7 +15,7 @@ const ExploreView = () => {
       setIsLoading(false);
     };
     getProjects();
-  }, []);
+  }, [fetchPublishedProjects]);
 
   return (
     <>
