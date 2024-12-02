@@ -19,7 +19,9 @@ const ExploreView = () => {
 
   return (
     <>
-      <h3>{strings.explore.gretting}</h3>
+      <h3 className="m-20 flex justify-center text-black dark:text-white text-3xl">
+        {strings.explore.gretting}
+      </h3>
 
       {/*PROJECT SECTION*/}
       <section className="w-5/6 mx-auto m-10">
