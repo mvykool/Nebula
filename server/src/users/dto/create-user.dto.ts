@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 
 const passwordRegEx =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
 
 export class CreateUserDto {
   @IsString()
@@ -21,13 +21,13 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @MinLength(2, { message: 'Username must have at least 2 letters' })
-  @IsAlphanumeric(null, {
+  @IsAlphanumeric(undefined, {
     message: 'username doesnt allow other than alpha numeric characters',
   })
   username: string;
 
   @IsNotEmpty()
-  @IsEmail(null, { message: 'please provide valid email' })
+  @IsEmail({}, { message: 'please provide valid email' })
   email: string;
 
   @IsNotEmpty()
