@@ -90,8 +90,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     setAccessToken("");
     setRefreshToken("");
-    localStorage.removeItem("site");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
     navigate("/login");
   };
