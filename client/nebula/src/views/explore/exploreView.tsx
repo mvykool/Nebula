@@ -3,6 +3,7 @@ import { strings } from "../../constants/strings";
 import { useProject } from "../../hooks/useProject";
 import Loading from "../../components/loading";
 import { Project } from "../../types/project.type";
+import ProjectCard from "../../components/projectCard";
 
 const ExploreView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -29,7 +30,12 @@ const ExploreView = () => {
             {publishedProjects &&
               publishedProjects.map((project: Project) => (
                 <div key={project?.id}>
-                  <p>{project?.name}</p>
+                  <ProjectCard
+                    projectId={project?.id}
+                    name={project?.name}
+                    cover={project?.cover}
+                    owner={project?.owner}
+                  />
                 </div>
               ))}
           </div>
