@@ -3,7 +3,7 @@ import { strings } from "../../constants/strings";
 import { useProject } from "../../hooks/useProject";
 import Loading from "../../components/loading";
 import { Project } from "../../types/project.type";
-import ProjectCard from "../../components/projectCard";
+import ExploreCard from "../../components/exploreCard";
 
 const ExploreView = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -26,11 +26,11 @@ const ExploreView = () => {
         {isLoading ? (
           <Loading />
         ) : (
-          <div className="flex flex-wrap">
+          <div>
             {publishedProjects &&
               publishedProjects.map((project: Project) => (
                 <div key={project?.id}>
-                  <ProjectCard
+                  <ExploreCard
                     projectId={project?.id}
                     name={project?.name}
                     cover={project?.cover}
