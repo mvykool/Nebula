@@ -25,7 +25,7 @@ const mockProjects = [
   {
     ...mockProject,
     id: 2,
-    name: 'janedoe',
+    name: 'project',
   },
 ];
 
