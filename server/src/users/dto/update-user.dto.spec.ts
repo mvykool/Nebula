@@ -6,7 +6,7 @@ describe('UpdateUserDto', () => {
     const dto = new UpdateUserDto();
 
     const errors = await validate(dto);
-    expect(errors.length).toBe(0); // Should be valid with no fields
+    expect(errors.length).toBe(0);
   });
 
   it('should validate partial update with valid name', async () => {
@@ -19,8 +19,7 @@ describe('UpdateUserDto', () => {
 
   it('should return error for invalid name (too short)', async () => {
     const dto = new UpdateUserDto();
-    dto.name = 'J'; // Invalid name (less than 2 characters)
-
+    dto.name = 'J';
     const errors = await validate(dto);
 
     expect(errors.length).toBeGreaterThan(0);

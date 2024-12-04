@@ -9,7 +9,7 @@ import { UpdatePageDto } from './dto/update-page.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Page } from './entities/page.entity';
 import { Repository } from 'typeorm';
-import { ProjectsService } from 'src/projects/projects.service';
+import { ProjectsService } from '../projects/projects.service';
 
 @Injectable()
 export class PagesService {
