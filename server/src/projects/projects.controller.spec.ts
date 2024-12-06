@@ -111,7 +111,10 @@ describe('Project service', () => {
     it('should return a single project by ID', async () => {
       const result = await service.findOne(1);
       expect(result).toEqual(mockProject);
-      expect(repository.findOne).toHaveBeenCalledWith({ id: 1 });
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: { id: 1 },
+        relations: ['owner', 'pages'],
+      });
     });
   });
 
@@ -122,7 +125,7 @@ describe('Project service', () => {
         cover: 'new-picture-url',
         description: 'updated-username',
         publish: true,
-        ownereId: 2,
+        ownereId: 1,
       };
 
       const result = await service.update(1, updateUserDto);
@@ -138,16 +141,6 @@ describe('Project service', () => {
       const result = await service.remove(1);
       expect(result).toEqual({ affected: 1 });
       expect(repository.delete).toHaveBeenCalledWith(1);
-    });
-  });
-
-  describe('findOne', () => {
-    it('should return a project by name', async () => {
-      const result = await service.findOne(1);
-      expect(result).toEqual(mockProject);
-      expect(repository.findOne).toHaveBeenCalledWith({
-        where: { name: 'project' },
-      });
     });
   });
 });
