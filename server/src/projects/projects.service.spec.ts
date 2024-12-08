@@ -101,4 +101,22 @@ describe('ProjectsService', () => {
       );
     });
   });
+
+  describe('update project', () => {
+    it('should update and return the user', async () => {
+      const updateUserDto: UpdateProjectDto = {
+        name: 'Updated Name',
+        cover: 'new-picture-url',
+        description: 'updated-username',
+        publish: true,
+        ownereId: 1,
+      };
+
+      const result = await service.update(1, updateUserDto);
+      expect(result).toEqual(mockProject);
+      expect(repositoryProject.save).toHaveBeenCalledWith(
+        expect.objectContaining(updateUserDto),
+      );
+    });
+  });
 });
