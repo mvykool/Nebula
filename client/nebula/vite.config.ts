@@ -8,6 +8,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: ["./src/test/setup.ts"],
+    setupFiles: ["./src/vitest.setup.ts"],
+    css: true,
+    testTimeout: 5000,
+    reporters: ["verbose"],
   },
 });

@@ -20,7 +20,7 @@ import PageProvider from "./hooks/usePage";
 
 function App() {
   return (
-    <div className="bg-bgLight dark:bg-bgDark h-screen">
+    <div data-testid="id" className="bg-bgLight dark:bg-bgDark h-screen">
       <Router>
         <AuthProvider>
           <ProjectProvider>
