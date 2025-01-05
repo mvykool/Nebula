@@ -9,7 +9,7 @@ import { usePages } from "../../../hooks/usePage";
 
 const Page = () => {
   const { projectId, pageId } = useParams();
-  const { fetchPage, updatePages } = usePages();
+  const { fetchPage, updatePages, fetchMyPages } = usePages();
   const [data, setData] = useState({
     title: "",
     content: "",
@@ -25,7 +25,7 @@ const Page = () => {
       }
 
       try {
-        const result = await fetchPage(pageId);
+        const result: any = await fetchPage(pageId);
         setData(result);
         console.log("updated page:", result[0]);
 
@@ -98,6 +98,7 @@ const Page = () => {
         content,
       });
       setData(updatedData);
+      fetchMyPages();
       console.log("Data saved successfully");
     } catch (err) {
       console.error("Error saving data:", err);

@@ -28,5 +28,6 @@ export interface ProjectContextType {
     projectId: string,
     updatedData: Partial<Project>,
   ) => Promise<Project>;
-  deleteProject: (projectId: number) => Promise<void>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  deleteProject: (projectId: any) => Promise<void>;
 }

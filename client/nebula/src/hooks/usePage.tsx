@@ -95,6 +95,13 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   const updatePages = useCallback(
     async (pageId: number, updatedData: Partial<Page>) => {
       try {
+        // Optimistically update the local state first
+        setMyPages((prevPages) =>
+          prevPages.map((page) =>
+            page.id === pageId ? { ...page, ...updatedData } : page,
+          ),
+        );
+
         const response = await fetch(`http://localhost:3000/pages/${pageId}`, {
           method: "PATCH",
           headers: {
@@ -103,17 +110,31 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
           },
           body: JSON.stringify(updatedData),
         });
+
         if (!response.ok) {
-          throw new Error("Failed to update project");
+          // If the request fails, revert the optimistic update
+          setMyPages((prevPages) =>
+            prevPages.map((page) =>
+              page.id === pageId ? { ...page, ...updatedData } : page,
+            ),
+          );
+          throw new Error("Failed to update page");
         }
-        console.log("page updated");
-        return await response.json();
+
+        const updatedPage = await response.json();
+
+        // Update the state with the server response to ensure consistency
+        setMyPages((prevPages) =>
+          prevPages.map((page) => (page.id === pageId ? updatedPage : page)),
+        );
+
+        return updatedPage;
       } catch (error) {
-        console.error("Error updating project:", error);
+        console.error("Error updating page:", error);
         throw error;
       }
     },
-    [fetchWithToken, accessToken],
+    [accessToken],
   );
 
   //DELETE PROJECTS

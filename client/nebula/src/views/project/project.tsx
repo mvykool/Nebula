@@ -20,7 +20,7 @@ interface ProjectData {
 const Project = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const { fetchProject, updateProject } = useProject();
-  const { myPages } = usePages();
+  const { myPages, fetchMyPages } = usePages();
   const [data, setData] = useState<ProjectData>({
     name: "",
     cover: "",
@@ -35,6 +35,8 @@ const Project = () => {
         console.error("Project ID is undefined");
         return;
       }
+
+      fetchMyPages();
       try {
         const result = await fetchProject(projectId);
         if (result) {

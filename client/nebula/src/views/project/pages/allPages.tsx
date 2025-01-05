@@ -1,20 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router";
 import { usePages } from "../../../hooks/usePage";
 import { useState } from "react";
 import { strings } from "../../../constants/strings";
 
-const AllPages = (id: string) => {
+interface Iprops {
+  id: string | undefined;
+}
+
+const AllPages = ({ id }: Iprops) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     title: "undefined",
     content: "",
     project: id,
   });
-  const { createPage, deletePages, myPages } = usePages();
+  const { createPage, deletePages, myPages, fetchMyPages } = usePages();
 
   const addPage = async () => {
     try {
-      const newPage = await createPage(data);
+      const newPage: any = await createPage(data);
 
       if (newPage && newPage.id) {
         console.log(newPage);
@@ -28,16 +33,17 @@ const AllPages = (id: string) => {
     return;
   };
 
-  const deletePage = async (id: string) => {
+  const deletePage = async (id: any) => {
     try {
       await deletePages(id);
       console.log("page deleted");
+      fetchMyPages();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const goPage = (id: string) => {
+  const goPage = (id: number) => {
     navigate(`pages/${id}`);
   };
 
