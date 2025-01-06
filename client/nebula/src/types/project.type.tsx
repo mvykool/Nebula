@@ -8,4 +8,5 @@ export type Project = {
   pages: Page[];
   id: number;
   owner?: User;
+  publish?: boolean;
 };

@@ -25,7 +25,7 @@ export interface ProjectContextType {
   myProjects: Project[];
   publishedProjects: Project[];
   updateProject: (
-    projectId: string,
+    projectId: string | undefined,
     updatedData: Partial<Project>,
   ) => Promise<Project>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

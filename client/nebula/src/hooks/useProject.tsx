@@ -90,7 +90,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   }, []);
 
   const fetchProject = useCallback(
-    async (id: string) => {
+    async (id: string | undefined) => {
       console.log(id, "project");
       try {
         const response = await fetchWithToken(`${urlBase}/projects/${id}`, {
@@ -137,7 +137,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   //UPDATE PROJECTS
   const updateProject = useCallback(
-    async (projectId: string, updatedData: Partial<Project>) => {
+    async (projectId: string | undefined, updatedData: Partial<Project>) => {
       try {
         const response = await fetch(`${urlBase}/projects/${projectId}`, {
           method: "PATCH",

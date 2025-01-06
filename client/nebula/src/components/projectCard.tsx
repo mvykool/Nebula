@@ -7,7 +7,7 @@ interface IProjectCard {
   projectId: number;
   name: string;
   cover: string;
-  owner: User;
+  owner: User | undefined;
 }
 
 const ProjectCard = ({ name, cover, owner, projectId }: IProjectCard) => {
