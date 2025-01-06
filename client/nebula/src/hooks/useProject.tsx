@@ -22,6 +22,8 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const [myProjects, setMyProjects] = useState([]);
   const [publishedProjects, setPublishedProjects] = useState<Project[]>([]);
 
+  const urlBase = import.meta.env.URL;
+
   // REQUESTS
 
   // CREATE PROJECT
@@ -32,17 +34,14 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
       }
 
       try {
-        const response = await fetchWithToken(
-          "http://localhost:3000/projects",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
+        const response = await fetchWithToken(`${urlBase}/projects`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify(data),
+        });
 
         if (response.ok) {
           const res = await response.json();
@@ -59,7 +58,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   // FETCH MY PROJECTS
   const fetchMyProjects = useCallback(async () => {
     try {
-      const response = await fetchWithToken("http://localhost:3000/projects");
+      const response = await fetchWithToken(`${urlBase}/projects`);
       if (response.ok) {
         const projects = await response.json();
         if (JSON.stringify(projects) !== JSON.stringify(myProjects)) {
@@ -77,9 +76,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   // FETCH PUBLISHED PROJECTS
   const fetchPublishedProjects = useCallback(async () => {
     try {
-      const response = await fetchWithToken(
-        "http://localhost:3000/projects/published",
-      );
+      const response = await fetchWithToken(`${urlBase}/projects/published`);
       if (response.ok) {
         const projects = await response.json();
         setPublishedProjects(projects);
@@ -96,15 +93,12 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
     async (id: string) => {
       console.log(id, "project");
       try {
-        const response = await fetchWithToken(
-          `http://localhost:3000/projects/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+        const response = await fetchWithToken(`${urlBase}/projects/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
           },
-        );
+        });
 
         if (response.ok) {
           const projects = await response.json();
@@ -145,17 +139,14 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const updateProject = useCallback(
     async (projectId: string, updatedData: Partial<Project>) => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/projects/${projectId}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify(updatedData),
+        const response = await fetch(`${urlBase}/projects/${projectId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
-        );
+          body: JSON.stringify(updatedData),
+        });
         if (!response.ok) {
           throw new Error("Failed to update project");
         }
@@ -175,7 +166,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
     async (projectId: number) => {
       try {
         const response = await fetchWithToken(
-          `http://localhost:3000/projects/${projectId}`,
+          `${urlBase}/projects/${projectId}`,
           {
             method: "DELETE",
             headers: {

@@ -19,15 +19,17 @@ const CreateProject = () => {
       const formData = new FormData();
       formData.append("file", file);
 
+      const urlBase = import.meta.env.URL;
+
       try {
-        const response = await fetch("http://localhost:3000/upload/upload", {
+        const response = await fetch(`${urlBase}/upload/upload`, {
           method: "POST",
           body: formData,
         });
 
         if (response.ok) {
           const data = await response.json();
-          const imageUrl = "http://localhost:3000" + data.url;
+          const imageUrl = data.url;
 
           setInput((prev) => ({ ...prev, cover: imageUrl }));
           setPreviewUrl(imageUrl);

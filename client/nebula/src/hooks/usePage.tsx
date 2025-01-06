@@ -18,6 +18,8 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   const { accessToken, fetchWithToken } = useAuth();
   const [myPages, setMyPages] = useState<Page[]>([]);
 
+  const urlBase = import.meta.env.URL;
+
   // REQUESTS
 
   // CREATE PROJECT
@@ -28,7 +30,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
       }
 
       try {
-        const response = await fetchWithToken("http://localhost:3000/pages", {
+        const response = await fetchWithToken(`${urlBase}/pages`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -53,7 +55,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   // FETCH MY PROJECTS
   const fetchMyPages = useCallback(async () => {
     try {
-      const response = await fetchWithToken("http://localhost:3000/pages");
+      const response = await fetchWithToken(`${urlBase}/pages`);
       if (response.ok) {
         const pages = await response.json();
         setMyPages(pages);
@@ -70,15 +72,12 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
     async (id: number) => {
       console.log(id, "project");
       try {
-        const response = await fetchWithToken(
-          `http://localhost:3000/pages/${id}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+        const response = await fetchWithToken(`${urlBase}/pages/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
           },
-        );
+        });
 
         if (response.ok) {
           const pages = await response.json();
@@ -102,7 +101,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
           ),
         );
 
-        const response = await fetch(`http://localhost:3000/pages/${pageId}`, {
+        const response = await fetch(`${urlBase}/pages/${pageId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -142,16 +141,13 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   const deletePages = useCallback(
     async (pageId: number) => {
       try {
-        const response = await fetchWithToken(
-          `http://localhost:3000/pages/${pageId}`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
+        const response = await fetchWithToken(`${urlBase}/pages/${pageId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
           },
-        );
+        });
         if (!response.ok) {
           throw new Error("Failed to update project");
         }

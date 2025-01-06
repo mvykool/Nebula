@@ -29,10 +29,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const navigate = useNavigate();
 
+  const urlBase = import.meta.env.VITE_URL;
+  console.log(urlBase);
+
   const loginAction = async (data: { username: string; password: string }) => {
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
+      const response = await fetch(`${urlBase}/auth/login`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -67,7 +71,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   //create user
   const signupAction = async (data: { username: string; password: string }) => {
     try {
-      const response = await fetch("http://localhost:3000/user", {
+      const response = await fetch(`${urlBase}/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +107,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/user/" + user?.sub, {
+      const response = await fetch(`${urlBase}/user/` + user?.sub, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -132,7 +136,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (!refreshToken) return;
 
     try {
-      const response = await fetch("http://localhost:3000/auth/refresh", {
+      const response = await fetch(`${urlBase}/auth/refresh`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -193,9 +197,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     try {
-      const response = await fetchWithToken(
-        "http://localhost:3000/auth/profile",
-      );
+      const response = await fetchWithToken(`${urlBase}/auth/profile`);
 
       if (response.ok) {
         const userData = await response.json();
