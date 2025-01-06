@@ -7,7 +7,7 @@ interface FormData {
   name: string;
   username: string;
   email: string;
-  picture: string | null;
+  picture: string | "";
 }
 
 const Profile = () => {
@@ -22,14 +22,14 @@ const Profile = () => {
     name: "",
     username: "",
     email: "",
-    picture: null,
+    picture: "",
   });
 
   const [initData, setInitData] = useState<FormData>({
     name: "",
     username: "",
     email: "",
-    picture: null,
+    picture: "",
   });
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -46,7 +46,7 @@ const Profile = () => {
       };
       setFormData(userData);
       setInitData(userData);
-      setPreviewUrl(user?.picture || null);
+      setPreviewUrl(user?.picture || "");
     }
   }, [user]);
 
@@ -113,7 +113,7 @@ const Profile = () => {
           setFormData(updatedUser);
           setInitData(updatedUser);
           setIsModified(false);
-          setPreviewUrl(updatedUser.picture || null);
+          setPreviewUrl(updatedUser.picture || "");
         }
       } catch (error) {
         console.error("Error during patch request:", error);

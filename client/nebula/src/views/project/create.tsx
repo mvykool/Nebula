@@ -1,12 +1,16 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useProject } from "../../hooks/useProject";
 import { useNavigate } from "react-router";
+//import { id } from "date-fns/locale";
 
 const CreateProject = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [input, setInput] = useState({
     name: "",
     cover: "",
+    description: "",
+    pages: [],
+    id: 1,
   });
 
   const { createProject } = useProject();
