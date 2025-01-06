@@ -19,10 +19,11 @@ async function bootstrap() {
 
   const options = {
     origin: 'http://localhost:5173',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   };
 
   app.enableCors(options);
