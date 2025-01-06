@@ -18,7 +18,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const options = {
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'https://nebula-client.vercel.app/'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
