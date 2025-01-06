@@ -14,7 +14,7 @@ const Home = () => {
       setIsLoading(false);
     };
     getProjects();
-  }, [fetchMyProjects]);
+  }, []);
 
   return (
     <>
@@ -24,7 +24,7 @@ const Home = () => {
         <div>
           {" "}
           {/*SET MAIN VIEW IF THERE ARE PROJECTS OR NOT*/}
-          {myProjects && myProjects.length > 0 ? (
+          {myProjects.length > 0 ? (
             <MyProjects projects={myProjects} />
           ) : (
             <Welcome />

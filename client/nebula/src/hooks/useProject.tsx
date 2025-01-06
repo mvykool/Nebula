@@ -62,15 +62,17 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
       const response = await fetchWithToken("http://localhost:3000/projects");
       if (response.ok) {
         const projects = await response.json();
-        setMyProjects(projects);
-        console.log(projects);
+        if (JSON.stringify(projects) !== JSON.stringify(myProjects)) {
+          setMyProjects(projects);
+          console.log(projects);
+        }
       } else {
         console.error("Failed to fetch projects:", await response.text());
       }
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }, [fetchWithToken]);
+  }, [fetchWithToken, myProjects]);
 
   // FETCH PUBLISHED PROJECTS
   const fetchPublishedProjects = useCallback(async () => {

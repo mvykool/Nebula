@@ -20,7 +20,7 @@ const MyProjects = ({ projects }: IProject) => {
         </div>
         <div className="flex flex-wrap">
           {projects &&
-            projects.map((project: Project) => (
+            projects?.map((project: Project) => (
               <div key={project?.id}>
                 <ProjectCard
                   projectId={project?.id}

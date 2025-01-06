@@ -14,7 +14,7 @@ const multerOptions = {
   storage: diskStorage({
     destination: (req, file, cb) => {
       // Specify the folder where files will be stored
-      cb(null, './.uploads');
+      cb(null, 'dist/uploads');
     },
     filename: (req, file, cb) => {
       // Create a unique file name
