@@ -79,7 +79,7 @@ const Profile = () => {
 
         if (response.ok) {
           const data = await response.json();
-          const imageUrl = "http://localhost:3000" + data.url;
+          const imageUrl = data.url;
 
           setFormData((prev) => ({ ...prev, picture: imageUrl }));
           setPreviewUrl(imageUrl);

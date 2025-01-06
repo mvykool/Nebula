@@ -7,41 +7,50 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-
-// Define storage options
-const multerOptions = {
-  storage: diskStorage({
-    destination: (req, file, cb) => {
-      // Specify the folder where files will be stored
-      cb(null, 'dist/uploads');
-    },
-    filename: (req, file, cb) => {
-      // Create a unique file name
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      const ext = file.originalname.split('.').pop();
-      cb(null, file.fieldname + '-' + uniqueSuffix + '.' + ext);
-    },
-  }),
-  fileFilter: (req, file, cb) => {
-    // Accept only certain file types
-    if (['image/jpeg', 'image/png', 'image/gif'].includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type'), false);
-    }
-  },
-};
+import { ImgurClient } from 'imgur';
+import { Multer } from 'multer';
 
 @Controller('upload')
 export class UploadController {
+  private readonly imgurClient: ImgurClient;
+
+  constructor() {
+    // Initialize the ImgurClient with your client ID
+    this.imgurClient = new ImgurClient({
+      clientId: process.env.IMGUR_ID,
+    });
+  }
+
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file', multerOptions))
-  uploadFile(@UploadedFile() file) {
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Multer.File) {
     if (!file) {
       throw new HttpException('No file uploaded', HttpStatus.BAD_REQUEST);
     }
-    // Return the URL where the file can be accessed
-    return { url: `/.uploads/${file.filename}` };
+
+    try {
+      // Convert buffer to base64
+      const base64Image = file.buffer.toString('base64');
+
+      // Upload the image to Imgur
+      const response = await this.imgurClient.upload({
+        image: base64Image,
+        type: 'base64',
+      });
+
+      // Check if the upload was successful
+      if (!response.success) {
+        throw new Error('Upload failed');
+      }
+
+      // Return the URL of the uploaded image
+      return { url: response.data.link };
+    } catch (error) {
+      console.error('Imgur upload error:', error);
+      throw new HttpException(
+        'Failed to upload image',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
