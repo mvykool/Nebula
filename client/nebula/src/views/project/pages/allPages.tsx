@@ -6,9 +6,10 @@ import { strings } from "../../../constants/strings";
 
 interface Iprops {
   id: string | undefined;
+  name: string | undefined;
 }
 
-const AllPages = ({ id }: Iprops) => {
+const AllPages = ({ id, name }: Iprops) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     title: "undefined",
@@ -47,12 +48,16 @@ const AllPages = ({ id }: Iprops) => {
     navigate(`pages/${id}`);
   };
 
+  const project = () => {
+    navigate(`/projects/${id}`);
+  };
+
   return (
     <div>
       <div className="flex flex-col ">
         <div className="flex justify-between my-5">
           {" "}
-          <p>{strings.sidebar.pages}</p>{" "}
+          <button onClick={project}>{name}</button>{" "}
           <button onClick={addPage} type="button">
             {strings.sidebar.addPage}
           </button>

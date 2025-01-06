@@ -5,16 +5,18 @@ import { useNavigate } from "react-router";
 import { strings } from "../constants/strings";
 import AllPages from "../views/project/pages/allPages";
 import PublishProject from "./publishProject";
+import { useEffect, useState } from "react";
 
 interface Iprops {
   id: string | undefined;
 }
 
 const Sidebar = ({ id }: Iprops) => {
+  const [projectName, setProjectName] = useState<string | undefined>("");
   const { user, defaultPfp } = useAuth();
 
   //context for project
-  const { deleteProject } = useProject();
+  const { deleteProject, fetchProject } = useProject();
   const { projectId } = useParams();
 
   const navigate = useNavigate();
@@ -25,8 +27,20 @@ const Sidebar = ({ id }: Iprops) => {
   };
 
   const goBack = (): void => {
-    navigate(-1);
+    navigate("/");
   };
+
+  useEffect(() => {
+    const project = async () => {
+      const projectData = await fetchProject(id);
+      setProjectName(projectData?.name);
+    };
+
+    project();
+  }, [id]);
+
+  console.log(projectName);
+
   return (
     <div className="border border-white left-0 top-0 sticky w-2/12 h-screen text-black dark:text-white bg-bgLight dark:bg-bgDark">
       {/*OWNER INFO*/}
@@ -51,7 +65,7 @@ const Sidebar = ({ id }: Iprops) => {
       <div className="p-8 ">
         <div className="w-full h-96">
           {" "}
-          <AllPages id={id} />
+          <AllPages id={id} name={projectName} />
         </div>
 
         {/*IMPORTANT BUTTONS*/}

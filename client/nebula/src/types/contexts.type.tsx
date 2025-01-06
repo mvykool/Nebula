@@ -21,7 +21,7 @@ export interface ProjectContextType {
   createProject: (data: Project) => Promise<void>;
   fetchMyProjects: () => Promise<void>;
   fetchPublishedProjects: () => Promise<void>;
-  fetchProject: (id: string) => Promise<Project | undefined>;
+  fetchProject: (id: string | undefined) => Promise<Project | undefined>;
   myProjects: Project[];
   publishedProjects: Project[];
   updateProject: (

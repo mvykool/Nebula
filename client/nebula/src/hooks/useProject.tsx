@@ -22,7 +22,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const [myProjects, setMyProjects] = useState([]);
   const [publishedProjects, setPublishedProjects] = useState<Project[]>([]);
 
-  const urlBase = import.meta.env.URL;
+  const urlBase = import.meta.env.VITE_URL;
 
   // REQUESTS
 

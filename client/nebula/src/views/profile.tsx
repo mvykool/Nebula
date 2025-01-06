@@ -71,7 +71,7 @@ const Profile = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const urlBase = import.meta.env.URL;
+      const urlBase = import.meta.env.VITE_URL;
 
       try {
         const response = await fetch(`${urlBase}/upload/upload`, {

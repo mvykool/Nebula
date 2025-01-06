@@ -18,7 +18,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   const { accessToken, fetchWithToken } = useAuth();
   const [myPages, setMyPages] = useState<Page[]>([]);
 
-  const urlBase = import.meta.env.URL;
+  const urlBase = import.meta.env.VITE_URL;
 
   // REQUESTS
 

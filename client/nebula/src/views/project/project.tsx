@@ -18,7 +18,7 @@ interface ProjectData {
 }
 
 const Project = () => {
-  const { projectId } = useParams<{ projectId: string }>();
+  const { projectId } = useParams<{ projectId: string | undefined }>();
   const { fetchProject, updateProject } = useProject();
   const { myPages, fetchMyPages } = usePages();
   const [data, setData] = useState<ProjectData>({

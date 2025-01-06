@@ -22,8 +22,8 @@ export const strings = {
     updating: "Updating...",
   },
   sidebar: {
-    pages: "Pages:",
-    addPage: "Add page:",
+    project: "Project",
+    addPage: "Add page",
     delete: "Delete project",
     publish: "Publish project",
   },
