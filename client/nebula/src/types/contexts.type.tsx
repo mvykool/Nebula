@@ -15,6 +15,11 @@ export interface AuthContextType {
   fetchUserData: () => Promise<void>;
   fetchWithToken: (url: string, options?: RequestInit) => Promise<Response>;
   defaultPfp: string;
+  loginAnonymous: (data: {
+    username: string;
+    password: string;
+  }) => Promise<void>;
+  isAnonymous: boolean;
 }
 
 export interface ProjectContextType {
