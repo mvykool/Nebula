@@ -5,12 +5,17 @@ export const strings = {
   },
   backButton: "Back",
   homePage: {
-    createProject: "Create your first project",
+    welcome: "Welcome to Neb",
+    nebula: "la",
     greetings: {
       morning: "Good morning,",
       afternoon: "Good afternoon,",
       evening: "Good evening",
     },
+  },
+  notmatch: {
+    error: "Error 404",
+    btn: "Go back home",
   },
   profile: {
     updateProfile: "Update Profile",

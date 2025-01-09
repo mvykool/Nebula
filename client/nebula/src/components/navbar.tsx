@@ -23,7 +23,10 @@ const Navbar = () => {
       {/*Logo*/}
       <div className="flex gap-2 w-[205px]">
         <i className="bx bxs-analyse text-xl text-primary"></i>
-        <a href="/" className="font-bold text-black dark:text-white text-lg">
+        <a
+          href="/"
+          className="font-bold tracking-wide text-black dark:text-white text-lg"
+        >
           Neb<span className="text-primary">u</span>la
         </a>
       </div>
