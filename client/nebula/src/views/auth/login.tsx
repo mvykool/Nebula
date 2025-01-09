@@ -1,5 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
 import { useAuth } from "../../hooks/authProvider";
+import { strings } from "../../constants/strings";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -109,7 +110,7 @@ const Login = () => {
                   : "bg-gray-300 cursor-not-allowed"
               }`}
             >
-              Login
+              {strings.logandsing.login}
             </button>
           </div>
         </form>
@@ -117,13 +118,13 @@ const Login = () => {
           onClick={loginAnon}
           className="bg-secondary hover:bg-secondary/90 mx-auto rounded-md w-3/6 justify-center font-bold px-4 py-2"
         >
-          Login as guest
+          {strings.logandsing.guest}
         </button>
         <a
           href="/signup"
           className="justify-center flex underline my-3 text-lg text-primary hover:text-primary/90"
         >
-          Create account
+          {strings.logandsing.create}
         </a>
       </div>
       <div className="relative h-screen w-3/6 py-7 px-10">

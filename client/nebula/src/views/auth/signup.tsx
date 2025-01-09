@@ -1,5 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
 import { useAuth } from "../../hooks/authProvider";
+import { strings } from "../../constants/strings";
 
 const SignUp = () => {
   const [input, setInput] = useState({
@@ -137,14 +138,14 @@ const SignUp = () => {
               : "bg-gray-300 cursor-not-allowed"
           }`}
         >
-          Create Account
+          {strings.logandsing.create}
         </button>
 
         <a
           href="/login"
           className="justify-center flex underline my-3 text-lg text-primary tracking-wider"
         >
-          Login
+          {strings.logandsing.login}
         </a>
       </form>
     </div>

@@ -17,6 +17,11 @@ export const strings = {
     error: "Error 404",
     btn: "Go back home",
   },
+  logandsing: {
+    create: "Create account",
+    login: "Login",
+    guest: "Login as guest",
+  },
   profile: {
     updateProfile: "Update Profile",
     changePicture: "Change profile picture",

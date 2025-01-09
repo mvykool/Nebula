@@ -132,7 +132,7 @@ const CreateProject = () => {
               />
               <button
                 type="submit"
-                className="mt-8 px-2 py-1 rounded-md bg-secondary"
+                className="mt-8 px-2 text-black py-1 rounded-md bg-secondary"
               >
                 Create
               </button>
