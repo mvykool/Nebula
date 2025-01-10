@@ -8,6 +8,8 @@ export default {
         white: "#ffffff",
         black: "#000000",
         hover: "#FFAAAA",
+        card: "#41444B",
+        cardWhite: "#DFD8C8",
         invalid: "#b3b3b3",
         bgLight: "#F2F1EB",
         bgDark: "#323232",

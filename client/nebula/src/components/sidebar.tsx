@@ -13,20 +13,14 @@ interface Iprops {
 
 const Sidebar = ({ id }: Iprops) => {
   const [projectName, setProjectName] = useState<string | undefined>("");
+  const [isHidden, setIsHidden] = useState<boolean>(false);
   const { user, defaultPfp } = useAuth();
-
-  //context for project
   const { deleteProject, fetchProject } = useProject();
   const { projectId } = useParams();
-
   const navigate = useNavigate();
 
   const handleDelete = (): void => {
     deleteProject(projectId);
-    navigate("/");
-  };
-
-  const goBack = (): void => {
     navigate("/");
   };
 
@@ -35,51 +29,72 @@ const Sidebar = ({ id }: Iprops) => {
       const projectData = await fetchProject(id);
       setProjectName(projectData?.name);
     };
-
     project();
   }, [id]);
 
-  console.log(projectName);
+  const hideSidebar = () => {
+    setIsHidden((previous) => !previous);
+  };
 
   return (
-    <div className="border border-white left-0 top-0 sticky w-2/12 h-screen text-black dark:text-white bg-bgLight dark:bg-bgDark">
-      {/*OWNER INFO*/}
-      <button
-        onClick={goBack}
-        type="button"
-        className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 ml-8 mt-3 px-3 py-1 rounded-md gap-1"
+    <div className={`relative ${isHidden ? "w-2" : "w-2/12"}`}>
+      <div
+        className={`fixed left-0 top-0 h-screen transform transition-transform duration-300 ease-in-out
+          ${isHidden ? "-translate-x-full" : "translate-x-0"}
+          border border-gray-800 w-2/12 text-black dark:text-white bg-bgLight dark:bg-bgDark`}
       >
-        <i className="bx bx-left-arrow-alt text-xl"></i>
-        {strings.backButton}
-      </button>
-      <div className="flex gap-3 mt-2 items-end p-8">
-        <img
-          src={user?.picture || defaultPfp}
-          className="h-14 w-14 rounded-md"
-          alt="user-picture"
-        />
-        <p className="font-semibold text-xl">{user?.username}</p>
-      </div>
-
-      {/*PROJECT SECTIONS*/}
-      <div className="p-8 ">
-        <div className="w-full h-96">
-          {" "}
-          <AllPages id={id} name={projectName} />
-        </div>
-
-        {/*IMPORTANT BUTTONS*/}
-        <div className="gap-4 items-start flex flex-col">
-          <button
-            onClick={handleDelete}
-            type="button"
-            className="px-2 py-1 rounded-md bg-primary"
-          >
-            {strings.sidebar.delete}
+        {/*OWNER INFO*/}
+        <div className="flex items-center p-2">
+          <div className="flex gap-2 w-[205px]">
+            <i className="bx bxs-analyse text-xl text-primary"></i>
+            <a
+              href="/"
+              className="font-bold tracking-wide text-black dark:text-white text-lg"
+            >
+              Neb<span className="text-primary">u</span>la
+            </a>
+          </div>
+          <button onClick={hideSidebar}>
+            <i className="bx bxs-chevrons-left px-2 text-2xl border border-gray-800 rounded-lg"></i>
           </button>
-          <PublishProject />
+        </div>
+        <div className="flex items-center gap-3 mt-2 p-4">
+          <img
+            src={user?.picture || defaultPfp}
+            className="h-14 w-14 rounded-md"
+            alt="user-picture"
+          />
+          <p className="font-semibold text-xl">{user?.username}</p>
+        </div>
+        {/*PROJECT SECTIONS*/}
+        <div className="p-8">
+          <div className="w-full h-96">
+            <AllPages id={id} name={projectName} />
+          </div>
+          {/*IMPORTANT BUTTONS*/}
+          <div className="gap-4 items-start flex flex-col">
+            <button
+              onClick={handleDelete}
+              type="button"
+              className="px-2 flex gap-2 items-center py-1"
+            >
+              <i className="bx bx-trash"></i>
+              {strings.sidebar.delete}
+            </button>
+            <PublishProject />
+          </div>
         </div>
       </div>
+
+      {/* Toggle button */}
+      <button
+        className={` top-0 p-5 transition-transform duration-300 ease-in-out`}
+        onClick={hideSidebar}
+      >
+        <i
+          className={`bx ${isHidden ? "bxs-chevrons-right" : "hidden"} px-2 text-2xl border border-gray-800 rounded-lg`}
+        ></i>
+      </button>
     </div>
   );
 };
