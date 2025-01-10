@@ -1,6 +1,7 @@
 import { FormEvent, useState, useEffect } from "react";
 import { useAuth } from "../../hooks/authProvider";
 import { strings } from "../../constants/strings";
+import PreloadedImage from "../../utils/preloadImage";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -128,10 +129,10 @@ const Login = () => {
         </a>
       </div>
       <div className="relative h-screen w-3/6 py-7 px-10">
-        <img
+        <PreloadedImage
           src="./../../../public/nature.jpeg"
+          alt="alt"
           className="relative object-cover h-full rounded-xl w-full"
-          alt="Nature background"
         />
       </div>
     </div>
