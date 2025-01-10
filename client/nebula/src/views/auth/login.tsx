@@ -130,7 +130,7 @@ const Login = () => {
       </div>
       <div className="relative h-screen w-3/6 py-7 px-10">
         <PreloadedImage
-          src="./../../../public/nature.jpeg"
+          src="/nature.jpeg"
           alt="alt"
           className="relative object-cover h-full rounded-xl w-full"
         />
