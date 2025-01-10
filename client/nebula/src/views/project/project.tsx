@@ -11,6 +11,7 @@ import { usePages } from "../../hooks/usePage";
 import { Page } from "../../types/page.type";
 import { useNavigate } from "react-router";
 import { strings } from "../../constants/strings";
+import Loading from "../../components/loading";
 
 interface ProjectData {
   name: string;
@@ -20,9 +21,13 @@ interface ProjectData {
 }
 
 const Project = () => {
+  const [coverChanged, setCoverChanged] = useState<boolean>(false);
+  const [initialCover, setInitialCover] = useState<string>("");
   const { projectId } = useParams<{ projectId: string | undefined }>();
   const { fetchProject, updateProject } = useProject();
   const { myPages, fetchMyPages } = usePages();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [data, setData] = useState<ProjectData>({
     name: "",
     cover: "",
@@ -33,10 +38,17 @@ const Project = () => {
 
   const navigate = useNavigate();
 
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setIsLoading(false); // Only hide loading state when image is actually loaded
+  };
+
   const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
+      setIsLoading(true); // Set loading state before starting upload
+
       const formData = new FormData();
       formData.append("file", file);
 
@@ -52,6 +64,9 @@ const Project = () => {
           const data = await response.json();
           const imageUrl = data.url;
           setData((prev) => ({ ...prev, cover: imageUrl }));
+          setImageLoaded(false); // Reset image loaded state for new image
+          setCoverChanged(true);
+          setImageLoaded(false);
         } else {
           console.error("Image upload failed");
           alert("Failed to upload image. Please try again.");
@@ -78,6 +93,7 @@ const Project = () => {
         if (result) {
           // Ensure result is not undefined before updating state
           setData(result);
+          setInitialCover(result.cover);
           console.log(result);
 
           // Parse and update the description content
@@ -155,6 +171,8 @@ const Project = () => {
         pages,
       });
       setData(updatedData);
+      setCoverChanged(false); // Reset the change tracking after successful save
+      setInitialCover(updatedData.cover);
       console.log("Data saved successfully");
     } catch (err) {
       console.error("Error saving data:", err);
@@ -194,12 +212,22 @@ const Project = () => {
             </button>
           </div>
 
+          {isLoading && (
+            <div className=" flex items-end justify-center pt-32">
+              <Loading />
+            </div>
+          )}
+
           {data?.cover && (
             <div>
               <img
                 src={data?.cover}
                 alt="cover-image"
-                className="w-11/12 mx-auto rounded-lg object-cover object-center h-[35vh]"
+                className={`mx-auto relative w-11/12 object-cover h-[30vh] object-center rounded-lg ${
+                  !imageLoaded ? "hidden" : ""
+                }
+                ${isLoading ? "hidden" : "flex"}`}
+                onLoad={handleImageLoad}
               />
               <label
                 className={`${
@@ -218,6 +246,17 @@ const Project = () => {
                 className="hidden"
                 onChange={handleImage}
               />
+              <button
+                onClick={saveData}
+                disabled={!coverChanged}
+                className={`px-3 py-2 rounded-md ${
+                  !coverChanged
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-secondary hover:bg-secondary/90"
+                }`}
+              >
+                Save
+              </button>
             </div>
           )}
 
