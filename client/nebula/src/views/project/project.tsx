@@ -201,17 +201,6 @@ const Project = () => {
       <Sidebar id={projectId} />
       {window.location.pathname == `/projects/${projectId}` ? (
         <div className="w-full bg-bgLight dark:bg-bgDark">
-          <div className="w-full h-20 p-5 flex gap-3 items-center py-1 pl-20">
-            <button
-              onClick={goBack}
-              type="button"
-              className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20  px-3 py-1 rounded-md"
-            >
-              <i className="bx bx-left-arrow-alt text-xl"></i>
-              {strings.backButton}
-            </button>
-          </div>
-
           {isLoading && (
             <div className=" flex items-end justify-center pt-32">
               <Loading />
@@ -223,7 +212,7 @@ const Project = () => {
               <img
                 src={data?.cover}
                 alt="cover-image"
-                className={`mx-auto relative w-11/12 object-cover h-[30vh] object-center rounded-lg ${
+                className={`mx-auto mt-10 relative w-11/12 object-cover h-[30vh] object-center rounded-lg ${
                   !imageLoaded ? "hidden" : ""
                 }
                 ${isLoading ? "hidden" : "flex"}`}

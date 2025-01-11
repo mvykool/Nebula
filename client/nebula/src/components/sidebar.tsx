@@ -39,9 +39,9 @@ const Sidebar = ({ id }: Iprops) => {
   return (
     <div className={`relative ${isHidden ? "w-2" : "w-2/12"}`}>
       <div
-        className={`fixed left-0 top-0 h-screen transform transition-transform duration-300 ease-in-out
+        className={`fixed left-0 top-0 h-screen transform transition-transform duration-200 ease-in-out
           ${isHidden ? "-translate-x-full" : "translate-x-0"}
-          border border-gray-800 w-2/12 text-black dark:text-white bg-bgLight dark:bg-bgDark`}
+          border border-gray-800 w-[10wh] text-black dark:text-white bg-bgLight dark:bg-bgDark`}
       >
         {/*OWNER INFO*/}
         <div className="flex items-center p-2">
@@ -67,12 +67,16 @@ const Sidebar = ({ id }: Iprops) => {
           <p className="font-semibold text-xl">{user?.username}</p>
         </div>
         {/*PROJECT SECTIONS*/}
-        <div className="p-8">
-          <div className="w-full h-96">
-            <AllPages id={id} name={projectName} />
-          </div>
-          {/*IMPORTANT BUTTONS*/}
-          <div className="gap-4 items-start flex flex-col">
+        <div>
+          <div className="gap-4 p-2 my-4 text-sm items-start flex flex-col">
+            <button
+              onClick={handleDelete}
+              type="button"
+              className="px-2 flex gap-2 items-center py-1"
+            >
+              <i className="bx bx-home"></i>
+              Home
+            </button>
             <button
               onClick={handleDelete}
               type="button"
@@ -83,6 +87,13 @@ const Sidebar = ({ id }: Iprops) => {
             </button>
             <PublishProject />
           </div>
+
+          <div className="border border-gray-400 w-full"></div>
+          <p className="p-4 text-gray-400">Workspace</p>
+          <div className="w-full px-4 min-h-[50vh]">
+            <AllPages id={id} name={projectName} />
+          </div>
+          {/*IMPORTANT BUTTONS*/}
         </div>
       </div>
 

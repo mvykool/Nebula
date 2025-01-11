@@ -55,10 +55,16 @@ const AllPages = ({ id, name }: Iprops) => {
   return (
     <div>
       <div className="flex flex-col ">
-        <div className="flex justify-between my-5">
+        <div className="flex justify-between items-center">
           {" "}
-          <button onClick={project}>{name}</button>{" "}
-          <button onClick={addPage} type="button">
+          <button onClick={project} className="font-bold text-lg tracking-wide">
+            {name}
+          </button>{" "}
+          <button
+            onClick={addPage}
+            className="bg-gray-500 bg-opacity-50 px-2 py-1 rounded-md"
+            type="button"
+          >
             {strings.sidebar.addPage}
           </button>
         </div>
