@@ -49,4 +49,9 @@ export class PagesController {
   remove(@Param('id') id: string) {
     return this.pagesService.remove(+id);
   }
+
+  @Delete()
+  removeAll() {
+    return this.pagesService.removeAll();
+  }
 }

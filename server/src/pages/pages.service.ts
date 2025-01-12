@@ -125,6 +125,10 @@ export class PagesService {
     return this.pageRepository.delete(id);
   }
 
+  async removeAll(): Promise<void> {
+    await this.pageRepository.clear(); // Deletes all rows from the table
+  }
+
   private async wouldCreateCircularReference(
     parent: Page,
     childId: number,
