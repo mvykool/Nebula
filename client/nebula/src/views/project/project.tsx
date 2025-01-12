@@ -9,8 +9,6 @@ import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
 import { usePages } from "../../hooks/usePage";
 import { Page } from "../../types/page.type";
-import { useNavigate } from "react-router";
-import { strings } from "../../constants/strings";
 import Loading from "../../components/loading";
 
 interface ProjectData {
@@ -35,8 +33,6 @@ const Project = () => {
     pages: [],
   });
   const editor = useCreateBlockNote();
-
-  const navigate = useNavigate();
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -70,10 +66,12 @@ const Project = () => {
         } else {
           console.error("Image upload failed");
           alert("Failed to upload image. Please try again.");
+          setIsLoading(false); // Only hide loading state when image is actually loaded
         }
       } catch (error) {
         console.error("Error uploading image:", error);
         alert("Error uploading image. Please try again.");
+        setCoverChanged(false);
       } finally {
         // Don't set isLoading to false here - we'll do that when the image actually loads
       }
@@ -192,10 +190,6 @@ const Project = () => {
     };
   }, [saveData]);
 
-  const goBack = (): void => {
-    navigate("/");
-  };
-
   return (
     <div className="w-full flex text-black dark:text-white">
       <Sidebar id={projectId} />
@@ -207,45 +201,57 @@ const Project = () => {
             </div>
           )}
 
-          {data?.cover && (
-            <div>
+          {data?.cover && initialCover && (
+            <div className="relative group">
               <img
                 src={data?.cover}
                 alt="cover-image"
-                className={`mx-auto mt-10 relative w-11/12 object-cover h-[30vh] object-center rounded-lg ${
-                  !imageLoaded ? "hidden" : ""
-                }
-                ${isLoading ? "hidden" : "flex"}`}
+                className={`mx-auto mt-10 relative w-11/12 object-cover h-[35vh] object-center rounded-lg
+                ${!imageLoaded ? "hidden" : ""}
+                ${isLoading ? "hidden" : "flex"}
+                `}
                 onLoad={handleImageLoad}
               />
-              <label
-                className={`${
-                  data.cover ? "mt-2" : "mt-20"
-                } mx-auto bg-primary ml-20 p-2 text-black dark:text-white font-semibold tracking-wide rounded-md text-sm cursor-pointer hover:bg-primary/90`}
-                htmlFor="file-upload"
-              >
-                {data.cover ? "Change project image" : "Add a project image"}
-              </label>
-
-              <input
-                type="file"
-                id="file-upload"
-                name="cover"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImage}
-              />
-              <button
-                onClick={saveData}
-                disabled={!coverChanged}
-                className={`px-3 py-2 rounded-md ${
-                  !coverChanged
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-secondary hover:bg-secondary/90"
-                }`}
-              >
-                Save
-              </button>
+              <div className="absolute inset-0 mx-auto items-end justify-end hidden cursor-pointer bg-black bg-opacity-55 w-11/12 rounded-lg group-hover:flex">
+                <div className="flex p-3 gap-2">
+                  <label
+                    className={`
+                    bg-primary 
+                    px-3
+                    py-2 
+                    text-black 
+                    dark:text-white 
+                    font-semibold 
+                    tracking-wide 
+                    rounded-md 
+                    text-sm 
+                    cursor-pointer 
+                    hover:bg-primary/90`}
+                    htmlFor="file-upload"
+                  >
+                    {data.cover
+                      ? "Change project image"
+                      : "Add a project image"}
+                  </label>
+                  <input
+                    type="file"
+                    id="file-upload"
+                    name="cover"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImage}
+                  />
+                  <button
+                    onClick={saveData}
+                    disabled={!coverChanged}
+                    className={`px-3 text-sm rounded-md  
+                  ${!coverChanged ? "bg-gray-400 cursor-not-allowed" : "bg-secondary hover:bg-secondary/90"}
+                  `}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
             </div>
           )}
 

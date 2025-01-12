@@ -70,7 +70,7 @@ const Sidebar = ({ id }: Iprops) => {
         <div>
           <div className="gap-4 p-2 my-4 text-sm items-start flex flex-col">
             <button
-              onClick={handleDelete}
+              onClick={() => navigate("/")}
               type="button"
               className="px-2 flex gap-2 items-center py-1"
             >
