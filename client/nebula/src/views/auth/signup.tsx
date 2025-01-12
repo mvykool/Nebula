@@ -46,8 +46,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen">
-      <h2 className="font-bold text-black dark:text-white my-7 text-4xl">
+    <div className="flex flex-col bg-bgDark justify-center items-center w-full min-h-screen">
+      <h2 className="font-bold text-white dark:text-white my-7 text-4xl">
         Sign <span className="text-primary">u</span>p
       </h2>
       <form
@@ -55,7 +55,7 @@ const SignUp = () => {
         className="rounded-md px-8 py-10 w-2/6 flex flex-col gap-4"
       >
         <div className="flex flex-col gap-2">
-          <label className="font-semibold text-black dark:text-white tracking-wide">
+          <label className="font-semibold text-white  tracking-wide">
             Name
           </label>
           <input
@@ -71,7 +71,7 @@ const SignUp = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold tracking-wide text-black dark:text-white">
+          <label className="font-semibold tracking-wide text-white ">
             Username
           </label>
           <input
@@ -92,7 +92,7 @@ const SignUp = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold tracking-wide text-black dark:text-white">
+          <label className="font-semibold tracking-wide text-white ">
             Email
           </label>
           <input
@@ -109,7 +109,7 @@ const SignUp = () => {
         </div>
         <div className="flex flex-col gap-2">
           <label
-            className="font-semibold tracking-wide text-black dark:text-white"
+            className="font-semibold tracking-wide text-white "
             htmlFor="password"
           >
             Password
@@ -135,7 +135,7 @@ const SignUp = () => {
           className={`mt-3 rounded-md font-bold py-2 px-1 ${
             isFormValid
               ? "bg-primary hover:bg-primary/90 cursor-pointer"
-              : "bg-gray-300 cursor-not-allowed"
+              : "bg-gray-400 bg-opacity-20 cursor-not-allowed"
           }`}
         >
           {strings.logandsing.create}

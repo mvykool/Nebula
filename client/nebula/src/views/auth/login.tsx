@@ -52,14 +52,14 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen">
+    <div className="relative flex min-h-screen bg-bgDark">
       <div className="rounded-md justify-center items-center px-8 py-10 w-3/6 flex flex-col gap-4">
-        <h2 className="font-bold text-black dark:text-white my-7 text-4xl">
+        <h2 className="font-bold text-white my-7 text-4xl">
           Sign <span className="text-primary">i</span>n
         </h2>
         <form className="w-3/6" onSubmit={handleSubmitEvent}>
           <div className="flex flex-col gap-2">
-            <label className="font-semibold text-black tracking-wide dark:text-white">
+            <label className="font-semibold text-white tracking-wide ">
               Username
             </label>
             <input
@@ -82,7 +82,7 @@ const Login = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="password"
-              className="font-semibold text-black tracking-wide dark:text-white"
+              className="font-semibold text-white tracking-wide "
             >
               Password
             </label>
@@ -108,7 +108,7 @@ const Login = () => {
               className={`mt-3 w-full rounded-md py-2 px-1 font-bold ${
                 isFormValid
                   ? "bg-primary hover:bg-primary/90 cursor-pointer"
-                  : "bg-gray-300 cursor-not-allowed"
+                  : "bg-gray-400 bg-opacity-20 cursor-not-allowed"
               }`}
             >
               {strings.logandsing.login}
@@ -117,7 +117,7 @@ const Login = () => {
         </form>
         <button
           onClick={loginAnon}
-          className="bg-secondary hover:bg-secondary/90 mx-auto rounded-md w-3/6 justify-center font-bold px-4 py-2"
+          className="bg-secondary hover:bg-secondary-dark mx-auto rounded-md w-3/6 justify-center font-bold px-4 py-2"
         >
           {strings.logandsing.guest}
         </button>
