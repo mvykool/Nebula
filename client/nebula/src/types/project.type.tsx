@@ -7,6 +7,6 @@ export type Project = {
   description: string;
   pages: Page[];
   id: number;
-  owner?: User;
+  owner: User;
   publish?: boolean;
 };

@@ -33,7 +33,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
 
   const urlBase = import.meta.env.VITE_URL;
-  console.log(urlBase);
 
   const loginAction = async (data: { username: string; password: string }) => {
     try {

@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useAuth } from "./authProvider";
 import { Page, PageContextType } from "../types/page.type";
+import { useProject } from "./useProject";
 
 interface PageContextProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ const PageContext = createContext<PageContextType | undefined>(undefined);
 
 const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   const { accessToken, fetchWithToken } = useAuth();
+  const { myProjects } = useProject();
   const [myPages, setMyPages] = useState<Page[]>([]);
 
   const urlBase = import.meta.env.VITE_URL;
@@ -164,10 +166,14 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   );
 
   useEffect(() => {
-    if (accessToken && (!myPages || myPages.length === 0)) {
+    if (
+      accessToken &&
+      (!myPages || myPages.length === 0) &&
+      myProjects.length > 0
+    ) {
       fetchMyPages();
     }
-  }, [accessToken, fetchMyPages]);
+  }, [accessToken, fetchMyPages, myProjects]);
 
   return (
     <PageContext.Provider

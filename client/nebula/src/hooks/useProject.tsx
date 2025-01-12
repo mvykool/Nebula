@@ -15,22 +15,44 @@ interface ProjectProviderProps {
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
+const LOCAL_STORAGE_KEY = "projects";
 
 const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
-  const { accessToken, fetchWithToken } = useAuth();
+  const { accessToken, fetchWithToken, isAnonymous } = useAuth();
   const navigate = useNavigate();
-  const [myProjects, setMyProjects] = useState([]);
+  const [myProjects, setMyProjects] = useState<Project[]>([]);
   const [publishedProjects, setPublishedProjects] = useState<Project[]>([]);
 
   const urlBase = import.meta.env.VITE_URL;
+
+  const getLocalProjects = useCallback((): Project[] => {
+    const projects = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return projects ? JSON.parse(projects) : [];
+  }, []);
+
+  const saveLocalProjects = useCallback((projects: Project[]) => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(projects));
+  }, []);
 
   // REQUESTS
 
   // CREATE PROJECT
   const createProject = useCallback(
     async (data: Project) => {
-      if (!accessToken) {
-        return;
+      console.log("Creating project, isAnonymous:", isAnonymous); // Debug log
+      if (isAnonymous) {
+        const projects = getLocalProjects();
+        const newProject = {
+          ...data,
+          id:
+            projects.length > 0
+              ? Math.max(...projects.map((p) => p.id)) + 1
+              : 1,
+        };
+        const updatedProjects = [...projects, newProject];
+        saveLocalProjects(updatedProjects);
+        setMyProjects(updatedProjects);
+        return newProject;
       }
 
       try {
@@ -47,31 +69,42 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
           const res = await response.json();
           console.log("project created: ", res);
           navigate("/");
+          return res;
         }
       } catch (error) {
-        console.log(error);
+        console.log("Error creating project:", error);
+        throw error;
       }
     },
-    [fetchWithToken, accessToken],
+    [fetchWithToken, accessToken, isAnonymous, navigate],
   );
 
   // FETCH MY PROJECTS
   const fetchMyProjects = useCallback(async () => {
-    try {
-      const response = await fetchWithToken(`${urlBase}/projects`);
-      if (response.ok) {
-        const projects = await response.json();
-        if (JSON.stringify(projects) !== JSON.stringify(myProjects)) {
-          setMyProjects(projects);
-          console.log(projects);
-        }
-      } else {
-        console.error("Failed to fetch projects:", await response.text());
+    if (isAnonymous) {
+      const localProjects = getLocalProjects();
+      if (localProjects.length > 0) {
+        setMyProjects(localProjects);
       }
-    } catch (error) {
-      console.error("Error fetching projects:", error);
     }
-  }, [fetchWithToken, myProjects]);
+
+    if (!isAnonymous) {
+      try {
+        const response = await fetchWithToken(`${urlBase}/projects`);
+        if (response.ok) {
+          const projects = await response.json();
+          if (JSON.stringify(projects) !== JSON.stringify(myProjects)) {
+            setMyProjects(projects);
+            console.log(projects);
+          }
+        } else {
+          console.error("Failed to fetch projects:", await response.text());
+        }
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    }
+  }, [fetchWithToken, myProjects, getLocalProjects, isAnonymous]);
 
   // FETCH PUBLISHED PROJECTS
   const fetchPublishedProjects = useCallback(async () => {
@@ -92,6 +125,12 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const fetchProject = useCallback(
     async (id: string | undefined) => {
       console.log(id, "project");
+
+      if (isAnonymous) {
+        const projects = getLocalProjects();
+        return projects.find((p) => p.id.toString() === id);
+      }
+
       try {
         const response = await fetchWithToken(`${urlBase}/projects/${id}`, {
           method: "GET",
@@ -138,6 +177,16 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   //UPDATE PROJECTS
   const updateProject = useCallback(
     async (projectId: string | undefined, updatedData: Partial<Project>) => {
+      if (isAnonymous) {
+        const projects = getLocalProjects();
+        const updatedProjects = projects.map((p) =>
+          p.id.toString() === projectId ? { ...p, ...updatedData } : p,
+        );
+        saveLocalProjects(updatedProjects);
+        setMyProjects(updatedProjects);
+        return updatedProjects.find((p) => p.id.toString() === projectId);
+      }
+
       try {
         const response = await fetch(`${urlBase}/projects/${projectId}`, {
           method: "PATCH",
@@ -164,6 +213,33 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   const deleteProject = useCallback(
     async (projectId: number) => {
+      console.log("Deleting project with ID:", projectId);
+
+      if (isAnonymous) {
+        const allProjects = getLocalProjects();
+        console.log("Before deletion, projects:", allProjects);
+
+        const updatedProjects = getLocalProjects().filter((p) => {
+          console.log(
+            `Filtering: ${p.id} (${typeof p.id}) !== ${projectId} (${typeof projectId})`,
+            p.id !== Number(projectId),
+          );
+          return p.id !== Number(projectId); // Convert projectId to number
+        });
+
+        console.log("After deletion, projects:", updatedProjects);
+
+        saveLocalProjects(updatedProjects);
+        console.log(
+          "Saved to local storage:",
+          JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]"),
+        );
+
+        setMyProjects(updatedProjects);
+        console.log("Updated state:", updatedProjects);
+
+        return { success: true };
+      }
       try {
         const response = await fetchWithToken(
           `${urlBase}/projects/${projectId}`,
@@ -184,7 +260,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
         throw error;
       }
     },
-    [fetchWithToken],
+    [fetchWithToken, getLocalProjects, saveLocalProjects, setMyProjects],
   );
 
   return (

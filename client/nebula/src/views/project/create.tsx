@@ -11,6 +11,14 @@ const CreateProject = () => {
     description: "",
     pages: [],
     id: 1,
+    owner: {
+      email: "guest@guest.com",
+      name: "guest",
+      picture: "https://i.imgur.com/yyZrnuQ.jpeg",
+      sub: "3",
+      username: "guest",
+      isGuest: true,
+    },
   });
 
   const { createProject } = useProject();
