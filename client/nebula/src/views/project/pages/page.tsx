@@ -119,7 +119,7 @@ const Page = () => {
   }, [saveData]);
 
   return (
-    <div className="w-full">
+    <div className="w-full pt-20">
       <BlockNoteView editor={editor} data-theming-css-variables-demo />
     </div>
   );

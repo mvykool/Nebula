@@ -1,5 +1,6 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useAuth } from "../../hooks/authProvider";
+import { strings } from "../../constants/strings";
 
 const SignUp = () => {
   const [input, setInput] = useState({
@@ -9,12 +10,23 @@ const SignUp = () => {
     password: "",
   });
 
-  //set authProvider
+  const [isFormValid, setIsFormValid] = useState(false);
   const auth = useAuth();
+
+  // Check if all fields are filled
+  useEffect(() => {
+    const { name, username, email, password } = input;
+    setIsFormValid(
+      name.trim() !== "" &&
+        username.trim() !== "" &&
+        email.trim() !== "" &&
+        password.trim() !== "",
+    );
+  }, [input]);
 
   const handleSubmitEvent = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-    if (input.username !== "" && input.password !== "") {
+    if (isFormValid) {
       try {
         await auth.signupAction(input);
       } catch (error) {
@@ -22,7 +34,7 @@ const SignUp = () => {
       }
       return;
     }
-    alert("please provide a valid input");
+    alert("Please fill in all fields");
   };
 
   const handleInput = (e: FormEvent<HTMLInputElement>): void => {
@@ -34,16 +46,18 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen">
-      <h2 className="font-bold my-7 text-4xl">
-        Sign <span className="text-purple-400">u</span>p
+    <div className="flex flex-col bg-bgDark justify-center items-center w-full min-h-screen">
+      <h2 className="font-bold text-white dark:text-white my-7 text-4xl">
+        Sign <span className="text-primary">u</span>p
       </h2>
       <form
         onSubmit={handleSubmitEvent}
-        className="bg-gray-50 rounded-md px-8 py-10 w-2/6 shadow-md flex flex-col gap-4"
+        className="rounded-md px-8 py-10 w-2/6 flex flex-col gap-4"
       >
         <div className="flex flex-col gap-2">
-          <label className="font-semibold">Name</label>
+          <label className="font-semibold text-white  tracking-wide">
+            Name
+          </label>
           <input
             className="py-2 px-1 rounded-sm"
             type="text"
@@ -53,14 +67,13 @@ const SignUp = () => {
             aria-describedby="name"
             aria-invalid="false"
             onChange={handleInput}
+            required
           />
-          <div id="username" className="sr-only">
-            Please enter a valid username. It must contain at least 6
-            characters.
-          </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold">Username</label>
+          <label className="font-semibold tracking-wide text-white ">
+            Username
+          </label>
           <input
             className="py-2 px-1 rounded-sm"
             type="text"
@@ -70,6 +83,8 @@ const SignUp = () => {
             aria-describedby="username"
             aria-invalid="false"
             onChange={handleInput}
+            required
+            minLength={6}
           />
           <div id="username" className="sr-only">
             Please enter a valid username. It must contain at least 6
@@ -77,7 +92,9 @@ const SignUp = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold">Email</label>
+          <label className="font-semibold tracking-wide text-white ">
+            Email
+          </label>
           <input
             className="py-2 px-1 rounded-sm"
             type="email"
@@ -87,14 +104,14 @@ const SignUp = () => {
             aria-describedby="email"
             aria-invalid="false"
             onChange={handleInput}
+            required
           />
-          <div id="username" className="sr-only">
-            Please enter a valid username. It must contain at least 6
-            characters.
-          </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="font-semibold" htmlFor="password">
+          <label
+            className="font-semibold tracking-wide text-white "
+            htmlFor="password"
+          >
             Password
           </label>
           <input
@@ -105,23 +122,30 @@ const SignUp = () => {
             aria-describedby="user-password"
             aria-invalid="false"
             onChange={handleInput}
+            required
+            minLength={6}
           />
           <div id="user-password" className="sr-only">
-            your password should be more than 6 character
+            Your password should be more than 6 characters
           </div>
         </div>
         <button
           type="submit"
-          className="mt-3 bg-purple-300 rounded-md py-2 px-1"
+          disabled={!isFormValid}
+          className={`mt-3 rounded-md font-bold py-2 px-1 ${
+            isFormValid
+              ? "bg-primary hover:bg-primary/90 cursor-pointer"
+              : "bg-gray-400 bg-opacity-20 cursor-not-allowed"
+          }`}
         >
-          Create Account
+          {strings.logandsing.create}
         </button>
 
         <a
           href="/login"
-          className="justify-center flex underline my-3 text-pink-200"
+          className="justify-center flex underline my-3 text-lg text-primary tracking-wider"
         >
-          Login
+          {strings.logandsing.login}
         </a>
       </form>
     </div>

@@ -5,16 +5,16 @@ import { useState } from "react";
 import { strings } from "../../../constants/strings";
 
 interface Iprops {
-  id: string | undefined;
+  projectId: string | undefined;
   name: string | undefined;
 }
 
-const AllPages = ({ id, name }: Iprops) => {
+const AllPages = ({ projectId, name }: Iprops) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
-    title: "undefined",
+    title: "title",
     content: "",
-    project: id,
+    project: projectId,
   });
   const { createPage, deletePages, myPages, fetchMyPages } = usePages();
 
@@ -25,7 +25,7 @@ const AllPages = ({ id, name }: Iprops) => {
       if (newPage && newPage.id) {
         console.log(newPage);
         setData(newPage);
-        console.log(`projects/${id}/pages/${newPage.id}`);
+        console.log(`projects/${projectId}/pages/${newPage.id}`);
         navigate(`pages/${newPage.id}`);
       }
     } catch (error) {
@@ -34,11 +34,16 @@ const AllPages = ({ id, name }: Iprops) => {
     return;
   };
 
+  const project = () => {
+    navigate(`/projects/${projectId}`);
+  };
+
   const deletePage = async (id: any) => {
     try {
       await deletePages(id);
       console.log("page deleted");
-      fetchMyPages();
+      fetchMyPages(projectId);
+      project();
     } catch (error) {
       console.log(error);
     }
@@ -48,30 +53,37 @@ const AllPages = ({ id, name }: Iprops) => {
     navigate(`pages/${id}`);
   };
 
-  const project = () => {
-    navigate(`/projects/${id}`);
-  };
-
   return (
     <div>
       <div className="flex flex-col ">
-        <div className="flex justify-between my-5">
+        <div className="flex justify-between mb-8 items-center">
           {" "}
-          <button onClick={project}>{name}</button>{" "}
-          <button onClick={addPage} type="button">
+          <button onClick={project} className="font-bold text-lg tracking-wide">
+            {name}
+          </button>{" "}
+          <button
+            onClick={addPage}
+            className="bg-gray-500 bg-opacity-50 px-2 py-1 rounded-md"
+            type="button"
+          >
             {strings.sidebar.addPage}
           </button>
         </div>
-        {Array.isArray(myPages) && myPages.length > 0 ? (
-          myPages.map((page) => (
-            <div className="flex justify-between items-center" key={page.id}>
-              <p onClick={() => goPage(page.id)}>{page.title}</p>
-              <button onClick={() => deletePage(page.id)}>X</button>
-            </div>
-          ))
-        ) : (
-          <p> </p>
-        )}
+        {Array.isArray(myPages) && myPages.length > 0
+          ? myPages.map((page) => (
+              <div
+                className="flex justify-between hover:bg-gray-700 items-center ml-3 p-2 rounded-sm"
+                key={page.id}
+              >
+                <p className="text-gray-300" onClick={() => goPage(page.id)}>
+                  {page.title}
+                </p>
+                <button onClick={() => deletePage(page.id)}>
+                  <i className="bx bxs-x-square text-gray-300 text-xl"></i>
+                </button>
+              </div>
+            ))
+          : null}
       </div>
     </div>
   );

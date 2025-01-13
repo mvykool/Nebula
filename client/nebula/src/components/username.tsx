@@ -7,7 +7,7 @@ const Username = () => {
     <>
       <img
         src={user?.picture || defaultPfp}
-        className="h-10 w-10 rounded-md"
+        className="h-11 w-11 rounded-md"
         alt="user-picture"
       />
       <p className="font-semibold">{user?.username}</p>

@@ -23,7 +23,7 @@ const ProjectCard = ({ name, cover, owner, projectId }: IProjectCard) => {
   return (
     <div
       onClick={goToProject}
-      className="bg-primary-dark cursor-pointer rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white"
+      className="bg-cardWhite dark:bg-card cursor-pointer rounded-lg m-2 relative w-[180px] h-[180px] text-black dark:text-white"
     >
       {cover ? (
         <img
