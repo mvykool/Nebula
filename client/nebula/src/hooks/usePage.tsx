@@ -55,20 +55,23 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   );
 
   // FETCH MY PROJECTS
-  const fetchMyPages = useCallback(async () => {
-    try {
-      const response = await fetchWithToken(`${urlBase}/pages`);
-      if (response.ok) {
-        const pages = await response.json();
-        setMyPages(pages);
-        console.log(pages);
-      } else {
-        console.error("Failed to fetch projects:", await response.text());
+  const fetchMyPages = useCallback(
+    async (id: number) => {
+      try {
+        const response = await fetchWithToken(`${urlBase}/pages/project/${id}`);
+        if (response.ok) {
+          const pages = await response.json();
+          setMyPages(pages);
+          console.log(pages);
+        } else {
+          console.error("Failed to fetch projects:", await response.text());
+        }
+      } catch (error) {
+        console.error("Error fetching projects:", error);
       }
-    } catch (error) {
-      console.error("Error fetching projects:", error);
-    }
-  }, [fetchWithToken]);
+    },
+    [fetchWithToken],
+  );
 
   const fetchPage = useCallback(
     async (id: number) => {
@@ -188,7 +191,8 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
       (!myPages || myPages.length === 0) &&
       myProjects.length > 0
     ) {
-      fetchMyPages();
+      const projectId: number = 1;
+      fetchMyPages(projectId);
     }
   }, [accessToken, fetchMyPages, myProjects]);
 

@@ -5,16 +5,16 @@ import { useState } from "react";
 import { strings } from "../../../constants/strings";
 
 interface Iprops {
-  id: string | undefined;
+  projectId: string | undefined;
   name: string | undefined;
 }
 
-const AllPages = ({ id, name }: Iprops) => {
+const AllPages = ({ projectId, name }: Iprops) => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     title: "title",
     content: "",
-    project: id,
+    project: projectId,
   });
   const { createPage, deletePages, myPages, fetchMyPages } = usePages();
 
@@ -25,7 +25,7 @@ const AllPages = ({ id, name }: Iprops) => {
       if (newPage && newPage.id) {
         console.log(newPage);
         setData(newPage);
-        console.log(`projects/${id}/pages/${newPage.id}`);
+        console.log(`projects/${projectId}/pages/${newPage.id}`);
         navigate(`pages/${newPage.id}`);
       }
     } catch (error) {
@@ -35,14 +35,14 @@ const AllPages = ({ id, name }: Iprops) => {
   };
 
   const project = () => {
-    navigate(`/projects/${id}`);
+    navigate(`/projects/${projectId}`);
   };
 
   const deletePage = async (id: any) => {
     try {
       await deletePages(id);
       console.log("page deleted");
-      fetchMyPages();
+      fetchMyPages(projectId);
       project();
     } catch (error) {
       console.log(error);

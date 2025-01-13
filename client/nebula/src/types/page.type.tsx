@@ -12,7 +12,7 @@ export type Page = {
 
 export interface PageContextType {
   createPage: (data: any) => Promise<Page | undefined>;
-  fetchMyPages: () => Promise<void>;
+  fetchMyPages: (id: any) => Promise<void>;
 
   fetchPage: (id: any) => Promise<Page | undefined>;
   myPages: Page[];

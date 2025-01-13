@@ -94,7 +94,7 @@ const Sidebar = ({ id }: Iprops) => {
           <div className="border border-gray-400 w-full"></div>
           <p className="p-4 text-gray-400">Workspace</p>
           <div className="w-full px-4 min-h-[50vh]">
-            <AllPages id={id} name={projectName} />
+            <AllPages projectId={id} name={projectName} />
           </div>
           {/*IMPORTANT BUTTONS*/}
         </div>
