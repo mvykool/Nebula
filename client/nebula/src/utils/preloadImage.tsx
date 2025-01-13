@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Loading from "../components/loading";
 
 interface PreloadedImageProps {
   src: string;
