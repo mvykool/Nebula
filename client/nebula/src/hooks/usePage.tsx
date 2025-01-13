@@ -139,6 +139,23 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   );
 
   //DELETE PROJECTS
+  const deleteAllPages = useCallback(async () => {
+    try {
+      const response = await fetchWithToken(`${urlBase}/pages`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const pages = await response.json();
+        return pages;
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }, [fetchWithToken]);
 
   const deletePages = useCallback(
     async (pageId: number) => {
@@ -184,6 +201,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
         fetchPage,
         updatePages,
         deletePages,
+        deleteAllPages,
       }}
     >
       {children}

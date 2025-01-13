@@ -27,7 +27,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return localStorage.getItem("refresh_token") || "";
   });
   const [isAnonymous, setIsAnonymous] = useState(() => {
-    return localStorage.getItem("isAnonymous") === "true";
+    return localStorage.getItem("isAnonymous") === "false";
   });
 
   const navigate = useNavigate();
@@ -52,6 +52,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem("refresh_token", res.refresh_token);
         setAccessToken(res.access_token);
         setRefreshToken(res.refresh_token);
+        setIsAnonymous(false);
+
+        localStorage.setItem("isAnonymous", "false");
 
         if (res.data && res.data.user) {
           setUser(res.data.user);
@@ -137,9 +140,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     setAccessToken("");
     setRefreshToken("");
+    setIsAnonymous(false);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
+    localStorage.removeItem("projects");
+    localStorage.setItem("isAnonymous", "false");
     navigate("/login");
   };
 

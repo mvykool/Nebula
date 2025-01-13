@@ -88,21 +88,20 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
       }
     }
 
-    if (!isAnonymous) {
-      try {
-        const response = await fetchWithToken(`${urlBase}/projects`);
-        if (response.ok) {
-          const projects = await response.json();
-          if (JSON.stringify(projects) !== JSON.stringify(myProjects)) {
-            setMyProjects(projects);
-            console.log(projects);
-          }
-        } else {
-          console.error("Failed to fetch projects:", await response.text());
+    console.log("dies it reach here?");
+    try {
+      const response = await fetchWithToken(`${urlBase}/projects`);
+      if (response.ok) {
+        const projects = await response.json();
+        if (JSON.stringify(projects) !== JSON.stringify(myProjects)) {
+          setMyProjects(projects);
+          console.log(projects);
         }
-      } catch (error) {
-        console.error("Error fetching projects:", error);
+      } else {
+        console.error("Failed to fetch projects:", await response.text());
       }
+    } catch (error) {
+      console.error("Error fetching projects:", error);
     }
   }, [fetchWithToken, myProjects, getLocalProjects, isAnonymous]);
 
@@ -240,6 +239,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
         return { success: true };
       }
+
       try {
         const response = await fetchWithToken(
           `${urlBase}/projects/${projectId}`,

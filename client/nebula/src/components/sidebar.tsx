@@ -6,6 +6,7 @@ import { strings } from "../constants/strings";
 import AllPages from "../views/project/pages/allPages";
 import PublishProject from "./publishProject";
 import { useEffect, useState } from "react";
+import { usePages } from "../hooks/usePage";
 
 interface Iprops {
   id: string | undefined;
@@ -15,12 +16,14 @@ const Sidebar = ({ id }: Iprops) => {
   const [projectName, setProjectName] = useState<string | undefined>("");
   const [isHidden, setIsHidden] = useState<boolean>(false);
   const { user, defaultPfp } = useAuth();
+  const { deleteAllPages } = usePages();
   const { deleteProject, fetchProject } = useProject();
   const { projectId } = useParams();
   const navigate = useNavigate();
 
   const handleDelete = (): void => {
     deleteProject(projectId);
+    deleteAllPages();
     navigate("/");
   };
 

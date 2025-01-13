@@ -6,7 +6,7 @@ export type Page = {
   title: string;
   content: string;
   project: Project | string;
-  parent: Page | null;
+  parent: Page;
   children: Page | null;
 };
 
@@ -18,4 +18,5 @@ export interface PageContextType {
   myPages: Page[];
   updatePages: (pageId: any, updatedData: Partial<Page>) => Promise<Page>;
   deletePages: (pageId: number) => Promise<void>;
+  deleteAllPages: () => Promise<void>;
 }
