@@ -11,7 +11,7 @@ interface FormData {
 }
 
 const Profile = () => {
-  const { user, defaultPfp, updateUser } = useAuth();
+  const { user, defaultPfp, updateUser, isAnonymous } = useAuth();
   const navigate = useNavigate();
 
   //view state

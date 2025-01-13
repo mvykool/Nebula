@@ -16,8 +16,9 @@ const PublishProject = () => {
     <button
       onClick={publish}
       type="button"
-      className="px-2 py-1 rounded-md bg-primary"
+      className="px-2 py-1 flex items-center gap-2 rounded-md bg-primary hover:bg-primary-dark"
     >
+      <i className="bx bx-rocket"></i>
       {strings.sidebar.publish}
     </button>
   );

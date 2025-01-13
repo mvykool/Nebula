@@ -16,6 +16,7 @@ import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
 import { AuthGuard } from '../auth/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { Page } from './entities/page.entity';
 
 @ApiTags('pages')
 @Controller('pages')
@@ -30,9 +31,9 @@ export class PagesController {
     return this.pagesService.createPage(createPageDto, projectId);
   }
 
-  @Get()
-  findAll() {
-    return this.pagesService.findAll();
+  @Get('project/:projectId')
+  async findByProject(@Param('projectId') projectId: number): Promise<Page[]> {
+    return this.pagesService.findByProject(projectId);
   }
 
   @Get(':id')
@@ -48,5 +49,10 @@ export class PagesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.pagesService.remove(+id);
+  }
+
+  @Delete()
+  removeAll() {
+    return this.pagesService.removeAll();
   }
 }

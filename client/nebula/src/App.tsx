@@ -17,6 +17,7 @@ import Layout from "./views/layout";
 import Project from "./views/project/project";
 import Page from "./views/project/pages/page";
 import PageProvider from "./hooks/usePage";
+import NotMatch from "./views/notMatch";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/explore" element={<ExploreView />} />
+                    <Route path="*" element={<NotMatch />} />
                     <Route
                       path="/project/creation"
                       element={<CreateProject />}

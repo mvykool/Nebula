@@ -2,13 +2,14 @@
 import Sidebar from "../../components/sidebar";
 import { Outlet, useParams } from "react-router";
 import { useProject } from "../../hooks/useProject";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, ChangeEvent } from "react";
 import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
 import { usePages } from "../../hooks/usePage";
 import { Page } from "../../types/page.type";
+import Loading from "../../components/loading";
 
 interface ProjectData {
   name: string;
@@ -18,9 +19,13 @@ interface ProjectData {
 }
 
 const Project = () => {
+  const [coverChanged, setCoverChanged] = useState<boolean>(false);
+  const [initialCover, setInitialCover] = useState<string>("");
   const { projectId } = useParams<{ projectId: string | undefined }>();
   const { fetchProject, updateProject } = useProject();
   const { myPages, fetchMyPages } = usePages();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [data, setData] = useState<ProjectData>({
     name: "",
     cover: "",
@@ -28,6 +33,50 @@ const Project = () => {
     pages: [],
   });
   const editor = useCreateBlockNote();
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setIsLoading(false); // Only hide loading state when image is actually loaded
+  };
+
+  const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      setIsLoading(true); // Set loading state before starting upload
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const urlBase = import.meta.env.VITE_URL;
+
+      try {
+        const response = await fetch(`${urlBase}/upload/upload`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const imageUrl = data.url;
+          setData((prev) => ({ ...prev, cover: imageUrl }));
+          setImageLoaded(false); // Reset image loaded state for new image
+          setCoverChanged(true);
+          setImageLoaded(false);
+        } else {
+          console.error("Image upload failed");
+          alert("Failed to upload image. Please try again.");
+          setIsLoading(false); // Only hide loading state when image is actually loaded
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("Error uploading image. Please try again.");
+        setCoverChanged(false);
+      } finally {
+        // Don't set isLoading to false here - we'll do that when the image actually loads
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +91,7 @@ const Project = () => {
         if (result) {
           // Ensure result is not undefined before updating state
           setData(result);
+          setInitialCover(result.cover);
           console.log(result);
 
           // Parse and update the description content
@@ -119,6 +169,8 @@ const Project = () => {
         pages,
       });
       setData(updatedData);
+      setCoverChanged(false); // Reset the change tracking after successful save
+      setInitialCover(updatedData.cover);
       console.log("Data saved successfully");
     } catch (err) {
       console.error("Error saving data:", err);
@@ -143,19 +195,67 @@ const Project = () => {
       <Sidebar id={projectId} />
       {window.location.pathname == `/projects/${projectId}` ? (
         <div className="w-full bg-bgLight dark:bg-bgDark">
-          <div className="w-full h-16 p-5 flex justify-start items-center">
-            <p className="font-bold">{data?.name}</p>
-          </div>
-
-          {data?.cover && (
-            <img
-              src={data?.cover}
-              alt="cover-image"
-              className="w-full object-cover h-[28vh]"
-            />
+          {isLoading && (
+            <div className=" flex items-end justify-center pt-32">
+              <Loading />
+            </div>
           )}
 
-          <div className="w-5/6 my-10 mx-auto">
+          {data?.cover && initialCover && (
+            <div className="relative group">
+              <img
+                src={data?.cover}
+                alt="cover-image"
+                className={`mx-auto mt-10 relative w-11/12 object-cover h-[35vh] object-center rounded-lg
+                ${!imageLoaded ? "hidden" : ""}
+                ${isLoading ? "hidden" : "flex"}
+                `}
+                onLoad={handleImageLoad}
+              />
+              <div className="absolute inset-0 mx-auto items-end justify-end hidden cursor-pointer bg-black bg-opacity-55 w-11/12 rounded-lg group-hover:flex">
+                <div className="flex p-3 gap-2">
+                  <label
+                    className={`
+                    bg-primary 
+                    px-3
+                    py-2 
+                    text-black 
+                    dark:text-white 
+                    font-semibold 
+                    tracking-wide 
+                    rounded-md 
+                    text-sm 
+                    cursor-pointer 
+                    hover:bg-primary/90`}
+                    htmlFor="file-upload"
+                  >
+                    {data.cover
+                      ? "Change project image"
+                      : "Add a project image"}
+                  </label>
+                  <input
+                    type="file"
+                    id="file-upload"
+                    name="cover"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImage}
+                  />
+                  <button
+                    onClick={saveData}
+                    disabled={!coverChanged}
+                    className={`px-3 text-sm rounded-md  
+                  ${!coverChanged ? "bg-gray-400 cursor-not-allowed" : "bg-secondary hover:bg-secondary/90"}
+                  `}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="w-full px-4 my-10 mx-auto">
             <BlockNoteView editor={editor} data-theming-css-variables-demo />
           </div>
         </div>
