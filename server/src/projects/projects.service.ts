@@ -20,7 +20,6 @@ export class ProjectsService {
     userId: number,
   ): Promise<Project> {
     const user = await this.userService.viewUser(userId);
-    const pages = await this.pagesService.findAll();
 
     if (!user) {
       throw new Error('user no found');
@@ -32,7 +31,7 @@ export class ProjectsService {
     project.description = createProjectDto.description;
     project.owner = user;
     project.publish = createProjectDto.publish;
-    project.pages = pages;
+    project.pages = [];
     return this.projectRepository.save(project);
   }
 
