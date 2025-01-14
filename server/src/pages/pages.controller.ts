@@ -27,8 +27,7 @@ export class PagesController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Request() req, @Body() createPageDto: CreatePageDto) {
-    const projectId = req.project?.id;
-    return this.pagesService.createPage(createPageDto, projectId);
+    return this.pagesService.createPage(createPageDto, createPageDto.projectId);
   }
 
   @Get('project/:projectId')
