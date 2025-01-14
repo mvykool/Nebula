@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Request,
   Delete,
   UseGuards,
   HttpCode,
@@ -26,7 +25,7 @@ export class PagesController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Request() req, @Body() createPageDto: CreatePageDto) {
+  async create(@Body() createPageDto: CreatePageDto) {
     return this.pagesService.createPage(createPageDto, createPageDto.projectId);
   }
 

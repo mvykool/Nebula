@@ -28,19 +28,14 @@ export class PagesService {
     page.title = createPageDto.title;
     page.content = createPageDto.content;
 
-    // set project for pages
+    // Make sure you're finding and setting the project correctly
     const project = await this.projectsService.findOne(projectId);
+    if (!project) {
+      throw new BadRequestException(`Project with ID ${projectId} not found`);
+    }
     page.project = project;
 
-    // provide parentid if exist
-
-    if (createPageDto.parentId) {
-      const parentPage = await this.pageRepository.findOneOrFail({
-        where: { id: createPageDto.parentId },
-      });
-      page.parent = parentPage;
-    }
-
+    // Set other page properties
     page.created = new Date();
     page.updated = new Date();
 
