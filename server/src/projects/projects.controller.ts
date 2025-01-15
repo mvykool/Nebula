@@ -55,8 +55,8 @@ export class ProjectsController {
     return this.projectsService.findOne(+id);
   }
 
-  @Public()
   @Get('p/:slug')
+  @Public()
   async getPublishedProject(@Param('slug') slug: string) {
     return this.projectsService.getPublishedProjectBySlug(slug);
   }
