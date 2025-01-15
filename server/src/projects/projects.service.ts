@@ -48,10 +48,18 @@ export class ProjectsService {
   }
 
   async findByOwner(ownerId: number): Promise<Project[]> {
-    return this.projectRepository.find({
-      where: { owner: { id: ownerId } },
-      relations: ['owner'],
-    });
+    console.log('Finding projects for owner:', ownerId);
+    try {
+      const projects = await this.projectRepository.find({
+        where: { owner: { id: ownerId } },
+        relations: ['owner'],
+      });
+      console.log('Found projects:', projects);
+      return projects;
+    } catch (error) {
+      console.error('Error in findByOwner:', error);
+      throw error;
+    }
   }
 
   async findPublishedProjects(): Promise<Project[]> {

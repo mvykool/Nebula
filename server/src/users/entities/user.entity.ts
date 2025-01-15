@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Project } from '../../projects/entities/project.entity';
 import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from 'typeorm';
 
@@ -19,6 +20,7 @@ export class User {
   email: string;
 
   @Column({ type: 'varchar' })
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @OneToMany(() => Project, (project) => project.owner)

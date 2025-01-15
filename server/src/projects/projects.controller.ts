@@ -11,6 +11,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { Project } from './entities/project.entity';
 import { ProjectsService } from './projects.service';
@@ -36,8 +37,23 @@ export class ProjectsController {
 
   @Get()
   async findMine(@Req() req): Promise<Project[]> {
-    const ownerId = req.user.sub;
-    return this.projectsService.findByOwner(ownerId);
+    try {
+      console.log('Request user:', req.user); // Log the user object
+      const ownerId = parseInt(req.user.sub); // Ensure ownerId is a number
+      console.log('Owner ID:', ownerId); // Log the parsed owner ID
+
+      const projects = await this.projectsService.findByOwner(ownerId);
+      return projects;
+    } catch (error) {
+      console.error('Controller error:', error);
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get('published')
