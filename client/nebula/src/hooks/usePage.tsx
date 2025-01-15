@@ -40,11 +40,14 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
           },
           body: JSON.stringify(data),
         });
-
         if (response.ok) {
           const res = await response.json();
-          console.log("page created: ", res);
-          setMyPages((prev: Page[]) => [...prev, res]);
+          console.log("Raw response from create page:", res); // Add this
+          setMyPages((prev: Page[]) => {
+            console.log("Previous pages:", prev); // Add this
+            console.log("Adding new page:", res); // Add this
+            return [...prev, res];
+          });
           return res;
         }
       } catch (error) {
@@ -57,17 +60,25 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   // FETCH MY PROJECTS
   const fetchMyPages = useCallback(
     async (id: number) => {
+      console.log("Fetching pages for project ID:", id);
       try {
         const response = await fetchWithToken(`${urlBase}/pages/project/${id}`);
         if (response.ok) {
           const pages = await response.json();
-          setMyPages(pages);
-          console.log(pages);
+          console.log("Received pages:", pages);
+          // Only update if the pages are different
+          setMyPages((prevPages) => {
+            if (JSON.stringify(prevPages) !== JSON.stringify(pages)) {
+              return pages;
+            }
+            return prevPages;
+          });
         } else {
-          console.error("Failed to fetch projects:", await response.text());
+          const errorText = await response.text();
+          console.error("Failed to fetch pages:", errorText);
         }
       } catch (error) {
-        console.error("Error fetching projects:", error);
+        console.error("Error fetching pages:", error);
       }
     },
     [fetchWithToken],
@@ -186,13 +197,14 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   );
 
   useEffect(() => {
-    if (
-      accessToken &&
-      (!myPages || myPages.length === 0) &&
-      myProjects.length > 0
-    ) {
-      const projectId: number = 1;
-      fetchMyPages(projectId);
+    if (accessToken && myProjects.length > 0) {
+      // Get the current project ID from the URL or state
+      const currentProjectId = window.location.pathname
+        .split("/")
+        .find((segment) => !isNaN(Number(segment)));
+      if (currentProjectId) {
+        fetchMyPages(parseInt(currentProjectId, 10));
+      }
     }
   }, [accessToken, fetchMyPages, myProjects]);
 

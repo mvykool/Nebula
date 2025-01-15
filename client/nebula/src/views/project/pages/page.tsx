@@ -98,7 +98,7 @@ const Page = () => {
         content,
       });
       setData(updatedData);
-      fetchMyPages();
+      fetchMyPages(projectId);
       console.log("Data saved successfully");
     } catch (err) {
       console.error("Error saving data:", err);

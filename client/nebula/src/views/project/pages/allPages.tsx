@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router";
 import { usePages } from "../../../hooks/usePage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { strings } from "../../../constants/strings";
 
 interface Iprops {
@@ -14,24 +14,43 @@ const AllPages = ({ projectId, name }: Iprops) => {
   const [data, setData] = useState({
     title: "title",
     content: "",
-    project: projectId,
+    projectId: projectId ? parseInt(projectId, 10) : undefined,
   });
+
   const { createPage, deletePages, myPages, fetchMyPages } = usePages();
 
-  const addPage = async () => {
-    try {
-      const newPage: any = await createPage(data);
+  useEffect(() => {
+    if (projectId) {
+      const numericProjectId = parseInt(projectId, 10);
+      console.log("Fetching pages for project:", numericProjectId);
+      fetchMyPages(numericProjectId);
+    }
+  }, [projectId, fetchMyPages]);
 
+  const addPage = async () => {
+    if (!projectId) {
+      console.error("No project ID provided");
+      return;
+    }
+
+    const numericProjectId = parseInt(projectId, 10);
+    const pageData = {
+      ...data,
+      projectId: numericProjectId,
+    };
+
+    try {
+      console.log("Creating page with data:", pageData);
+      const newPage = await createPage(pageData);
       if (newPage && newPage.id) {
-        console.log(newPage);
-        setData(newPage);
-        console.log(`projects/${projectId}/pages/${newPage.id}`);
+        console.log("New page created:", newPage);
+        await fetchMyPages(numericProjectId); // Refresh the pages list
+        setData(pageData);
         navigate(`pages/${newPage.id}`);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error creating page:", error);
     }
-    return;
   };
 
   const project = () => {
@@ -42,7 +61,9 @@ const AllPages = ({ projectId, name }: Iprops) => {
     try {
       await deletePages(id);
       console.log("page deleted");
-      fetchMyPages(projectId);
+      if (projectId) {
+        await fetchMyPages(parseInt(projectId, 10)); // Convert to number
+      }
       project();
     } catch (error) {
       console.log(error);

@@ -40,20 +40,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const createProject = useCallback(
     async (data: Project) => {
       console.log("Creating project, isAnonymous:", isAnonymous); // Debug log
-      if (isAnonymous) {
-        const projects = getLocalProjects();
-        const newProject = {
-          ...data,
-          id:
-            projects.length > 0
-              ? Math.max(...projects.map((p) => p.id)) + 1
-              : 1,
-        };
-        const updatedProjects = [...projects, newProject];
-        saveLocalProjects(updatedProjects);
-        setMyProjects(updatedProjects);
-        return newProject;
-      }
 
       try {
         const response = await fetchWithToken(`${urlBase}/projects`, {
@@ -68,6 +54,9 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
         if (response.ok) {
           const res = await response.json();
           console.log("project created: ", res);
+          // Update local state before navigating
+          setMyProjects((prev) => [...prev, res]);
+          await fetchMyProjects(); // Refresh the projects list
           navigate("/");
           return res;
         }
@@ -81,13 +70,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   // FETCH MY PROJECTS
   const fetchMyProjects = useCallback(async () => {
-    if (isAnonymous) {
-      const localProjects = getLocalProjects();
-      if (localProjects.length > 0) {
-        setMyProjects(localProjects);
-      }
-    }
-
     console.log("dies it reach here?");
     try {
       const response = await fetchWithToken(`${urlBase}/projects`);
@@ -124,11 +106,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const fetchProject = useCallback(
     async (id: string | undefined) => {
       console.log(id, "project");
-
-      if (isAnonymous) {
-        const projects = getLocalProjects();
-        return projects.find((p) => p.id.toString() === id);
-      }
 
       try {
         const response = await fetchWithToken(`${urlBase}/projects/${id}`, {
@@ -176,16 +153,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   //UPDATE PROJECTS
   const updateProject = useCallback(
     async (projectId: string | undefined, updatedData: Partial<Project>) => {
-      if (isAnonymous) {
-        const projects = getLocalProjects();
-        const updatedProjects = projects.map((p) =>
-          p.id.toString() === projectId ? { ...p, ...updatedData } : p,
-        );
-        saveLocalProjects(updatedProjects);
-        setMyProjects(updatedProjects);
-        return updatedProjects.find((p) => p.id.toString() === projectId);
-      }
-
       try {
         const response = await fetch(`${urlBase}/projects/${projectId}`, {
           method: "PATCH",
@@ -213,32 +180,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const deleteProject = useCallback(
     async (projectId: number) => {
       console.log("Deleting project with ID:", projectId);
-
-      if (isAnonymous) {
-        const allProjects = getLocalProjects();
-        console.log("Before deletion, projects:", allProjects);
-
-        const updatedProjects = getLocalProjects().filter((p) => {
-          console.log(
-            `Filtering: ${p.id} (${typeof p.id}) !== ${projectId} (${typeof projectId})`,
-            p.id !== Number(projectId),
-          );
-          return p.id !== Number(projectId); // Convert projectId to number
-        });
-
-        console.log("After deletion, projects:", updatedProjects);
-
-        saveLocalProjects(updatedProjects);
-        console.log(
-          "Saved to local storage:",
-          JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]"),
-        );
-
-        setMyProjects(updatedProjects);
-        console.log("Updated state:", updatedProjects);
-
-        return { success: true };
-      }
 
       try {
         const response = await fetchWithToken(
