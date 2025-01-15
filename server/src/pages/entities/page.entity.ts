@@ -26,11 +26,16 @@ export class Page {
   })
   project: Project;
 
-  @ManyToOne(() => Page, (page) => page.children, { nullable: true })
+  @ManyToOne(() => Page, (page) => page.children, {
+    nullable: true,
+    onDelete: 'CASCADE', // Add this to ensure child pages are deleted when parent is deleted
+  })
   parent: Page;
 
-  @OneToMany(() => Page, (page) => page.parent)
-  children: Page;
+  @OneToMany(() => Page, (page) => page.parent, {
+    cascade: true, // Add this to automatically save children when saving parent
+  })
+  children: Page[];
 
   @CreateDateColumn({ type: 'varchar', length: 40 })
   created: Date;
