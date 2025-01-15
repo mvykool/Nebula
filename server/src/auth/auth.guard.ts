@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-
+import { IS_PUBLIC_KEY } from 'src/decorator/public.decorator';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 
@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // First check if route is public
-    const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -28,6 +28,7 @@ export class AuthGuard implements CanActivate {
     if (isPublic) {
       return true;
     }
+
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
