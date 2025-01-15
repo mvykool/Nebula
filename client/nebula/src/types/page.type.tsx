@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Project } from "./project.type";
 
 export type Page = {
   id: number;
   title: string;
   content: string;
-  project: Project | string;
-  parent: Page;
-  children: Page | null;
+  project: string;
+  parent: Page | null;
+  children: Page[] | null;
 };
 
 export interface PageContextType {

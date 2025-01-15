@@ -85,7 +85,7 @@ const Project = () => {
         return;
       }
 
-      fetchMyPages();
+      fetchMyPages(projectId);
       try {
         const result = await fetchProject(projectId);
         if (result) {
