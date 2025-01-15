@@ -13,6 +13,11 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 
+interface SignInDto {
+  username: string;
+  password: string; // This will be the hashed password from frontend
+}
+
 @ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
@@ -20,16 +25,15 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async signIn(@Body() signInDto: Record<string, any>) {
-    const { access_token, refresh_token } = await this.authService.signIn(
+  async signIn(@Body() signInDto: SignInDto) {
+    // Now passing back the complete response including user data
+    console.log('Received signInDto:', signInDto);
+    const response = await this.authService.signIn(
       signInDto.username,
-      signInDto.password,
+      signInDto.password, // This is now the hashed password
     );
 
-    return {
-      access_token,
-      refresh_token,
-    };
+    return response; // This will include access_token, refresh_token, and data.user
   }
 
   @UseGuards(AuthGuard)

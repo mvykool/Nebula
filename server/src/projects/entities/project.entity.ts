@@ -25,10 +25,10 @@ export class Project {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @CreateDateColumn({ type: 'varchar', length: 40 })
+  @CreateDateColumn({ type: 'timestamp' })
   created: Date;
 
-  @UpdateDateColumn({ type: 'varchar', length: 40 })
+  @UpdateDateColumn({ type: 'timestamp' })
   updated: Date;
 
   @Column({ type: 'boolean', default: false })

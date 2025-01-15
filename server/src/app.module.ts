@@ -24,7 +24,7 @@ import { imagesModule } from './images/images.module';
       },
       entities: [User, Project, Page],
       migrations: ['dist/migrations/*.js'],
-      synchronize: false,
+      synchronize: true,
     }),
     ThrottlerModule.forRoot([
       {

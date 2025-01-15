@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -11,13 +12,27 @@ export class AuthService {
 
   async signIn(
     username: string,
-    pass: string,
-  ): Promise<{ access_token: string; refresh_token: string }> {
+    hashedPassword: string,
+  ): Promise<{
+    access_token: string;
+    refresh_token: string;
+    data: { user: any };
+  }> {
     const user = await this.usersService.findOne(username);
-
-    if (user?.password !== pass) {
+    if (!user) {
       throw new UnauthorizedException();
     }
+
+    // Direct comparison since passwords are hashed the same way
+    const isPasswordValid = await bcrypt.compare(hashedPassword, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException();
+    }
+
+    console.log('Password comparison:', {
+      provided: hashedPassword,
+      stored: user.password,
+    });
 
     const payload = {
       sub: user.id,
@@ -26,16 +41,27 @@ export class AuthService {
       picture: user.picture,
       email: user.email,
     };
-    console.log('Payload:', payload);
-    const access_token = await this.jwtService.signAsync(payload);
-    const refresh_token = await this.jwtService.signAsync(payload, {
-      secret: process.env.SECRET_REFRESH,
-      expiresIn: '7d',
-    });
+
+    const [access_token, refresh_token] = await Promise.all([
+      this.jwtService.signAsync(payload),
+      this.jwtService.signAsync(payload, {
+        secret: process.env.SECRET_REFRESH,
+        expiresIn: '7d',
+      }),
+    ]);
 
     return {
       access_token,
       refresh_token,
+      data: {
+        user: {
+          sub: user.id,
+          username: user.username,
+          name: user.name,
+          picture: user.picture,
+          email: user.email,
+        },
+      },
     };
   }
 
