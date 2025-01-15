@@ -40,4 +40,7 @@ export class Project {
 
   @OneToMany(() => Page, (page) => page.project, { cascade: true })
   pages: Page[];
+
+  @Column({ type: 'varchar', length: 100, nullable: true, unique: true })
+  publishedSlug: string;
 }

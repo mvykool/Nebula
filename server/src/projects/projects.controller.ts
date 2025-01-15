@@ -18,6 +18,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/decorator/public.decorator';
 
 @ApiTags('projects')
 @Controller('projects')
@@ -52,6 +53,12 @@ export class ProjectsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.projectsService.findOne(+id);
+  }
+
+  @Public()
+  @Get('p/:slug')
+  async getPublishedProject(@Param('slug') slug: string) {
+    return this.projectsService.getPublishedProjectBySlug(slug);
   }
 
   @Patch(':id')

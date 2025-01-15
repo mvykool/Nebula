@@ -39,6 +39,14 @@ export class ProjectsService {
     return this.projectRepository.find();
   }
 
+  private generateSlug(name: string): string {
+    // Convert to lowercase and replace spaces/special chars with dashes
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
+
   async findByOwner(ownerId: number): Promise<Project[]> {
     return this.projectRepository.find({
       where: { owner: { id: ownerId } },
@@ -69,6 +77,22 @@ export class ProjectsService {
       throw new BadRequestException(`Project with ID ${id} not found`);
     }
 
+    // If publishing for the first time, generate a slug
+    if (updateProjectDto.publish && !project.publishedSlug) {
+      let slug = this.generateSlug(project.name);
+      let counter = 0;
+
+      // Ensure slug uniqueness
+      while (
+        await this.projectRepository.findOne({ where: { publishedSlug: slug } })
+      ) {
+        counter++;
+        slug = `${this.generateSlug(project.name)}-${counter}`;
+      }
+
+      project.publishedSlug = slug;
+    }
+
     // Update only the fields that are present in the DTO
     if (updateProjectDto.name !== undefined) {
       project.name = updateProjectDto.name;
@@ -85,6 +109,19 @@ export class ProjectsService {
 
     // Save the updated project
     return this.projectRepository.save(project);
+  }
+
+  async getPublishedProjectBySlug(slug: string): Promise<Project> {
+    const project = await this.projectRepository.findOne({
+      where: { publishedSlug: slug, publish: true },
+      relations: ['pages'],
+    });
+
+    if (!project) {
+      throw new BadRequestException('Published project not found');
+    }
+
+    return project;
   }
 
   remove(id: number): Promise<{ affected?: number }> {
