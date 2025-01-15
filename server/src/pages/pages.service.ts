@@ -3,6 +3,7 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreatePageDto } from './dto/create-page.dto';
 import { UpdatePageDto } from './dto/update-page.dto';
@@ -24,20 +25,27 @@ export class PagesService {
     createPageDto: CreatePageDto,
     projectId: number,
   ): Promise<Page> {
-    const page: Page = new Page();
+    const page = new Page();
     page.title = createPageDto.title;
     page.content = createPageDto.content;
 
-    // Make sure you're finding and setting the project correctly
     const project = await this.projectsService.findOne(projectId);
     if (!project) {
-      throw new BadRequestException(`Project with ID ${projectId} not found`);
+      throw new NotFoundException(`Project with ID ${projectId} not found`);
     }
     page.project = project;
 
-    // Set other page properties
-    page.created = new Date();
-    page.updated = new Date();
+    if (createPageDto.parentId) {
+      const parentPage = await this.pageRepository.findOne({
+        where: { id: createPageDto.parentId },
+      });
+      if (!parentPage) {
+        throw new NotFoundException(
+          `Parent page with ID ${createPageDto.parentId} not found`,
+        );
+      }
+      page.parent = parentPage;
+    }
 
     return this.pageRepository.save(page);
   }
@@ -49,7 +57,7 @@ export class PagesService {
   async findByProject(projectId: number): Promise<Page[]> {
     return this.pageRepository.find({
       where: { project: { id: projectId } },
-      relations: ['project'],
+      relations: ['project', 'parent', 'children'],
     });
   }
 
