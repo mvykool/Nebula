@@ -18,7 +18,7 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 const LOCAL_STORAGE_KEY = "projects";
 
 const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
-  const { accessToken, fetchWithToken, isAnonymous } = useAuth();
+  const { accessToken, fetchWithToken } = useAuth();
   const navigate = useNavigate();
   const [myProjects, setMyProjects] = useState<Project[]>([]);
   const [publishedProjects, setPublishedProjects] = useState<Project[]>([]);
@@ -39,8 +39,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   // CREATE PROJECT
   const createProject = useCallback(
     async (data: Project) => {
-      console.log("Creating project, isAnonymous:", isAnonymous); // Debug log
-
       try {
         const response = await fetchWithToken(`${urlBase}/projects`, {
           method: "POST",
@@ -65,7 +63,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
         throw error;
       }
     },
-    [fetchWithToken, accessToken, isAnonymous, navigate],
+    [fetchWithToken, accessToken, navigate],
   );
 
   // FETCH MY PROJECTS
@@ -85,7 +83,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }, [fetchWithToken, myProjects, getLocalProjects, isAnonymous]);
+  }, [fetchWithToken, myProjects, getLocalProjects]);
 
   // FETCH PUBLISHED PROJECTS
   const fetchPublishedProjects = useCallback(async () => {
@@ -101,7 +99,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
     } catch (error) {
       console.error("Error fetching projects:", error);
     }
-  }, []);
+  }, [fetchWithToken]);
 
   const fetchProject = useCallback(
     async (id: string | undefined) => {
@@ -154,25 +152,33 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const updateProject = useCallback(
     async (projectId: string | undefined, updatedData: Partial<Project>) => {
       try {
-        const response = await fetch(`${urlBase}/projects/${projectId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
+        const response = await fetchWithToken(
+          `${urlBase}/projects/${projectId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedData),
           },
-          body: JSON.stringify(updatedData),
-        });
+        );
+
         if (!response.ok) {
           throw new Error("Failed to update project");
         }
-        console.log(response);
-        return await response.json();
+
+        const updatedProject = await response.json();
+
+        // Immediately fetch fresh projects data to ensure sync
+        await fetchMyProjects();
+
+        return updatedProject;
       } catch (error) {
         console.error("Error updating project:", error);
         throw error;
       }
     },
-    [fetchWithToken, accessToken],
+    [fetchWithToken, fetchMyProjects],
   );
 
   //DELETE PROJECTS
@@ -204,12 +210,29 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
     [fetchWithToken, getLocalProjects, saveLocalProjects, setMyProjects],
   );
 
+  const getPublicProjectBySlug = useCallback(
+    async (slug: string | undefined) => {
+      try {
+        const response = await fetch(`${urlBase}/projects/p/${slug}`);
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch (error) {
+        console.error("Error fetching public project:", error);
+        throw error;
+      }
+    },
+    [urlBase],
+  );
+
   return (
     <ProjectContext.Provider
       value={{
         createProject,
         fetchMyProjects,
+        getPublicProjectBySlug,
         fetchPublishedProjects,
+        setMyProjects,
         myProjects,
         fetchProject,
         publishedProjects,

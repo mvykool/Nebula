@@ -20,9 +20,8 @@ interface ProjectData {
 
 const Project = () => {
   const [coverChanged, setCoverChanged] = useState<boolean>(false);
-  const [initialCover, setInitialCover] = useState<string>("");
   const { projectId } = useParams<{ projectId: string | undefined }>();
-  const { fetchProject, updateProject } = useProject();
+  const { fetchProject, updateProject, setMyProjects } = useProject();
   const { myPages, fetchMyPages } = usePages();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
@@ -39,11 +38,18 @@ const Project = () => {
     setIsLoading(false); // Only hide loading state when image is actually loaded
   };
 
+  const removeCover = () => {
+    setData((prev) => ({ ...prev, cover: "" }));
+    setCoverChanged(true); // Indicate that the cover has been changed
+    setImageLoaded(false); // Reset the image loaded state
+  };
+
   const handleImage = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
       setIsLoading(true); // Set loading state before starting upload
+      setImageLoaded(false); // Reset image loaded state for new image
 
       const formData = new FormData();
       formData.append("file", file);
@@ -60,20 +66,18 @@ const Project = () => {
           const data = await response.json();
           const imageUrl = data.url;
           setData((prev) => ({ ...prev, cover: imageUrl }));
-          setImageLoaded(false); // Reset image loaded state for new image
           setCoverChanged(true);
-          setImageLoaded(false);
+          // Remove the setImageLoaded(false) here - let the onLoad handler handle it
         } else {
           console.error("Image upload failed");
           alert("Failed to upload image. Please try again.");
-          setIsLoading(false); // Only hide loading state when image is actually loaded
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error uploading image:", error);
         alert("Error uploading image. Please try again.");
         setCoverChanged(false);
-      } finally {
-        // Don't set isLoading to false here - we'll do that when the image actually loads
+        setIsLoading(false);
       }
     }
   };
@@ -91,7 +95,6 @@ const Project = () => {
         if (result) {
           // Ensure result is not undefined before updating state
           setData(result);
-          setInitialCover(result.cover);
           console.log(result);
 
           // Parse and update the description content
@@ -140,6 +143,8 @@ const Project = () => {
     };
   };
 
+  // In your Project component, modify the saveData function:
+
   const saveData = useCallback(async () => {
     if (!projectId) {
       console.error("Project ID is undefined");
@@ -154,28 +159,51 @@ const Project = () => {
         ? blocks[0].content.map((c: any) => c.text).join("")
         : data.name;
 
+    console.log("New project name:", name); // Debug log
+
     // Convert content to the expected format
     const description = JSON.stringify(
       content.slice(1).map((block) => [block]),
     );
-
     const pages = myPages;
 
     try {
+      console.log("Saving project with data:", {
+        ...data,
+        name,
+        description,
+        pages,
+      }); // Debug log
       const updatedData = await updateProject(projectId, {
         ...data,
         name,
         description,
         pages,
       });
+      console.log("Project updated response:", updatedData); // Debug log
+
       setData(updatedData);
-      setCoverChanged(false); // Reset the change tracking after successful save
-      setInitialCover(updatedData.cover);
+      setCoverChanged(false);
+
+      const refreshedProject = await fetchProject(projectId);
+      console.log("Refreshed project data:", refreshedProject); // Debug log
+
+      if (refreshedProject) {
+        setMyProjects((prev: any) => {
+          const updated = prev.map((project: any) =>
+            project.id === projectId
+              ? { ...project, ...refreshedProject }
+              : project,
+          );
+          console.log("Updated projects list:", updated); // Debug log
+          return updated;
+        });
+      }
       console.log("Data saved successfully");
     } catch (err) {
       console.error("Error saving data:", err);
     }
-  }, [editor, projectId, data, updateProject]);
+  }, [editor, projectId, data, updateProject, fetchProject]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -201,19 +229,25 @@ const Project = () => {
             </div>
           )}
 
-          {data?.cover && initialCover && (
-            <div className="relative group">
+          {data?.cover ? (
+            <div className="relative group w-11/12 mx-auto">
               <img
                 src={data?.cover}
                 alt="cover-image"
-                className={`mx-auto mt-10 relative w-11/12 object-cover h-[35vh] object-center rounded-lg
+                className={` mt-10 relative w-full object-cover h-[35vh] object-center rounded-lg
                 ${!imageLoaded ? "hidden" : ""}
                 ${isLoading ? "hidden" : "flex"}
                 `}
                 onLoad={handleImageLoad}
               />
-              <div className="absolute inset-0 mx-auto items-end justify-end hidden cursor-pointer bg-black bg-opacity-55 w-11/12 rounded-lg group-hover:flex">
+              <div className="absolute inset-0 items-end justify-end hidden  bg-black bg-opacity-55 w-full rounded-lg group-hover:flex">
                 <div className="flex p-3 gap-2">
+                  <button
+                    className={`${data.cover ? "block bg-red-500 py-2 font-semibold tracking-wide cursor-pointer rounded-md text-sm px-3" : "hidden"}`}
+                    onClick={removeCover}
+                  >
+                    remove cover
+                  </button>
                   <label
                     className={`
                     bg-primary 
@@ -253,9 +287,48 @@ const Project = () => {
                 </div>
               </div>
             </div>
+          ) : (
+            <div className=" mx-auto items-end justify-end  flex cursor-pointer rounded-lg ">
+              <div className="flex p-5 gap-2">
+                <label
+                  className={`
+                    bg-primary 
+                    px-3
+                    py-2 
+                    text-black 
+                    dark:text-white 
+                    font-semibold 
+                    tracking-wide 
+                    rounded-md 
+                    text-sm 
+                    cursor-pointer 
+                    hover:bg-primary/90`}
+                  htmlFor="file-upload"
+                >
+                  {data.cover ? "Change project image" : "Add a project image"}
+                </label>
+                <input
+                  type="file"
+                  id="file-upload"
+                  name="cover"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImage}
+                />
+                <button
+                  onClick={saveData}
+                  disabled={!coverChanged}
+                  className={`px-3 text-sm rounded-md ${data.cover ? "block" : "hidden"}  
+                  ${!coverChanged ? "bg-gray-400 cursor-not-allowed" : "bg-secondary hover:bg-secondary/90"}
+                  `}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
           )}
 
-          <div className="w-full px-4 my-10 mx-auto">
+          <div className="w-10/12 px-4 my-10 mx-auto">
             <BlockNoteView editor={editor} data-theming-css-variables-demo />
           </div>
         </div>
