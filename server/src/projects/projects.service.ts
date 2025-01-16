@@ -52,7 +52,7 @@ export class ProjectsService {
     try {
       const projects = await this.projectRepository.find({
         where: { owner: { id: ownerId } },
-        relations: ['owner'],
+        relations: ['owner', 'pages'],
       });
       console.log('Found projects:', projects);
       return projects;
@@ -122,7 +122,7 @@ export class ProjectsService {
   async getPublishedProjectBySlug(slug: string): Promise<Project> {
     const project = await this.projectRepository.findOne({
       where: { publishedSlug: slug, publish: true },
-      relations: ['pages', 'owner'],
+      relations: ['owner', 'pages'],
     });
 
     if (!project) {
