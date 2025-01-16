@@ -26,9 +26,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(() => {
     return localStorage.getItem("refresh_token") || "";
   });
-  const [isAnonymous, setIsAnonymous] = useState(() => {
-    return localStorage.getItem("isAnonymous") === "false";
-  });
 
   const navigate = useNavigate();
 
@@ -47,29 +44,29 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const res = await response.json();
 
-      if (response.ok) {
+      if (!response.ok) {
+        throw new Error(res.message || "Authentication failed");
+      }
+
+      try {
         localStorage.setItem("access_token", res.access_token);
         localStorage.setItem("refresh_token", res.refresh_token);
         setAccessToken(res.access_token);
         setRefreshToken(res.refresh_token);
-        setIsAnonymous(false);
 
-        localStorage.setItem("isAnonymous", "false");
-
-        if (res.data && res.data.user) {
+        if (res.data?.user) {
           setUser(res.data.user);
           localStorage.setItem("user", JSON.stringify(res.data.user));
-        } else {
-          console.error("User data is missing in the response");
         }
 
         navigate("/");
-      } else {
-        console.error("Login failed:", res.message);
-        alert("Invalid username or password");
+      } catch (storageError) {
+        console.error("Storage error:", storageError);
+        throw new Error("Failed to save authentication data");
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error; // Re-throw to be handled by the component
     }
   };
 
@@ -95,7 +92,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem("isAnonymous", "true");
         setAccessToken(res.access_token);
         setRefreshToken(res.refresh_token);
-        setIsAnonymous(true);
 
         if (res.data && res.data.user) {
           setUser(res.data.user);
@@ -140,7 +136,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     setAccessToken("");
     setRefreshToken("");
-    setIsAnonymous(false);
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
@@ -280,7 +275,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         updateUser,
         signupAction,
         loginAnonymous,
-        isAnonymous,
         logOut,
         defaultPfp,
         fetchWithToken,

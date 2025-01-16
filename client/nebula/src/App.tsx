@@ -18,6 +18,7 @@ import Project from "./views/project/project";
 import Page from "./views/project/pages/page";
 import PageProvider from "./hooks/usePage";
 import NotMatch from "./views/notMatch";
+import PublicProjectView from "./views/publicProjectView";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
                     </Route>
                   </Route>
                 </Route>
+                <Route path="/p/:slug" element={<PublicProjectView />} />
               </Routes>
             </PageProvider>
           </ProjectProvider>

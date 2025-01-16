@@ -5,42 +5,60 @@ import { useNavigate } from "react-router";
 import { strings } from "../constants/strings";
 import AllPages from "../views/project/pages/allPages";
 import PublishProject from "./publishProject";
-import { useEffect, useState } from "react";
 import { usePages } from "../hooks/usePage";
+import { useEffect, useState } from "react";
 
 interface Iprops {
   id: string | undefined;
 }
 
 const Sidebar = ({ id }: Iprops) => {
-  const [projectName, setProjectName] = useState<string | undefined>("");
   const [isHidden, setIsHidden] = useState<boolean>(false);
   const { user, defaultPfp } = useAuth();
   const { deleteAllPages } = usePages();
-  const { deleteProject, fetchProject } = useProject();
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const { myProjects, deleteProject } = useProject();
+
+  // Find the current project in the myProjects array
+  // Add useEffect to log when myProjects or id changes
+  useEffect(() => {
+    console.log("Sidebar: myProjects updated:", myProjects);
+    console.log("Sidebar: current id:", id);
+  }, [myProjects, id]);
+
+  const currentProject = myProjects.find((project) => {
+    console.log(
+      "Comparing project.id:",
+      project.id,
+      "with id:",
+      id,
+      "type of project.id:",
+      typeof project.id,
+      "type of id:",
+      typeof id,
+    );
+    return project.id === Number(id);
+  });
+
+  console.log("Sidebar: currentProject found:", currentProject);
+  const projectName = currentProject?.name;
+  console.log("Sidebar: projectName:", projectName);
 
   const handleDelete = (): void => {
-    deleteProject(projectId);
-    deleteAllPages();
-    navigate("/");
+    if (projectId) {
+      deleteProject(Number(projectId));
+      deleteAllPages();
+      navigate("/");
+    }
   };
-
-  useEffect(() => {
-    const project = async () => {
-      const projectData = await fetchProject(id);
-      setProjectName(projectData?.name);
-    };
-    project();
-  }, [id]);
 
   const hideSidebar = () => {
     setIsHidden((previous) => !previous);
   };
 
   return (
-    <div className={`relative ${isHidden ? "w-2" : "w-2/12"}`}>
+    <div className={`relative z-50 ${isHidden ? "w-2" : "w-2/12"}`}>
       <div
         className={`fixed left-0 top-0 h-screen transform transition-transform duration-200 ease-in-out
           ${isHidden ? "-translate-x-full" : "translate-x-0"}
@@ -92,7 +110,7 @@ const Sidebar = ({ id }: Iprops) => {
           </div>
 
           <div className="border border-gray-400 w-full"></div>
-          <p className="p-4 text-gray-400">Workspace</p>
+          <p className="px-4 pt-3 pb-5 text-gray-400">Workspace</p>
           <div className="w-full px-4 min-h-[50vh]">
             <AllPages projectId={id} name={projectName} />
           </div>
