@@ -8,7 +8,8 @@ const Login = () => {
     username: "",
     password: "",
   });
-
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const auth = useAuth();
 
@@ -30,17 +31,24 @@ const Login = () => {
     }
   };
 
-  const handleSubmitEvent = async (e: FormEvent): Promise<void> => {
+  const handleSubmitEvent = async (e: FormEvent) => {
     e.preventDefault();
-    if (isFormValid) {
-      try {
-        await auth.loginAction(input);
-      } catch (error) {
-        console.log(error);
-      }
+    if (!input.username || !input.password) {
+      setError("Please fill in all fields");
       return;
     }
-    alert("Please fill in all fields");
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      await auth.loginAction(input);
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Invalid username or password");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInput = (e: FormEvent<HTMLInputElement>): void => {
@@ -58,6 +66,11 @@ const Login = () => {
           Sign <span className="text-primary">i</span>n
         </h2>
         <form className="w-3/6" onSubmit={handleSubmitEvent}>
+          {error && (
+            <div className="bg-red-500 text-white p-2 rounded mb-4">
+              {error}
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <label className="font-semibold text-white tracking-wide ">
               Username
@@ -104,14 +117,14 @@ const Login = () => {
           <div className="flex mt-3 justify-center w-full">
             <button
               type="submit"
-              disabled={!isFormValid}
+              disabled={!isFormValid || loading}
               className={`mt-3 w-full rounded-md py-2 px-1 font-bold ${
-                isFormValid
+                isFormValid && !loading
                   ? "bg-primary hover:bg-primary/90 cursor-pointer"
                   : "bg-gray-400 bg-opacity-20 cursor-not-allowed"
               }`}
             >
-              {strings.logandsing.login}
+              {loading ? "Signing in..." : strings.logandsing.login}
             </button>
           </div>
         </form>

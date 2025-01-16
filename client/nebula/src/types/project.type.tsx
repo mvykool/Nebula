@@ -9,4 +9,5 @@ export type Project = {
   id: number;
   owner?: User;
   publish?: boolean;
+  publishedSlug?: string;
 };

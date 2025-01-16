@@ -60,13 +60,10 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
   // FETCH MY PROJECTS
   const fetchMyPages = useCallback(
     async (id: number) => {
-      console.log("Fetching pages for project ID:", id);
       try {
         const response = await fetchWithToken(`${urlBase}/pages/project/${id}`);
         if (response.ok) {
           const pages = await response.json();
-          console.log("Received pages:", pages);
-          // Only update if the pages are different
           setMyPages((prevPages) => {
             if (JSON.stringify(prevPages) !== JSON.stringify(pages)) {
               return pages;

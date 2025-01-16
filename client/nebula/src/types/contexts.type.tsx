@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { Project } from "./project.type";
 import { User } from "./user.type";
 
@@ -19,7 +20,6 @@ export interface AuthContextType {
     username: string;
     password: string;
   }) => Promise<void>;
-  isAnonymous: boolean;
 }
 
 export interface ProjectContextType {
@@ -27,6 +27,8 @@ export interface ProjectContextType {
   fetchMyProjects: () => Promise<void>;
   fetchPublishedProjects: () => Promise<void>;
   fetchProject: (id: string | undefined) => Promise<Project | undefined>;
+  getPublicProjectBySlug: (slug: string | undefined) => Promise<Project>;
+  setMyProjects: Dispatch<SetStateAction<Project[]>>;
   myProjects: Project[];
   publishedProjects: Project[];
   updateProject: (
