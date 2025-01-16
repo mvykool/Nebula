@@ -36,6 +36,7 @@ export const strings = {
     addPage: "Add page",
     delete: "Delete project",
     publish: "Publish project",
+    unpublish: "Unpublish project",
   },
   project: {
     createNew: "Create new project",
