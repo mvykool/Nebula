@@ -19,6 +19,7 @@ import Page from "./views/project/pages/page";
 import PageProvider from "./hooks/usePage";
 import NotMatch from "./views/notMatch";
 import PublicProjectView from "./views/publicProjectView";
+import PublicPageView from "./components/publicPageView";
 
 function App() {
   return (
@@ -55,6 +56,10 @@ function App() {
                   </Route>
                 </Route>
                 <Route path="/p/:slug" element={<PublicProjectView />} />
+                <Route
+                  path="/p/:slug/pages/:pageId"
+                  element={<PublicPageView />}
+                />
               </Routes>
             </PageProvider>
           </ProjectProvider>

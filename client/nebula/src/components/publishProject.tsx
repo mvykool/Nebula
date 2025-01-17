@@ -70,14 +70,14 @@ const PublishProject = () => {
 
       {/* Optional: Show the public URL when published */}
       {isPublished && (
-        <div className="flex flex-col text-sm bg-white p-2 rounded shadow-lg">
-          <p className="text-black">Published! 🎉</p>
+        <div className="flex flex-col text-sm bg-secondary-dark p-2 rounded">
           <a
             href={`/p/${slug}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
+            className="text-black gap-2 flex items-center hover:underline"
           >
+            <i className="bx bx-link-external"></i>
             View public page
           </a>
         </div>

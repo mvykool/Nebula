@@ -128,24 +128,21 @@ const AllPages = ({ projectId, name }: Iprops) => {
     return (
       <div key={page.id} className="flex flex-col">
         <div
-          className="flex justify-between hover:bg-gray-700 items-center p-2 rounded-sm"
+          className="flex justify-between hover:bg-cardWhite dark:hover:bg-card text-black dark:text-gray-200 items-center p-2 rounded-md"
           style={{ marginLeft: `${level * 20}px` }}
         >
           <div className="flex items-center gap-2">
             {hasChildren && (
               <button
                 onClick={() => toggleExpand(page.id)}
-                className="text-gray-300 w-4 h-4 flex items-center justify-center"
+                className=" w-4 h-4 flex items-center justify-center"
               >
                 <i
                   className={`bx bx-chevron-${isExpanded ? "down" : "right"} text-lg`}
                 ></i>
               </button>
             )}
-            <p
-              className="text-gray-300 cursor-pointer"
-              onClick={() => goPage(page.id)}
-            >
+            <p className=" w-36 cursor-pointer" onClick={() => goPage(page.id)}>
               {page.title}
             </p>
           </div>
@@ -153,7 +150,7 @@ const AllPages = ({ projectId, name }: Iprops) => {
             {level === 0 && (
               <button
                 onClick={() => addChildPage(page.id)}
-                className="text-gray-300 hover:text-gray-100"
+                className="text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-gray-100"
                 title="Add subpage"
               >
                 <i className="bx bx-plus"></i>
@@ -161,7 +158,7 @@ const AllPages = ({ projectId, name }: Iprops) => {
             )}
             <button
               onClick={() => deletePage(page.id)}
-              className="text-gray-300 hover:text-gray-100"
+              className="text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-gray-100"
               title="Delete page"
             >
               <i className="bx bxs-x-square text-xl"></i>
