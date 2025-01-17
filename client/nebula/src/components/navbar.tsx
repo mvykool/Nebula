@@ -1,23 +1,9 @@
-import { useState } from "react";
 import UserAndLogOut from "./userAndLogOut";
 import { NavLink } from "react-router-dom";
 import { strings } from "../constants/strings";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 const Navbar = () => {
-  const [isDark, setIsDark] = useState<boolean>(false);
-
-  const toggleTheme = () => {
-    if (document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDark(true);
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setIsDark(false);
-    }
-  };
-
   return (
     <div className="w-full h-16 flex justify-between items-center">
       {/*Logo*/}
@@ -51,17 +37,7 @@ const Navbar = () => {
       <div className="flex items-center gap-3 w-[205px] text-black dark:text-white">
         <ul className="flex gap-3 mr-4">
           <li>
-            <button
-              type="button"
-              className="rounded-full hover:bg-hover dark:hover:bg-opacity-30"
-              onClick={toggleTheme}
-            >
-              {isDark ? (
-                <i className="bx bx-moon text-xl h-8 flex justify-center items-center w-8 cursor-pointer"></i>
-              ) : (
-                <i className="bx bx-sun text-xl h-8 flex justify-center items-center w-8 cursor-pointer"></i>
-              )}
-            </button>
+            <ThemeSwitcher />
           </li>
           <li>
             <i className="bx bx-bell text-xl cursor-pointer rounded-full w-8 h-8 flex justify-center items-center hover:bg-hover dark:hover:bg-opacity-30"></i>
