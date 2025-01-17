@@ -213,7 +213,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const getPublicProjectBySlug = useCallback(
     async (slug: string | undefined) => {
       try {
-        const response = await fetch(`${urlBase}/projects/p/${slug}`);
+        const response = await fetchWithToken(`${urlBase}/projects/p/${slug}`);
         if (response.ok) {
           return await response.json();
         }
@@ -222,7 +222,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
         throw error;
       }
     },
-    [urlBase],
+    [urlBase, fetchWithToken],
   );
 
   return (

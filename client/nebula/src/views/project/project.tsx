@@ -328,7 +328,7 @@ const Project = () => {
             </div>
           )}
 
-          <div className="w-10/12 px-4 my-10 mx-auto">
+          <div className="w-10/12 px-7 my-10 mx-auto">
             <BlockNoteView editor={editor} data-theming-css-variables-demo />
           </div>
         </div>
