@@ -12,6 +12,7 @@ const ExploreView = () => {
   useEffect(() => {
     const getProjects = async () => {
       await fetchPublishedProjects();
+      console.log(publishedProjects);
       setIsLoading(false);
     };
     getProjects();
@@ -33,7 +34,7 @@ const ExploreView = () => {
               publishedProjects.map((project: Project) => (
                 <div key={project?.id}>
                   <ExploreCard
-                    projectId={project?.id}
+                    slug={project.publishedSlug}
                     name={project?.name}
                     cover={project?.cover}
                     owner={project?.owner}

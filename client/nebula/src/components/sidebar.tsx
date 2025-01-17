@@ -58,11 +58,11 @@ const Sidebar = ({ id }: Iprops) => {
   };
 
   return (
-    <div className={`relative z-50 ${isHidden ? "w-2" : "w-2/12"}`}>
+    <div className={`relative z-50 ${isHidden ? "w-2" : "w-[15vw]"}`}>
       <div
         className={`fixed left-0 top-0 h-screen transform transition-transform duration-200 ease-in-out
           ${isHidden ? "-translate-x-full" : "translate-x-0"}
-          border border-gray-800 w-[10wh] text-black dark:text-white bg-bgLight dark:bg-bgDark`}
+          border border-gray-800 max-w-[15vw] text-black dark:text-white bg-bgLight dark:bg-bgDark`}
       >
         {/*OWNER INFO*/}
         <div className="flex items-center p-2">
@@ -110,7 +110,9 @@ const Sidebar = ({ id }: Iprops) => {
           </div>
 
           <div className="border border-gray-400 w-full"></div>
-          <p className="px-4 pt-3 pb-5 text-gray-400">Workspace</p>
+          <p className="px-4 pt-3 pb-5 text-gray-700 dark:text-gray-400">
+            Workspace
+          </p>
           <div className="w-full px-4 min-h-[50vh]">
             <AllPages projectId={id} name={projectName} />
           </div>

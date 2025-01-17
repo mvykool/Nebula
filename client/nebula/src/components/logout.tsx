@@ -23,7 +23,7 @@ const Logout = ({ auth, setIsOpen }: LogOutProps) => {
   };
 
   return (
-    <div className="border boder-white absolute w-full flex flex-col gap-3 rounded-b-md">
+    <div className="border-b border-r border-l boder-gray-700 dark:border-gray-500 absolute w-full flex flex-col gap-3 rounded-b-md">
       <button
         className="flex items-center pl-5 py-3 gap-3 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleProfile}
