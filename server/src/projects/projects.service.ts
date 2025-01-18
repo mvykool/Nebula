@@ -122,7 +122,7 @@ export class ProjectsService {
   async getPublishedProjectBySlug(slug: string): Promise<Project> {
     const project = await this.projectRepository.findOne({
       where: { publishedSlug: slug, publish: true },
-      relations: ['owner', 'pages'],
+      relations: ['owner', 'pages', 'pages.parent', 'pages.children'],
     });
 
     if (!project) {
