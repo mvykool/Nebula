@@ -31,4 +31,10 @@ export class StarsController {
     const userId = req.user.sub;
     return this.starsService.hasUserStarred(userId, projectId);
   }
+  @Get('my-starred')
+  @UseGuards(AuthGuard)
+  async getMyStarredProjects(@Request() req) {
+    const userId = req.user.sub;
+    return this.starsService.getUserStarredProjects(userId);
+  }
 }
