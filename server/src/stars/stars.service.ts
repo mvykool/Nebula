@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Star } from './entities/star.entity';
 import { NotificationsService } from '../notifications/notifications.service';
 import { ProjectsService } from '../projects/projects.service';
+import { Project } from 'src/projects/entities/project.entity';
 
 @Injectable()
 export class StarsService {
@@ -79,5 +80,16 @@ export class StarsService {
       },
     });
     return !!star;
+  }
+
+  async getUserStarredProjects(userId: number): Promise<Project[]> {
+    const stars = await this.starsRepository.find({
+      where: { user: { id: userId } },
+      relations: ['project', 'project.owner'],
+      order: { createdAt: 'DESC' },
+    });
+
+    // Extract and return the projects from stars
+    return stars.map((star) => star.project);
   }
 }
