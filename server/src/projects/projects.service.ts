@@ -135,4 +135,8 @@ export class ProjectsService {
   remove(id: number): Promise<{ affected?: number }> {
     return this.projectRepository.delete(id);
   }
+
+  async updateStarCount(projectId: number, count: number): Promise<void> {
+    await this.projectRepository.update(projectId, { starCount: count });
+  }
 }

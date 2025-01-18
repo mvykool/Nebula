@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Page } from '../../pages/entities/page.entity';
+import { Star } from 'src/stars/entities/star.entity';
 
 @Entity()
 export class Project {
@@ -43,4 +44,11 @@ export class Project {
 
   @Column({ type: 'varchar', length: 100, nullable: true, unique: true })
   publishedSlug: string;
+
+  @OneToMany(() => Star, (star) => star.project)
+  stars: Star[];
+
+  // Optional: Add a virtual column to count stars
+  @Column({ type: 'int', default: 0 })
+  starCount: number;
 }
