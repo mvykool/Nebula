@@ -10,6 +10,10 @@ import { Project } from './projects/entities/project.entity';
 import { Page } from './pages/entities/page.entity';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { imagesModule } from './images/images.module';
+import { StarsModule } from './stars/stars.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { Star } from './stars/entities/star.entity';
+import { Notification } from './notifications/entities/notification.entity';
 
 @Module({
   imports: [
@@ -22,8 +26,7 @@ import { imagesModule } from './images/images.module';
       ssl: {
         rejectUnauthorized: false,
       },
-      entities: [User, Project, Page],
-      migrations: ['dist/migrations/*.js'],
+      entities: [User, Project, Page, Star, Notification],
       synchronize: true,
     }),
     ThrottlerModule.forRoot([
@@ -35,6 +38,8 @@ import { imagesModule } from './images/images.module';
     UsersModule,
     ProjectsModule,
     PagesModule,
+    StarsModule,
+    NotificationsModule,
     AuthModule,
     imagesModule,
   ],
