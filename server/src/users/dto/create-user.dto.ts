@@ -5,6 +5,10 @@ import {
   Matches,
   MinLength,
   IsString,
+  IsDate,
+  IsOptional,
+  IsBoolean,
+  ValidateIf,
 } from 'class-validator';
 
 const passwordRegEx =
@@ -35,5 +39,18 @@ export class CreateUserDto {
     message:
       'password must contain min 8 and max 20 characters, at least one upper case letter, one lowercase letter, one number, and one special character',
   })
+  @ValidateIf((o) => !o.isGoogleUser && !o.isDemo)
   password: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isGoogleUser?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isDemo?: boolean;
+
+  @IsOptional()
+  @IsDate()
+  demoExpiresAt?: Date;
 }

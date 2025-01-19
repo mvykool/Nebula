@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { StarsModule } from 'src/stars/stars.module';
 import { NotificationsModule } from 'src/notifications/notifications.module';
+import { GoogleStrategy } from './interfaces/strategies/google.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
     }),
     UsersModule,
     StarsModule,
+    PassportModule,
     NotificationsModule,
     JwtModule.register({
       global: true,
@@ -23,7 +26,7 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, Reflector],
+  providers: [AuthService, Reflector, GoogleStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -1,7 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ClassSerializerInterceptor } from '@nestjs/common';
+import {
+  BadRequestException,
+  ClassSerializerInterceptor,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import helmet from 'helmet';
 
@@ -30,6 +34,21 @@ async function bootstrap() {
   };
 
   app.enableCors(options);
+
+  // Add validation pipe with proper error handling
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      exceptionFactory: (errors) => {
+        const messages = errors.map((error) =>
+          Object.values(error.constraints).join(', '),
+        );
+        return new BadRequestException(messages);
+      },
+    }),
+  );
 
   app.use(
     helmet({

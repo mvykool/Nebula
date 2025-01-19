@@ -21,7 +21,7 @@ export class User {
   @Column({ type: 'varchar', length: 40 })
   email: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   @Exclude({ toPlainOnly: true })
   password: string;
 
@@ -33,4 +33,13 @@ export class User {
 
   @OneToMany(() => Notification, (notification) => notification.recipient)
   notifications: Notification[];
+
+  @Column({ nullable: true })
+  isGoogleUser: boolean;
+
+  @Column({ default: false })
+  isDemo: boolean;
+
+  @Column({ nullable: true })
+  demoExpiresAt: Date;
 }
