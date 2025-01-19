@@ -8,7 +8,7 @@ import {
 import { useAuth } from "./authProvider";
 import { useNavigate } from "react-router";
 import { ProjectContextType } from "../types/contexts.type";
-import { Project } from "../types/project.type";
+import { Project, ProjectInput } from "../types/project.type";
 
 interface ProjectProviderProps {
   children: React.ReactNode;
@@ -38,7 +38,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   // CREATE PROJECT
   const createProject = useCallback(
-    async (data: Project) => {
+    async (data: ProjectInput) => {
       try {
         const response = await fetchWithToken(`${urlBase}/projects`, {
           method: "POST",
@@ -52,9 +52,8 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
         if (response.ok) {
           const res = await response.json();
           console.log("project created: ", res);
-          // Update local state before navigating
           setMyProjects((prev) => [...prev, res]);
-          await fetchMyProjects(); // Refresh the projects list
+          await fetchMyProjects();
           navigate("/");
           return res;
         }

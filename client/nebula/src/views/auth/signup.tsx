@@ -52,7 +52,7 @@ const SignUp = () => {
       </h2>
       <form
         onSubmit={handleSubmitEvent}
-        className="rounded-md px-8 py-10 w-2/6 flex flex-col gap-4"
+        className="rounded-md px-8 py-10 w-5/6 md:w-2/6 flex flex-col gap-4"
       >
         <div className="flex flex-col gap-2">
           <label className="font-semibold text-white  tracking-wide">

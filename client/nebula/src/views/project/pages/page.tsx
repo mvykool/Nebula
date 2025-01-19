@@ -73,14 +73,15 @@ const Page = () => {
   };
 
   const saveData = useCallback(async (): Promise<void> => {
-    if (!projectId) {
-      console.error("Project ID is undefined");
+    if (!projectId || !pageId) {
+      console.error("Project ID or Page ID is undefined");
       return;
     }
+
     const blocks = editor.document;
     const contentEditor = blocks.map(extractContentFromBlock);
 
-    // Extract name from the first block if it's a heading
+    // Extract title from the first block if it's a heading
     const title =
       blocks[0].type === "heading"
         ? blocks[0].content.map((c: any) => c.text).join("")
@@ -92,18 +93,21 @@ const Page = () => {
     );
 
     try {
-      const updatedData = await updatePages(pageId, {
-        ...data,
+      // Only send the fields that the backend expects
+      const updatePayload = {
         title,
         content,
-      });
+        // parentId: data.parentId // Include this if you need to update the parent
+      };
+
+      const updatedData = await updatePages(Number(pageId), updatePayload);
       setData(updatedData);
-      fetchMyPages(projectId);
+      await fetchMyPages(Number(projectId));
       console.log("Data saved successfully");
     } catch (err) {
       console.error("Error saving data:", err);
     }
-  }, [editor, projectId, data, updatePages]);
+  }, [editor, projectId, pageId, data.title, updatePages, fetchMyPages]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -119,7 +123,7 @@ const Page = () => {
   }, [saveData]);
 
   return (
-    <div className="w-9/12 px-7  mx-auto pt-20">
+    <div className="w-full md:w-9/12 px-0 md:px-7  mx-auto pt-20">
       <BlockNoteView editor={editor} data-theming-css-variables-demo />
     </div>
   );

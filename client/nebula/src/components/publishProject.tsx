@@ -45,12 +45,12 @@ const PublishProject = () => {
         onClick={togglePublish}
         disabled={loading}
         type="button"
-        className={`px-2 py-1 flex items-center gap-2 rounded-md transition-colors
+        className={`px-1 md:px-2 py-1 flex items-center gap-2 rounded-md transition-colors
         ${
           loading
             ? "bg-gray-400 cursor-not-allowed"
             : isPublished
-              ? "bg-red-500 hover:bg-red-600"
+              ? "bg-red-500 hover:bg-red-600 text-left md:text-balance"
               : "bg-primary hover:bg-primary-dark"
         }`}
       >

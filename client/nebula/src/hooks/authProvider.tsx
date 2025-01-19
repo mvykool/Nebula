@@ -27,9 +27,29 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return localStorage.getItem("refresh_token") || "";
   });
 
+  const [isInitialized, setIsInitialized] = useState(false);
+
   const navigate = useNavigate();
 
   const urlBase = import.meta.env.VITE_URL;
+
+  // Initialize auth state on mount
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const storedAccessToken = localStorage.getItem("access_token");
+      const storedRefreshToken = localStorage.getItem("refresh_token");
+      const storedUser = localStorage.getItem("user");
+
+      if (storedAccessToken && storedRefreshToken && storedUser) {
+        setAccessToken(storedAccessToken);
+        setRefreshToken(storedRefreshToken);
+        setUser(JSON.parse(storedUser));
+      }
+      setIsInitialized(true);
+    };
+
+    initializeAuth();
+  }, []);
 
   const loginAction = async (data: { username: string; password: string }) => {
     try {
@@ -70,46 +90,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const loginAnonymous = async (data: {
-    username: string;
-    password: string;
-  }) => {
-    try {
-      const response = await fetch(`${urlBase}/auth/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const res = await response.json();
-
-      if (response.ok) {
-        localStorage.setItem("access_token", res.access_token);
-        localStorage.setItem("refresh_token", res.refresh_token);
-        localStorage.setItem("isAnonymous", "true");
-        setAccessToken(res.access_token);
-        setRefreshToken(res.refresh_token);
-
-        if (res.data && res.data.user) {
-          setUser(res.data.user);
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-        } else {
-          console.error("User data is missing in the response");
-        }
-
-        navigate("/");
-      } else {
-        console.error("Login failed:", res.message);
-        alert("Invalid username or password");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   //create user
   const signupAction = async (data: { username: string; password: string }) => {
     try {
@@ -132,7 +112,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const logOut = () => {
+  const logOut = useCallback(() => {
     setUser(null);
     setAccessToken("");
     setRefreshToken("");
@@ -142,7 +122,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("projects");
     localStorage.setItem("isAnonymous", "false");
     navigate("/login");
-  };
+  }, [navigate]);
 
   const updateUser = async (updateData: Partial<User>) => {
     if (!accessToken || !user?.sub) {
@@ -195,9 +175,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setAccessToken(res.access_token);
         setRefreshToken(res.refresh_token);
         return res.access_token;
-      } else {
-        throw new Error("Token refresh failed");
       }
+      logOut();
+      return null;
     } catch (error) {
       console.error("Token refresh failed:", error);
       logOut();
@@ -221,7 +201,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           const newToken = await refreshTokens();
           if (newToken) {
             return makeRequest(newToken);
-          } else {
             throw new Error("Authentication failed");
           }
         }
@@ -237,24 +216,33 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Use fetchWithToken in your fetchUserData function
   const fetchUserData = useCallback(async () => {
     if (!accessToken) {
+      console.log("No access token available");
       return;
     }
 
     try {
-      const response = await fetchWithToken(`${urlBase}/auth/profile`);
+      const response = await fetch(`${urlBase}/auth/profile`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
       } else {
-        throw new Error("Failed to fetch user data");
+        // Only logout if it's a 401 error
+        if (response.status === 401) {
+          logOut();
+        }
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
-      logOut();
+      // Don't automatically logout on network errors
     }
-  }, [accessToken, fetchWithToken]);
+  }, [accessToken]);
 
   useEffect(() => {
     if (accessToken && !user) {
@@ -265,16 +253,59 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const defaultPfp =
     "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg";
 
+  const loginWithGoogle = async () => {
+    window.location.href = `${urlBase}/auth/google`;
+  };
+
+  const loginDemo = async () => {
+    try {
+      const response = await fetch(`${urlBase}/auth/demo`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const res = await response.json();
+
+      if (!response.ok) {
+        throw new Error(res.message || "Demo authentication failed");
+      }
+
+      localStorage.setItem("access_token", res.access_token);
+      localStorage.setItem("refresh_token", res.refresh_token);
+      localStorage.setItem("isDemo", "true");
+      setAccessToken(res.access_token);
+      setRefreshToken(res.refresh_token);
+
+      if (res.data?.user) {
+        setUser(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+      }
+
+      navigate("/");
+    } catch (error) {
+      console.error("Demo login error:", error);
+      throw error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
+        setUser,
+        setAccessToken,
+        setRefreshToken,
+        loginWithGoogle,
+        loginDemo,
         accessToken,
         fetchUserData,
         user,
         loginAction,
+        isInitialized,
         updateUser,
         signupAction,
-        loginAnonymous,
         logOut,
         defaultPfp,
         fetchWithToken,

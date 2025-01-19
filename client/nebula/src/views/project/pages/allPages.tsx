@@ -126,9 +126,9 @@ const AllPages = ({ projectId, name }: Iprops) => {
     const isExpanded = expandedPages.has(page.id);
 
     return (
-      <div key={page.id} className="flex flex-col">
+      <div key={page.id} className="flex flex-col relative w-full">
         <div
-          className="flex justify-between hover:bg-cardWhite dark:hover:bg-card text-black dark:text-gray-200 items-center p-2 rounded-md"
+          className="flex justify-between relative hover:bg-cardWhite dark:hover:bg-card text-black dark:text-gray-200 items-center p-2 rounded-md"
           style={{ marginLeft: `${level * 20}px` }}
         >
           <div className="flex items-center gap-2">
@@ -142,7 +142,11 @@ const AllPages = ({ projectId, name }: Iprops) => {
                 ></i>
               </button>
             )}
-            <p className=" w-36 cursor-pointer" onClick={() => goPage(page.id)}>
+
+            <p
+              className=" max-w-20 md:w-36 cursor-pointer  text-ellipsis overflow-hidden whitespace-nowrap"
+              onClick={() => goPage(page.id)}
+            >
               {page.title}
             </p>
           </div>
@@ -177,27 +181,28 @@ const AllPages = ({ projectId, name }: Iprops) => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col ">
-        <div className="flex justify-between mb-8 items-center">
-          {" "}
-          <button onClick={project} className="font-bold text-lg tracking-wide">
-            {name}
-          </button>{" "}
-          <button
-            onClick={addPage}
-            className="bg-gray-500 text-sm bg-opacity-50 px-2 py-1 rounded-md"
-            type="button"
-          >
-            {strings.sidebar.addPage}
-          </button>
-        </div>
-        {Array.isArray(myPages) && myPages.length > 0
-          ? myPages
-              .filter((page) => !page.parent) // Only render top-level pages
-              .map((page) => renderPage(page))
-          : null}
+    <div className="flex flex-col relative w-full">
+      <div className="flex justify-between mb-8 items-center">
+        {" "}
+        <button
+          onClick={project}
+          className="font-bold max-w-36 cursor-pointer text-ellipsis overflow-hidden whitespace-nowrap text-sm tracking-wide"
+        >
+          {name}
+        </button>{" "}
+        <button
+          onClick={addPage}
+          className="bg-gray-500 text-sm bg-opacity-50 px-2 py-1 rounded-md"
+          type="button"
+        >
+          {strings.sidebar.addPage}
+        </button>
       </div>
+      {Array.isArray(myPages) && myPages.length > 0
+        ? myPages
+            .filter((page) => !page.parent) // Only render top-level pages
+            .map((page) => renderPage(page))
+        : null}
     </div>
   );
 };

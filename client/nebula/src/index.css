@@ -6,6 +6,11 @@ input[type="file"] {
   display: none;
 }
 
+#root {
+  width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
 /* THEME FOR EDITOR */
 /* Base theme */
 .bn-container[data-theming-css-variables-demo] {

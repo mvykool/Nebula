@@ -1,10 +1,16 @@
 import { Dispatch, SetStateAction } from "react";
-import { Project } from "./project.type";
+import { Project, ProjectInput } from "./project.type";
 import { User } from "./user.type";
 
 export interface AuthContextType {
   accessToken: string;
   user: User | null;
+  isInitialized: boolean;
+  setUser: (user: User | null) => void;
+  setAccessToken: (token: string) => void;
+  setRefreshToken: (token: string) => void;
+  loginWithGoogle: () => Promise<void>;
+  loginDemo: () => Promise<void>;
   loginAction: (data: { username: string; password: string }) => Promise<void>;
   signupAction: (data: {
     username: string;
@@ -16,14 +22,10 @@ export interface AuthContextType {
   fetchUserData: () => Promise<void>;
   fetchWithToken: (url: string, options?: RequestInit) => Promise<Response>;
   defaultPfp: string;
-  loginAnonymous: (data: {
-    username: string;
-    password: string;
-  }) => Promise<void>;
 }
 
 export interface ProjectContextType {
-  createProject: (data: Project) => Promise<void>;
+  createProject: (data: ProjectInput) => Promise<void>;
   fetchMyProjects: () => Promise<void>;
   fetchPublishedProjects: () => Promise<void>;
   fetchProject: (id: string | undefined) => Promise<Project | undefined>;

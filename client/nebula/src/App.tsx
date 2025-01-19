@@ -20,6 +20,8 @@ import PageProvider from "./hooks/usePage";
 import NotMatch from "./views/notMatch";
 import PublicProjectView from "./views/publicProjectView";
 import PublicPageView from "./components/publicPageView";
+import StarredProjectsView from "./views/starredProjectsView";
+import AuthCallback from "./components/AuthCallback";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
               <Routes>
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
+
                 <Route element={<PrivateRoute />}>
                   <Route
                     element={
@@ -43,6 +47,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/explore" element={<ExploreView />} />
+                    <Route path="/starred" element={<StarredProjectsView />} />
                     <Route path="*" element={<NotMatch />} />
                     <Route
                       path="/project/creation"
