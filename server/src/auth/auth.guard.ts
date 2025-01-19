@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // First check if route is public
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -33,23 +32,25 @@ export class AuthGuard implements CanActivate {
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
+      console.log('No token found in request');
       throw new UnauthorizedException();
     }
+
     try {
       const secret = this.configService.get<string>('SECRET');
-      console.log(
-        'Using secret:',
-        secret ? 'Secret exists' : 'No secret found',
-      );
+      console.log('Token verification attempt');
+
       const payload = await this.jwtService.verifyAsync(token, {
-        secret,
+        secret: secret,
       });
-      console.log('Decoded Payload:', payload);
+
+      console.log('Token verified successfully');
       if (payload.sub) {
         payload.sub = parseInt(payload.sub);
       }
       request['user'] = payload;
-    } catch {
+    } catch (error) {
+      console.error('Token verification failed:', error);
       throw new UnauthorizedException();
     }
     return true;

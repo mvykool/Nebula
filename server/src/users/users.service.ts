@@ -20,8 +20,18 @@ export class UsersService {
     user.picture = createUserDto.picture;
     user.username = createUserDto.username;
     user.email = createUserDto.email;
-    // Hash the password before saving
-    user.password = await bcrypt.hash(createUserDto.password, this.saltRounds);
+    user.isGoogleUser = createUserDto.isGoogleUser || false;
+    user.isDemo = createUserDto.isDemo || false;
+    user.demoExpiresAt = createUserDto.demoExpiresAt;
+
+    // Only hash password if it's provided (not Google user)
+    if (createUserDto.password) {
+      user.password = await bcrypt.hash(
+        createUserDto.password,
+        this.saltRounds,
+      );
+    }
+
     return this.userRepository.save(user);
   }
 
@@ -74,5 +84,12 @@ export class UsersService {
     hashedPassword: string,
   ): Promise<boolean> {
     return bcrypt.compare(plainTextPassword, hashedPassword);
+  }
+
+  async findOneByEmail(email: string): Promise<User> {
+    return this.userRepository.findOne({
+      where: { email },
+      select: ['id', 'username', 'password', 'name', 'picture', 'email'],
+    });
   }
 }
