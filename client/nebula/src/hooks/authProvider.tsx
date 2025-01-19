@@ -120,7 +120,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
     localStorage.removeItem("projects");
-    localStorage.setItem("isAnonymous", "false");
     navigate("/login");
   }, [navigate]);
 
