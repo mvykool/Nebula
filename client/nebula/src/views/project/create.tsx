@@ -2,23 +2,20 @@ import { useState, FormEvent } from "react";
 import { useProject } from "../../hooks/useProject";
 import { useNavigate } from "react-router";
 import UploadImage from "../../components/uploadImage";
-import { Project } from "../../types/project.type";
+
+interface ProjectInput {
+  name: string;
+  cover?: string;
+  description?: string;
+  publish?: boolean;
+}
 
 const CreateProject = () => {
-  const [input, setInput] = useState<Project>({
+  const [input, setInput] = useState<ProjectInput>({
     name: "",
     cover: "",
     description: "",
-    pages: [],
-    id: 1,
-    owner: {
-      email: "guest@guest.com",
-      name: "guest",
-      picture: "https://i.imgur.com/yyZrnuQ.jpeg",
-      sub: "3",
-      username: "guest",
-      isGuest: true,
-    },
+    publish: false,
   });
 
   const { createProject } = useProject();
@@ -26,13 +23,12 @@ const CreateProject = () => {
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
-
-    if (input.name !== "") {
+    if (input.name.trim() !== "") {
       try {
         await createProject(input);
-        navigate("/"); // Navigate after successful creation
+        navigate("/");
       } catch (error) {
-        console.log(error);
+        console.error("Error creating project:", error);
         alert("Failed to create project. Please try again.");
       }
       return;
@@ -54,24 +50,21 @@ const CreateProject = () => {
 
   return (
     <>
-      <div className="relative w-5/6 mx-auto mt-10">
+      <div className="relative w-full md:w-5/6 mx-auto mt-10">
         <button
           onClick={goBack}
           type="button"
-          className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 px-3 py-1 rounded-md gap-1"
+          className="text-black dark:text-white flex items-center bg-hover dark:bg-opacity-20 px-3 py-1 ml-5 md:ml-0 rounded-md gap-1"
         >
           <i className="bx bx-left-arrow-alt text-xl"></i>
           back
         </button>
-
-        <div className="flex flex-col border border-hover rounded-md pb-20 w-4/6 mx-auto">
+        <div className="flex flex-col border border-hover rounded-md pb-20 w-11/12 md:w-4/6 mt-10 md:mt-0 mx-auto">
           <UploadImage setInput={setInput} />
-
-          <div className="w-6/12 p-4 mt-10 flex flex-col items-center mx-auto">
+          <div className="w-9/12 md:w-6/12 p-4 mt-10 flex flex-col items-center mx-auto">
             <h3 className="my-3 font-extrabold text-lg text-black dark:text-white">
               Create your project
             </h3>
-
             <form
               onSubmit={handleSubmit}
               className="flex w-full flex-col text-black dark:text-white"

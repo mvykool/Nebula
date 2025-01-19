@@ -17,8 +17,8 @@ const Greetings = () => {
   };
   return (
     <>
-      <div className="flex items-center justify-center mt-24 mb-16">
-        <h2 className="font-extrabold text-black dark:text-white text-3xl">
+      <div className="flex px-20 md:px-0 items-center justify-center mt-24 mb-16">
+        <h2 className="font-extrabold text-center md:text-balance text-black dark:text-white text-3xl">
           {getGreeting()}
         </h2>
       </div>

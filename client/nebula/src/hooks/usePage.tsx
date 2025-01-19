@@ -105,37 +105,27 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
 
   //UPDATE PROJECTS
   const updatePages = useCallback(
-    async (pageId: number, updatedData: Partial<Page>) => {
+    async (
+      pageId: number,
+      updatedData: { title?: string; content?: string; parentId?: number },
+    ) => {
       try {
-        // Optimistically update the local state first
-        setMyPages((prevPages) =>
-          prevPages.map((page) =>
-            page.id === pageId ? { ...page, ...updatedData } : page,
-          ),
-        );
-
-        const response = await fetch(`${urlBase}/pages/${pageId}`, {
+        const response = await fetchWithToken(`${urlBase}/pages/${pageId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
           },
           body: JSON.stringify(updatedData),
         });
 
         if (!response.ok) {
-          // If the request fails, revert the optimistic update
-          setMyPages((prevPages) =>
-            prevPages.map((page) =>
-              page.id === pageId ? { ...page, ...updatedData } : page,
-            ),
-          );
-          throw new Error("Failed to update page");
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to update page");
         }
 
         const updatedPage = await response.json();
 
-        // Update the state with the server response to ensure consistency
+        // Update the state with the server response
         setMyPages((prevPages) =>
           prevPages.map((page) => (page.id === pageId ? updatedPage : page)),
         );
@@ -146,7 +136,7 @@ const PageProvider: React.FC<PageContextProps> = ({ children }) => {
         throw error;
       }
     },
-    [accessToken],
+    [fetchWithToken],
   );
 
   //DELETE PROJECTS

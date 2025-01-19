@@ -4,5 +4,6 @@ export type User = {
   username: string;
   picture: string;
   email: string;
-  isGuest: boolean;
+  isGoogleUser: boolean;
+  isDemo: boolean;
 };

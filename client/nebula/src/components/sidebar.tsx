@@ -58,19 +58,21 @@ const Sidebar = ({ id }: Iprops) => {
   };
 
   return (
-    <div className={`relative z-50 ${isHidden ? "w-2" : "w-[15vw]"}`}>
+    <div
+      className={`relative z-50 ${isHidden ? "w-0 md:w-2" : "w-0 md:w-[15vw]"}`}
+    >
       <div
         className={`fixed left-0 top-0 h-screen transform transition-transform duration-200 ease-in-out
           ${isHidden ? "-translate-x-full" : "translate-x-0"}
-          border border-gray-800 max-w-[15vw] text-black dark:text-white bg-bgLight dark:bg-bgDark`}
+          border border-gray-800 md:max-w-[15vw] max-w-[42vw] text-black dark:text-white bg-bgLight dark:bg-bgDark`}
       >
         {/*OWNER INFO*/}
         <div className="flex items-center p-2">
-          <div className="flex gap-2 w-[205px]">
-            <i className="bx bxs-analyse text-xl text-primary"></i>
+          <div className="flex gap-2 w-[205px] items-center">
+            <i className="bx bxs-analyse text-lg md:text-xl text-primary"></i>
             <a
               href="/"
-              className="font-bold tracking-wide text-black dark:text-white text-lg"
+              className="font-bold tracking-wide text-black dark:text-white text-base md:text-lg"
             >
               Neb<span className="text-primary">u</span>la
             </a>
@@ -79,13 +81,13 @@ const Sidebar = ({ id }: Iprops) => {
             <i className="bx bxs-chevrons-left px-2 text-2xl border border-gray-800 rounded-lg"></i>
           </button>
         </div>
-        <div className="flex items-center gap-3 mt-2 p-4">
+        <div className="flex items-center flex-col md:flex-row gap-3 mt-2 p-4">
           <img
             src={user?.picture || defaultPfp}
             className="h-14 w-14 rounded-md"
             alt="user-picture"
           />
-          <p className="font-semibold text-xl">{user?.username}</p>
+          <p className="font-semibold text-lg md:text-xl">{user?.username}</p>
         </div>
         {/*PROJECT SECTIONS*/}
         <div>
@@ -126,7 +128,7 @@ const Sidebar = ({ id }: Iprops) => {
         onClick={hideSidebar}
       >
         <i
-          className={`bx ${isHidden ? "bxs-chevrons-right" : "hidden"} px-2 text-2xl border border-gray-800 rounded-lg`}
+          className={`bx ${isHidden ? "bxs-chevrons-right bg-gray-700" : "hidden"} px-2 text-2xl border border-gray-800 rounded-lg`}
         ></i>
       </button>
     </div>

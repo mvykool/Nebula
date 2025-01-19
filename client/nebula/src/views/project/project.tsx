@@ -10,19 +10,28 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { usePages } from "../../hooks/usePage";
 import { Page } from "../../types/page.type";
 import Loading from "../../components/loading";
+import { User } from "../../types/user.type";
+import { useGenerateGradient } from "../../hooks/useGenerateColor";
 
 interface ProjectData {
   name: string;
   cover: string;
   description: string;
   pages: Page[];
+  id: number;
+  owner?: User;
+  publish?: boolean;
+  publishedSlug?: string;
+  starCount?: number;
 }
 
 const Project = () => {
+  const gradient = useGenerateGradient();
+
   const [coverChanged, setCoverChanged] = useState<boolean>(false);
   const { projectId } = useParams<{ projectId: string | undefined }>();
   const { fetchProject, updateProject, setMyProjects } = useProject();
-  const { myPages, fetchMyPages } = usePages();
+  const { fetchMyPages } = usePages();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const [data, setData] = useState<ProjectData>({
@@ -30,6 +39,16 @@ const Project = () => {
     cover: "",
     description: "",
     pages: [],
+    id: 1,
+    owner: {
+      email: "guest@guest.com",
+      name: "guest",
+      picture: "https://i.imgur.com/yyZrnuQ.jpeg",
+      sub: "3",
+      username: "guest",
+      isDemo: true,
+      isGoogleUser: false,
+    },
   });
   const editor = useCreateBlockNote();
 
@@ -159,35 +178,28 @@ const Project = () => {
         ? blocks[0].content.map((c: any) => c.text).join("")
         : data.name;
 
-    console.log("New project name:", name); // Debug log
-
     // Convert content to the expected format
     const description = JSON.stringify(
       content.slice(1).map((block) => [block]),
     );
-    const pages = myPages;
 
     try {
-      console.log("Saving project with data:", {
-        ...data,
+      // Only send the allowed properties
+      const updatePayload = {
         name,
         description,
-        pages,
-      }); // Debug log
-      const updatedData = await updateProject(projectId, {
-        ...data,
-        name,
-        description,
-        pages,
-      });
-      console.log("Project updated response:", updatedData); // Debug log
+        cover: data.cover,
+        publish: data.publish, // Include this if you need to update publish status
+      };
+
+      console.log("Saving project with data:", updatePayload);
+      const updatedData = await updateProject(projectId, updatePayload);
+      console.log("Project updated response:", updatedData);
 
       setData(updatedData);
       setCoverChanged(false);
 
       const refreshedProject = await fetchProject(projectId);
-      console.log("Refreshed project data:", refreshedProject); // Debug log
-
       if (refreshedProject) {
         setMyProjects((prev: any) => {
           const updated = prev.map((project: any) =>
@@ -195,7 +207,6 @@ const Project = () => {
               ? { ...project, ...refreshedProject }
               : project,
           );
-          console.log("Updated projects list:", updated); // Debug log
           return updated;
         });
       }
@@ -222,7 +233,7 @@ const Project = () => {
     <div className="w-full flex text-black dark:text-white">
       <Sidebar id={projectId} />
       {window.location.pathname == `/projects/${projectId}` ? (
-        <div className="w-full bg-bgLight dark:bg-bgDark">
+        <div className="w-full overflow-x-hidden bg-bgLight dark:bg-bgDark">
           {isLoading && (
             <div className=" flex items-end justify-center pt-32">
               <Loading />
@@ -230,11 +241,11 @@ const Project = () => {
           )}
 
           {data?.cover ? (
-            <div className="relative group w-11/12 mx-auto">
+            <div className="relative group w-full mx-0 md:w-11/12 md:mx-auto">
               <img
                 src={data?.cover}
                 alt="cover-image"
-                className={` mt-10 relative w-full object-cover h-[35vh] object-center rounded-lg
+                className={` mt-10 relative w-full object-cover h-[15vh] md:h-[35vh] object-center rounded-lg
                 ${!imageLoaded ? "hidden" : ""}
                 ${isLoading ? "hidden" : "flex"}
                 `}
@@ -288,10 +299,16 @@ const Project = () => {
               </div>
             </div>
           ) : (
-            <div className=" mx-auto items-end justify-end  flex cursor-pointer rounded-lg ">
-              <div className="flex p-5 gap-2">
-                <label
-                  className={`
+            <div className="relative group w-11/12 mx-auto">
+              <div
+                style={{ background: gradient }}
+                className=" mt-10 relative w-full object-cover h-[15vh] md:h-[35vh] object-center rounded-lg"
+              ></div>
+
+              <div className="absolute inset-0 items-end justify-end hidden  bg-black bg-opacity-55 w-full rounded-lg group-hover:flex">
+                <div className="flex p-3 gap-2">
+                  <label
+                    className={`
                     bg-primary 
                     px-3
                     py-2 
@@ -303,32 +320,35 @@ const Project = () => {
                     text-sm 
                     cursor-pointer 
                     hover:bg-primary/90`}
-                  htmlFor="file-upload"
-                >
-                  {data.cover ? "Change project image" : "Add a project image"}
-                </label>
-                <input
-                  type="file"
-                  id="file-upload"
-                  name="cover"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleImage}
-                />
-                <button
-                  onClick={saveData}
-                  disabled={!coverChanged}
-                  className={`px-3 text-sm rounded-md ${data.cover ? "block" : "hidden"}  
+                    htmlFor="file-upload"
+                  >
+                    {data.cover
+                      ? "Change project image"
+                      : "Add a project image"}
+                  </label>
+                  <input
+                    type="file"
+                    id="file-upload"
+                    name="cover"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImage}
+                  />
+                  <button
+                    onClick={saveData}
+                    disabled={!coverChanged}
+                    className={`px-3 text-sm rounded-md ${data.cover ? "block" : "hidden"}  
                   ${!coverChanged ? "bg-gray-400 cursor-not-allowed" : "bg-secondary hover:bg-secondary/90"}
                   `}
-                >
-                  Save
-                </button>
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
-          <div className="w-10/12 px-7 my-10 mx-auto">
+          <div className="w-full md:w-10/12 px-0 md:px-7 my-10 mx-auto">
             <BlockNoteView editor={editor} data-theming-css-variables-demo />
           </div>
         </div>

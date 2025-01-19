@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
+import { gradientPairs } from "../utils/colors";
 
-export const useGenerateRandomColor = (colors: string[]) => {
-  const [color, setColor] = useState("");
+// Define the gradient direction types
+type GradientDirection = "to right" | "to right bottom" | "to bottom";
+
+interface GradientPair {
+  start: string;
+  end: string;
+  direction: GradientDirection;
+}
+
+export const useGenerateGradient = (customGradients?: GradientPair[]) => {
+  const [gradient, setGradient] = useState<string>("");
 
   useEffect(() => {
-    const randomColors = colors[Math.floor(Math.random() * colors.length)];
-    setColor(randomColors);
-  }, [colors]);
-  return color;
+    const pairs = customGradients || gradientPairs;
+    const randomPair = pairs[Math.floor(Math.random() * pairs.length)];
+
+    const gradientString = `linear-gradient(${randomPair.direction}, ${randomPair.start}, ${randomPair.end})`;
+    setGradient(gradientString);
+  }, [customGradients]);
+
+  return gradient;
 };

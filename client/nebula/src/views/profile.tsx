@@ -11,7 +11,7 @@ interface FormData {
 }
 
 const Profile = () => {
-  const { user, defaultPfp, updateUser, isAnonymous } = useAuth();
+  const { user, defaultPfp, updateUser } = useAuth();
   const navigate = useNavigate();
 
   //view state
@@ -48,6 +48,7 @@ const Profile = () => {
       setInitData(userData);
       setPreviewUrl(user?.picture || "");
     }
+    console.log(user);
   }, [user]);
 
   //temporal goback btn
@@ -124,7 +125,6 @@ const Profile = () => {
   };
 
   const prefixImage = formData?.picture;
-  console.log(prefixImage);
 
   return (
     <>

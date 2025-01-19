@@ -6,7 +6,7 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="w-4/6 mx-auto">
+    <div className="w-full overflow-x-hidden md:w-4/6 mx-auto">
       <Navbar />
       <main>{children}</main>
     </div>

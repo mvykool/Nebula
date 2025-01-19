@@ -5,8 +5,11 @@ import { useProject } from "../hooks/useProject";
 import ProjectContent from "../components/ProjectContent";
 import { ThemeSwitcher } from "../components/ThemeSwitcher";
 import PublicSidebar from "../components/publicSidebar";
+import { useGenerateGradient } from "../hooks/useGenerateColor";
 
 const PublicProjectView: React.FC = () => {
+  const gradient = useGenerateGradient();
+
   const { slug } = useParams<{ slug?: string }>();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,12 +51,18 @@ const PublicProjectView: React.FC = () => {
         pages={project.pages}
         slug={slug || ""}
       />
-
-      <img
-        src={project?.cover}
-        alt="cover"
-        className="w-full h-[40vh] object-cover"
-      />
+      {project?.cover ? (
+        <img
+          src={project?.cover}
+          alt="cover"
+          className="w-full h-[40vh] object-cover"
+        />
+      ) : (
+        <div
+          style={{ background: gradient }}
+          className="  relative w-full object-cover h-[35vh] object-center rounded-lg"
+        ></div>
+      )}
       <main className="max-w-4xl mx-auto p-8">
         {project.description && (
           <ProjectContent content={project.description} />

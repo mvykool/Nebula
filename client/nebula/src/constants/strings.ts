@@ -44,4 +44,7 @@ export const strings = {
   explore: {
     gretting: "🌐 Explore new projects",
   },
+  starred: {
+    gretting: "⭐️ Starred projects",
+  },
 };
