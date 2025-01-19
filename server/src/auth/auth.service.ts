@@ -151,12 +151,13 @@ export class AuthService {
     const timestamp = Date.now();
     const createUserDto: CreateUserDto = {
       username: 'Demo User',
-      email: `demo_${timestamp}@demo.com`,
-      name: `demo_${timestamp}`,
-      picture: 'default-avatar.png', // or whatever default you want to use
-      password: timestamp.toString(), // This will be hashed by the service
+      email: `demo@demo.com`,
+      name: 'demo',
+      picture:
+        'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg',
+      password: timestamp.toString(),
       isDemo: true,
-      demoExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours from now
+      demoExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
     };
 
     const user = await this.usersService.createUser(createUserDto);

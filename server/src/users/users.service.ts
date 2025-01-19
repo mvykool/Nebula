@@ -24,7 +24,6 @@ export class UsersService {
     user.isDemo = createUserDto.isDemo || false;
     user.demoExpiresAt = createUserDto.demoExpiresAt;
 
-    // Only hash password if it's provided (not Google user)
     if (createUserDto.password) {
       user.password = await bcrypt.hash(
         createUserDto.password,
@@ -57,7 +56,6 @@ export class UsersService {
         this.saltRounds,
       );
     } else {
-      // If no new password provided, get the existing password
       const existingUser = await this.viewUser(id);
       user.password = existingUser.password;
     }
@@ -73,7 +71,16 @@ export class UsersService {
   async findOne(username: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { username },
-      select: ['id', 'username', 'password', 'name', 'picture', 'email'], // Explicitly select password for auth
+      select: [
+        'id',
+        'username',
+        'password',
+        'name',
+        'picture',
+        'email',
+        'isDemo',
+        'isGoogleUser',
+      ],
     });
     return user;
   }
