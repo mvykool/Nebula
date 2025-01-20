@@ -20,7 +20,7 @@ const ExploreView = () => {
 
   return (
     <>
-      <header className="border-b sticky top-0 bg-bgLight dark:bg-bgDark flex justify-between items-center py-5">
+      <header className="border-b border-black dark:border-white sticky top-0 bg-bgLight dark:bg-bgDark flex justify-between items-center py-5">
         <h2 className="text-2xl w-full font-bold ml-4 md:ml-0 text-black dark:text-white">
           {strings.explore.gretting}
         </h2>

@@ -47,14 +47,14 @@ const Logout = ({ auth, setIsOpen }: LogOutProps) => {
         Profile
       </button>
       <button
-        className="flex items-center pl-5 py-3 gap-3 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
+        className="flex md:hidden items-center pl-5 py-3 gap-3 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleProjects}
       >
         <i className="bx bx-book text-lg"></i>
         My projects
       </button>
       <button
-        className="flex items-center pl-5 py-3 gap-3 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
+        className="flex  md:hidden items-center pl-5 py-3 gap-3 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleExplore}
       >
         <i className="bx bx-planet text-lg"></i>

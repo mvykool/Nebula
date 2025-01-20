@@ -24,9 +24,9 @@ export const ThemeSwitcher = () => {
         onClick={toggleTheme}
       >
         {isDark ? (
-          <i className="bx bx-moon text-xl h-8 flex justify-center items-center w-8 cursor-pointer"></i>
+          <i className="bx bx-moon text-xl size-8 flex justify-center items-center cursor-pointer"></i>
         ) : (
-          <i className="bx bx-sun text-xl h-8 flex justify-center items-center w-8 cursor-pointer"></i>
+          <i className="bx bx-sun text-xl size-8 flex justify-center items-center cursor-pointer"></i>
         )}
       </button>
     </>
