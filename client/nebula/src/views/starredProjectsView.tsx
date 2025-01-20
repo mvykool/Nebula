@@ -59,7 +59,7 @@ const StarredProjectsView = () => {
 
   return (
     <div className="min-h-screen bg-bgLight dark:bg-bgDark">
-      <header className="border-b sticky top-0 bg-bgLight dark:bg-bgDark flex justify-between items-center py-5">
+      <header className="border-b border-black dark:border-white sticky top-0 bg-bgLight dark:bg-bgDark flex justify-between items-center py-5">
         <h1 className="text-2xl font-bold ml-4 md:ml-0 text-black dark:text-white">
           {strings.starred.gretting}
         </h1>
@@ -134,7 +134,7 @@ const StarredProjectsView = () => {
               </div>
             ))}
           </div>
-        )}
+        )}{" "}
       </main>
     </div>
   );

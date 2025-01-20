@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
     <div className="w-full h-16 flex justify-between items-center">
       {/*Logo*/}
-      <div className="flex gap-2 flex-0 md:flex-1 items-center ml-5 md:ml-0">
+      <div className="flex gap-2 flex-1 md:-1 items-center ml-5 w-auto md:ml-0">
         <i className="bx bxs-analyse text-lg md:text-xl text-primary"></i>
         <a
           href="/"
@@ -23,7 +23,7 @@ const Navbar = () => {
       </div>
 
       {/*Main button*/}
-      <div className="hidden md:flex items-center gap-3 flex-0 md:flex-1">
+      <div className="hidden md:flex items-center justify-center flex-1 gap-3 flex-0 md:flex-2">
         <NavLink
           to={"/"}
           className="aria-[current=page]:bg-primary-light px-2 text-black dark:text-white py-1 font-semibold tracking-wide rounded-md"
@@ -39,7 +39,7 @@ const Navbar = () => {
       </div>
 
       {/*user info and logout*/}
-      <div className="flex items-center gap-3 text-black dark:text-white">
+      <div className="flex items-center justify-end flex-1 gap-3 text-black dark:text-white">
         <div className=" items-center gap-3 mr-4 flex">
           <ThemeSwitcher />
           <NotificationBell urlBase={urlBase} fetchWithToken={fetchWithToken} />

@@ -42,9 +42,26 @@ const PublicProjectView: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-bgLight dark:bg-bgDark text-black dark:text-white">
-      <header className="border-b z-20  top-0 flex justify-between items-center p-5">
+      <header className="border-b z-20  top-0 flex justify-between items-center p-2">
         <h1 className="text-2xl font-bold">{project.name}</h1>
-        <ThemeSwitcher />
+        <div className="flex items-center gap-3 md:gap-8">
+          <ThemeSwitcher />
+
+          <div className="flex items-center gap-2">
+            <i className="bx bxs-star text-amber-500 text-xl"></i>
+
+            <span>{project.starCount}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <img
+              src={project.owner?.picture}
+              alt="owner's picture"
+              className="size-8 md:size-11 rounded-lg"
+            />
+            <p className="font-bold">{project.owner?.username}</p>
+          </div>
+        </div>
       </header>
       <PublicSidebar
         projectName={project.name}
@@ -55,12 +72,12 @@ const PublicProjectView: React.FC = () => {
         <img
           src={project?.cover}
           alt="cover"
-          className="w-full h-[40vh] object-cover"
+          className="w-full h-[30vh] md:h-[35vh] object-cover"
         />
       ) : (
         <div
           style={{ background: gradient }}
-          className="  relative w-full object-cover h-[35vh] object-center rounded-lg"
+          className="  relative w-full  h-[30vh] md:h-[35vh]"
         ></div>
       )}
       <main className="max-w-4xl mx-auto p-8">
