@@ -164,7 +164,7 @@ const Login = () => {
             onClick={handleDemoLogin}
             className="bg-secondary hover:bg-secondary/90 rounded-md w-full justify-center font-bold px-4 py-2"
           >
-            Try Demo Version
+            Log in as Guest
           </button>
         </div>
         <a
