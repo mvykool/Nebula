@@ -212,18 +212,27 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const getPublicProjectBySlug = useCallback(
     async (slug: string | undefined) => {
       try {
-        const response = await fetchWithToken(`${urlBase}/projects/p/${slug}`);
-        if (response.ok) {
-          return await response.json();
+        const fullUrl = `${urlBase}/projects/p/${slug}`;
+        console.log("Attempting to fetch from:", fullUrl);
+
+        const response = await fetchWithToken(fullUrl);
+        console.log("Response status:", response.status);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error response:", errorText);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        return await response.json();
       } catch (error) {
         console.error("Error fetching public project:", error);
+        console.error("URL base:", urlBase);
+        console.error("Slug:", slug);
         throw error;
       }
     },
     [urlBase, fetchWithToken],
   );
-
   return (
     <ProjectContext.Provider
       value={{
