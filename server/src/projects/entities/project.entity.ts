@@ -48,7 +48,9 @@ export class Project {
   @OneToMany(() => Star, (star) => star.project)
   stars: Star[];
 
-  // Optional: Add a virtual column to count stars
+  @Column({ type: 'boolean', default: false })
+  isMarkdown: boolean;
+
   @Column({ type: 'int', default: 0 })
   starCount: number;
 }
