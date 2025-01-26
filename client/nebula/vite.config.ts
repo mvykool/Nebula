@@ -1,17 +1,17 @@
-/// <reference types="vitest" />
-/// <reference types="@testing-library/jest-dom" />
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: ["./src/vitest.setup.ts"],
-    css: true,
-    testTimeout: 5000,
-    reporters: ["verbose"],
+  plugins: [
+    react(),
+    sentryVitePlugin({
+      org: "mvykol",
+      project: "javascript-react",
+    }),
+  ],
+  build: {
+    sourcemap: true,
   },
 });
+
