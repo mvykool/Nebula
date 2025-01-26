@@ -42,4 +42,7 @@ export class Page {
 
   @UpdateDateColumn({ type: 'varchar', length: 40 })
   updated: Date;
+
+  @Column({ type: 'boolean', default: false })
+  isMarkdown: boolean;
 }
