@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import "./index.css";
 
 Sentry.init({
-  dsn: "your-dsn", // Get this from Sentry dashboard
+  dsn: import.meta.env.VITE_SENTRY_DNS,
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),

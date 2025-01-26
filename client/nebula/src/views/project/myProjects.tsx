@@ -2,7 +2,6 @@ import CreateButton from "../../components/createButton";
 import Greetings from "../../components/greeting";
 import ProjectCard from "../../components/projectCard";
 import { Project } from "../../types/project.type";
-import * as Sentry from "@sentry/react";
 
 interface IProject {
   projects: Project[];
@@ -11,17 +10,6 @@ interface IProject {
 const MyProjects = ({ projects }: IProject) => {
   return (
     <div>
-      <button
-        onClick={() => {
-          try {
-            throw new Error("This is your first error!");
-          } catch (error) {
-            Sentry.captureException(error);
-          }
-        }}
-      >
-        Break the world
-      </button>
       <Greetings />
       {/*PROJECT SECTION*/}
       <section className="w-5/6 mx-auto m-10">
