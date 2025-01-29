@@ -40,21 +40,21 @@ const Logout = ({ auth, setIsOpen }: LogOutProps) => {
   return (
     <div className="border-b z-40 bg-bgLight dark:bg-bgDark border-r border-l boder-gray-700 dark:border-gray-500 absolute w-48 md:w-full right-0 flex flex-col gap-3 rounded-b-md">
       <button
-        className="flex items-center pl-5 py-3 gap-3 md:gap-1 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
+        className="flex items-center pl-5 py-3 gap-3 md:gap-2 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleProfile}
       >
         <i className="bx bx-user-circle text-lg"></i>
         Profile
       </button>
       <button
-        className="flex md:hidden items-center pl-5 py-3 gap-3 md:gap-1 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
+        className="flex md:hidden items-center pl-5 py-3 gap-3 md:gap-2 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleProjects}
       >
         <i className="bx bx-book text-lg"></i>
         My projects
       </button>
       <button
-        className="flex  md:hidden items-center pl-5 py-3 gap-3 md:gap-1 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
+        className="flex  md:hidden items-center pl-5 py-3 gap-3 md:gap-2 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleExplore}
       >
         <i className="bx bx-planet text-lg"></i>
@@ -62,14 +62,14 @@ const Logout = ({ auth, setIsOpen }: LogOutProps) => {
       </button>
 
       <button
-        className="flex items-center pl-5 py-3 gap-3 md:gap-1 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
+        className="flex items-center pl-5 py-3 gap-3 md:gap-2 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleStarred}
       >
         <i className="bx bx-star text-lg"></i>
         Starred projects
       </button>
       <button
-        className="flex items-center pl-5 py-3 gap-3 md:gap-1 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
+        className="flex items-center pl-5 py-3 gap-3 md:gap-2 hover:bg-primary hover:bg-opacity-20 hover:dark:bg-black rounded-b-md"
         onClick={handleLogOut}
       >
         <i className="bx bx-log-out text-red-400"></i>
