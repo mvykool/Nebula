@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreatePageDto {
   @IsString()
@@ -14,8 +14,4 @@ export class CreatePageDto {
   @IsNumber()
   @IsOptional()
   parentId?: number;
-
-  @IsOptional()
-  @IsBoolean()
-  isMarkdown?: boolean;
 }
