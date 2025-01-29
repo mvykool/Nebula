@@ -22,8 +22,4 @@ export class CreateProjectDto {
 
   @IsOptional()
   pages?: Page[];
-
-  @IsOptional()
-  @IsBoolean()
-  isMarkdown?: boolean;
 }
