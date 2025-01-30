@@ -39,7 +39,7 @@ const ProjectContent = ({ content }: { content: string }) => {
             className += "font-mono bg-gray-100 rounded px-1 ";
         }
         return (
-          <span key={index} className={className || undefined}>
+          <span key={index} className={className.trim() || undefined}>
             {item.text}
           </span>
         );
@@ -47,6 +47,45 @@ const ProjectContent = ({ content }: { content: string }) => {
       return null;
     });
   };
+
+  // Group consecutive bulletListItems and numberedListItems together
+  const groupedBlocks = useMemo(() => {
+    const grouped: BlockProps[][] = [];
+    let currentGroup: BlockProps[] = [];
+    let currentType: string | null = null;
+
+    blocks.forEach((block: any) => {
+      if (
+        (block.type === "bulletListItem" ||
+          block.type === "numberedListItem") &&
+        block.type === currentType
+      ) {
+        currentGroup.push(block);
+      } else if (
+        block.type === "bulletListItem" ||
+        block.type === "numberedListItem"
+      ) {
+        if (currentGroup.length > 0) {
+          grouped.push(currentGroup);
+        }
+        currentGroup = [block];
+        currentType = block.type;
+      } else {
+        if (currentGroup.length > 0) {
+          grouped.push(currentGroup);
+          currentGroup = [];
+        }
+        grouped.push([block]);
+        currentType = null;
+      }
+    });
+
+    if (currentGroup.length > 0) {
+      grouped.push(currentGroup);
+    }
+
+    return grouped;
+  }, [blocks]);
 
   const renderBlock = (block: BlockProps) => {
     const alignment = block.props.textAlignment || "left";
@@ -58,7 +97,6 @@ const ProjectContent = ({ content }: { content: string }) => {
         const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
         const sizeClass =
           level === 1 ? "text-4xl" : level === 2 ? "text-3xl" : "text-2xl";
-
         return (
           <HeadingTag
             className={`font-bold ${sizeClass} my-4 ${alignmentClass}`}
@@ -70,7 +108,7 @@ const ProjectContent = ({ content }: { content: string }) => {
 
       case "paragraph":
         if (block.content.length === 0) {
-          return <div className="h-4" />; // Empty paragraph as spacing
+          return <div className="h-4" />;
         }
         return (
           <p className={`my-3 ${alignmentClass}`}>
@@ -94,28 +132,49 @@ const ProjectContent = ({ content }: { content: string }) => {
           </figure>
         );
 
-      case "list": {
-        const ListTag = block.props.listType === "numbered" ? "ol" : "ul";
-        return (
-          <ListTag
-            className={`my-3 ${block.props.listType === "numbered" ? "list-decimal" : "list-disc"} ml-6`}
-          >
-            {block.content.map((item, index) => (
-              <li key={index}>{renderTextContent(item.content)}</li>
-            ))}
-          </ListTag>
-        );
-      }
+      case "bulletListItem":
+      case "numberedListItem":
+        return <li className="ml-2">{renderTextContent(block.content)}</li>;
 
       default:
         return null;
     }
   };
 
+  const renderBlockGroup = (blocks: BlockProps[]) => {
+    if (!blocks.length) return null;
+
+    // If it's a list group
+    if (blocks[0].type === "bulletListItem") {
+      return (
+        <ul className="list-disc ml-6 my-3">
+          {blocks.map((block, index) => (
+            <div key={index}>{renderBlock(block)}</div>
+          ))}
+        </ul>
+      );
+    }
+
+    if (blocks[0].type === "numberedListItem") {
+      return (
+        <ol className="list-decimal ml-6 my-3">
+          {blocks.map((block, index) => (
+            <div key={index}>{renderBlock(block)}</div>
+          ))}
+        </ol>
+      );
+    }
+
+    // For non-list blocks
+    return blocks.map((block, index) => (
+      <div key={index}>{renderBlock(block)}</div>
+    ));
+  };
+
   return (
     <div className="max-w-none">
-      {blocks.map((block: BlockProps, index: number) => (
-        <div key={index}>{renderBlock(block)}</div>
+      {groupedBlocks.map((group, index) => (
+        <div key={index}>{renderBlockGroup(group)}</div>
       ))}
     </div>
   );
