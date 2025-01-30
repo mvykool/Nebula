@@ -48,7 +48,6 @@ const ProjectContent = ({ content }: { content: string }) => {
     });
   };
 
-  // Group consecutive bulletListItems and numberedListItems together
   const groupedBlocks = useMemo(() => {
     const grouped: BlockProps[][] = [];
     let currentGroup: BlockProps[] = [];
@@ -165,7 +164,6 @@ const ProjectContent = ({ content }: { content: string }) => {
       );
     }
 
-    // For non-list blocks
     return blocks.map((block, index) => (
       <div key={index}>{renderBlock(block)}</div>
     ));
