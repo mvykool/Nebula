@@ -58,7 +58,7 @@ const StarredProjectsView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bgLight dark:bg-bgDark">
+    <div className="max-h-screen bg-bgLight dark:bg-bgDark">
       <header className="border-b border-black dark:border-white sticky top-0 bg-bgLight dark:bg-bgDark flex justify-between items-center py-5">
         <h1 className="text-2xl font-bold ml-4 md:ml-0 text-black dark:text-white">
           {strings.starred.gretting}
@@ -71,7 +71,7 @@ const StarredProjectsView = () => {
             <p>You haven't starred any projects yet.</p>
             <Link
               to="/explore"
-              className="mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline"
+              className="pt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline"
             >
               Explore projects
             </Link>
