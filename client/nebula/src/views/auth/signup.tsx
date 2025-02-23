@@ -8,6 +8,7 @@ const SignUp = () => {
     username: "",
     email: "",
     password: "",
+    picture: "",
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
