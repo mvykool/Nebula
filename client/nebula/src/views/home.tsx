@@ -35,19 +35,15 @@ const Home = () => {
     };
 
     // Add a small delay to ensure auth state is properly synchronized
-    const timer = setTimeout(() => {
-      initializeHome();
-    }, 100);
-
-    return () => clearTimeout(timer);
+    initializeHome();
   }, [user, accessToken, isInitialized, fetchMyProjects, navigate]);
 
   // Show loading state while initializing or loading
   if (isLoading || !isInitialized) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
+      <>
         <Loading />
-      </div>
+      </>
     );
   }
 
