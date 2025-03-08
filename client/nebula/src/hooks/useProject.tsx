@@ -67,7 +67,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   // FETCH MY PROJECTS
   const fetchMyProjects = useCallback(async () => {
-    console.log("dies it reach here?");
     try {
       const response = await fetchWithToken(`${urlBase}/projects`);
       if (response.ok) {
