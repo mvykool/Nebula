@@ -8,7 +8,7 @@ import {
 import { useAuth } from "./authProvider";
 import { useNavigate } from "react-router";
 import { ProjectContextType } from "../types/contexts.type";
-import { Project } from "../types/project.type";
+import { Project, ProjectInput } from "../types/project.type";
 
 interface ProjectProviderProps {
   children: React.ReactNode;
@@ -38,7 +38,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   // CREATE PROJECT
   const createProject = useCallback(
-    async (data: Project) => {
+    async (data: ProjectInput) => {
       try {
         const response = await fetchWithToken(`${urlBase}/projects`, {
           method: "POST",
@@ -52,9 +52,8 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
         if (response.ok) {
           const res = await response.json();
           console.log("project created: ", res);
-          // Update local state before navigating
           setMyProjects((prev) => [...prev, res]);
-          await fetchMyProjects(); // Refresh the projects list
+          await fetchMyProjects();
           navigate("/");
           return res;
         }
@@ -68,7 +67,6 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
 
   // FETCH MY PROJECTS
   const fetchMyProjects = useCallback(async () => {
-    console.log("dies it reach here?");
     try {
       const response = await fetchWithToken(`${urlBase}/projects`);
       if (response.ok) {
@@ -213,18 +211,27 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children }) => {
   const getPublicProjectBySlug = useCallback(
     async (slug: string | undefined) => {
       try {
-        const response = await fetch(`${urlBase}/projects/p/${slug}`);
-        if (response.ok) {
-          return await response.json();
+        const fullUrl = `${urlBase}/projects/p/${slug}`;
+        console.log("Attempting to fetch from:", fullUrl);
+
+        const response = await fetchWithToken(fullUrl);
+        console.log("Response status:", response.status);
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Error response:", errorText);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        return await response.json();
       } catch (error) {
         console.error("Error fetching public project:", error);
+        console.error("URL base:", urlBase);
+        console.error("Slug:", slug);
         throw error;
       }
     },
-    [urlBase],
+    [urlBase, fetchWithToken],
   );
-
   return (
     <ProjectContext.Provider
       value={{

@@ -7,11 +7,13 @@ const Username = () => {
     <>
       <img
         src={user?.picture || defaultPfp}
-        className="h-11 w-11 rounded-md"
+        className="h-8 md:h-11 w-8 md:w-11 rounded-md"
         alt="user-picture"
       />
-      <p className="font-semibold">{user?.username}</p>
-      <i className="bx bx-chevron-down"></i>
+      <div className="flex items-center justify-between w-full">
+        <p className="font-semibold hidden md:block">{user?.username}</p>
+        <i className="bx bx-chevron-down"></i>
+      </div>
     </>
   );
 };

@@ -122,7 +122,7 @@ export class ProjectsService {
   async getPublishedProjectBySlug(slug: string): Promise<Project> {
     const project = await this.projectRepository.findOne({
       where: { publishedSlug: slug, publish: true },
-      relations: ['owner', 'pages'],
+      relations: ['owner', 'pages', 'pages.parent', 'pages.children'],
     });
 
     if (!project) {
@@ -134,5 +134,9 @@ export class ProjectsService {
 
   remove(id: number): Promise<{ affected?: number }> {
     return this.projectRepository.delete(id);
+  }
+
+  async updateStarCount(projectId: number, count: number): Promise<void> {
+    await this.projectRepository.update(projectId, { starCount: count });
   }
 }

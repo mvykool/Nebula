@@ -126,24 +126,25 @@ const AllPages = ({ projectId, name }: Iprops) => {
     const isExpanded = expandedPages.has(page.id);
 
     return (
-      <div key={page.id} className="flex flex-col">
+      <div key={page.id} className="flex flex-col relative w-full">
         <div
-          className="flex justify-between hover:bg-gray-700 items-center p-2 rounded-sm"
+          className="flex justify-between relative hover:bg-cardWhite dark:hover:bg-card text-black dark:text-gray-200 items-center p-2 rounded-md"
           style={{ marginLeft: `${level * 20}px` }}
         >
           <div className="flex items-center gap-2">
             {hasChildren && (
               <button
                 onClick={() => toggleExpand(page.id)}
-                className="text-gray-300 w-4 h-4 flex items-center justify-center"
+                className=" w-4 h-4 flex items-center justify-center"
               >
                 <i
                   className={`bx bx-chevron-${isExpanded ? "down" : "right"} text-lg`}
                 ></i>
               </button>
             )}
+
             <p
-              className="text-gray-300 cursor-pointer"
+              className=" max-w-20 md:w-36 cursor-pointer  text-ellipsis overflow-hidden whitespace-nowrap"
               onClick={() => goPage(page.id)}
             >
               {page.title}
@@ -153,7 +154,7 @@ const AllPages = ({ projectId, name }: Iprops) => {
             {level === 0 && (
               <button
                 onClick={() => addChildPage(page.id)}
-                className="text-gray-300 hover:text-gray-100"
+                className="text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-gray-100"
                 title="Add subpage"
               >
                 <i className="bx bx-plus"></i>
@@ -161,7 +162,7 @@ const AllPages = ({ projectId, name }: Iprops) => {
             )}
             <button
               onClick={() => deletePage(page.id)}
-              className="text-gray-300 hover:text-gray-100"
+              className="text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-gray-100"
               title="Delete page"
             >
               <i className="bx bxs-x-square text-xl"></i>
@@ -180,27 +181,28 @@ const AllPages = ({ projectId, name }: Iprops) => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col ">
-        <div className="flex justify-between mb-8 items-center">
-          {" "}
-          <button onClick={project} className="font-bold text-lg tracking-wide">
-            {name}
-          </button>{" "}
-          <button
-            onClick={addPage}
-            className="bg-gray-500 text-sm bg-opacity-50 px-2 py-1 rounded-md"
-            type="button"
-          >
-            {strings.sidebar.addPage}
-          </button>
-        </div>
-        {Array.isArray(myPages) && myPages.length > 0
-          ? myPages
-              .filter((page) => !page.parent) // Only render top-level pages
-              .map((page) => renderPage(page))
-          : null}
+    <div className="flex flex-col relative w-full">
+      <div className="flex justify-between mb-8 items-center">
+        {" "}
+        <button
+          onClick={project}
+          className="font-bold max-w-36 cursor-pointer text-ellipsis overflow-hidden whitespace-nowrap text-sm tracking-wide"
+        >
+          {name}
+        </button>{" "}
+        <button
+          onClick={addPage}
+          className="bg-gray-500 text-sm bg-opacity-50 px-2 py-1 rounded-md"
+          type="button"
+        >
+          {strings.sidebar.addPage}
+        </button>
       </div>
+      {Array.isArray(myPages) && myPages.length > 0
+        ? myPages
+            .filter((page) => !page.parent) // Only render top-level pages
+            .map((page) => renderPage(page))
+        : null}
     </div>
   );
 };

@@ -11,7 +11,6 @@ const MyProjects = ({ projects }: IProject) => {
   return (
     <div>
       <Greetings />
-
       {/*PROJECT SECTION*/}
       <section className="w-5/6 mx-auto m-10">
         {" "}

@@ -13,23 +13,27 @@ const Login = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const auth = useAuth();
 
+  const handleGoogleLogin = () => {
+    auth.loginWithGoogle();
+  };
+
+  const handleDemoLogin = async () => {
+    try {
+      setLoading(true);
+      await auth.loginDemo();
+    } catch (error) {
+      console.error("Demo login error:", error);
+      setError("Failed to login with demo account");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Check if all fields are filled
   useEffect(() => {
     const { username, password } = input;
     setIsFormValid(username.trim() !== "" && password.trim() !== "");
   }, [input]);
-
-  const loginAnon = async (): Promise<void> => {
-    const data = {
-      username: import.meta.env.VITE_ANON_USER,
-      password: import.meta.env.VITE_ANON_PASSWORD,
-    };
-    try {
-      await auth.loginAnonymous(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleSubmitEvent = async (e: FormEvent) => {
     e.preventDefault();
@@ -61,11 +65,11 @@ const Login = () => {
 
   return (
     <div className="relative flex min-h-screen bg-bgDark">
-      <div className="rounded-md justify-center items-center px-8 py-10 w-3/6 flex flex-col gap-4">
+      <div className="rounded-md justify-center items-center px-8 py-10 w-full md:w-3/6 flex flex-col gap-4">
         <h2 className="font-bold text-white my-7 text-4xl">
           Sign <span className="text-primary">i</span>n
         </h2>
-        <form className="w-3/6" onSubmit={handleSubmitEvent}>
+        <form className="w-5/6 md:w-3/6" onSubmit={handleSubmitEvent}>
           {error && (
             <div className="bg-red-500 text-white p-2 rounded mb-4">
               {error}
@@ -128,12 +132,24 @@ const Login = () => {
             </button>
           </div>
         </form>
-        <button
-          onClick={loginAnon}
-          className="bg-secondary hover:bg-secondary-dark mx-auto rounded-md w-3/6 justify-center font-bold px-4 py-2"
-        >
-          {strings.logandsing.guest}
-        </button>
+        <div className="flex flex-col gap-4 w-5/6 md:w-3/6">
+          {/* Google Login Button */}
+          <button
+            onClick={handleGoogleLogin}
+            className="flex items-center justify-center gap-1 bg-white text-gray-800 hover:bg-gray-50 rounded-md w-full py-2 px-4 font-bold"
+          >
+            <i className="bx bxl-google text-2xl"></i>
+            Continue with Google
+          </button>
+
+          {/* Demo Login Button */}
+          <button
+            onClick={handleDemoLogin}
+            className="bg-secondary hover:bg-secondary/90 rounded-md w-full justify-center font-bold px-4 py-2"
+          >
+            Log in as Guest
+          </button>
+        </div>
         <a
           href="/signup"
           className="justify-center flex underline my-3 text-lg text-primary hover:text-primary/90"
@@ -141,7 +157,7 @@ const Login = () => {
           {strings.logandsing.create}
         </a>
       </div>
-      <div className="relative h-screen w-3/6 py-7 px-10">
+      <div className="relative hidden md:block h-screen w-3/6 py-7 px-10">
         <PreloadedImage
           src="/nature.jpeg"
           alt="alt"

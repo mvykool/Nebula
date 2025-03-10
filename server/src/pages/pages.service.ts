@@ -51,7 +51,9 @@ export class PagesService {
   }
 
   findAll(): Promise<Page[]> {
-    return this.pageRepository.find();
+    return this.pageRepository.find({
+      relations: ['parent', 'children'],
+    });
   }
 
   async findByProject(projectId: number): Promise<Page[]> {

@@ -5,6 +5,10 @@ import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
+import { StarsModule } from 'src/stars/stars.module';
+import { NotificationsModule } from 'src/notifications/notifications.module';
+import { GoogleStrategy } from './interfaces/strategies/google.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -12,6 +16,9 @@ import { Reflector } from '@nestjs/core';
       isGlobal: true,
     }),
     UsersModule,
+    StarsModule,
+    PassportModule,
+    NotificationsModule,
     JwtModule.register({
       global: true,
       secret: process.env.SECRET,
@@ -19,7 +26,7 @@ import { Reflector } from '@nestjs/core';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, Reflector],
+  providers: [AuthService, Reflector, GoogleStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
